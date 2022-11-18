@@ -52,7 +52,7 @@ public:
 	{
 		cout << "Constructor Map() is called" << endl;
 		randomize_map();
-		printshit();
+		// printshit();
 	}
 	
 	void print_map()
@@ -83,9 +83,9 @@ public:
 		print_map();
 		for(int i = 0; i < 50; i++){
 			for(int j = 0; j < 50; j++){
-				if(){
+				// if(){
 
-				}
+				// }
 			}
 		}
 		for(int i = 9; i >= 0; i--){
@@ -157,7 +157,10 @@ public:
 // GRABY TEST LEARNER PERMITS HAHA GAY WAMEN grayb
 int main()
 {
-	Map();
-	
+	int a[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};
+	int* aOfFirst = *a; // address of first element fel big array
+	int aOfSecondPosition = *a[1]; //address of second element fel big array
+	int insideOfSecond = *(a[1]); //address of first element fel second small array
+	cout<<aOfFirst<<": a of first  \n"<<aOfSecondPosition<<": a of second: \n "<<insideOfSecond<<endl;
 	return 0;
 }
