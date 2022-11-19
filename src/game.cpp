@@ -2,6 +2,9 @@
 #include <random>
 #include <ctime>
 #include <cstdlib>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
 using namespace std;
 
 class Champion
@@ -12,13 +15,12 @@ private:
 	int champX;
 	int champY;
 
-	
 public:
 	Champion()
 	{
 		cout << "Constructor champion() is called" << endl;
-		champY = 0; //Row
-		champX = 0; //Column
+		champY = 0; // Row
+		champX = 0; // Column
 		hp = 100;
 		gemScore = 0;
 	}
@@ -26,32 +28,38 @@ public:
 	{
 		cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
 	}
-	int getX(){
+	int getX()
+	{
 		return this->champX;
 	}
-	int getY(){
+	int getY()
+	{
 		return this->champY;
 	}
-	void setX(int x){
+	void setX(int x)
+	{
 		this->champX = x;
 	}
-	void setY(int y){
+	void setY(int y)
+	{
 		this->champY = y;
 	}
-	int getHp(){
+	int getHp()
+	{
 		return this->hp;
 	}
-	void decHp(){
-		this->hp-=40; 
+	void decHp()
+	{
+		this->hp -= 40;
 	}
-	int getScore(){
+	int getScore()
+	{
 		return this->gemScore;
 	}
-	void setGemScore(int x){
+	void setGemScore(int x)
+	{
 		this->gemScore = x;
 	}
-	
-	
 };
 
 class Map
@@ -65,178 +73,238 @@ private:
 	int obstY[25];
 	int gemCount;
 	int obstCount;
-public:
 
+public:
 	Map()
 	{
 		cout << "Constructor Map() is called" << endl;
 		randomize_map();
-		print_map();
-		cout<<"Gem count: "<<gemCount<<"\nObst count: "<<obstCount<<endl;
+		newTurn();
+		
 		
 	}
-	bool checkBoundUp(){
-		if(mario.getX() == 0)
+	bool checkBoundUp()
+	{
+		if (mario.getX() == 0)
 			return false;
 		return true;
 	}
 
-	bool checkBoundDown(){
-		if(mario.getX() == 9)
+	bool checkBoundDown()
+	{
+		if (mario.getX() == 9)
 			return false;
 		return true;
 	}
 
-	bool checkBoundLeft(){
-		if(mario.getY() == 0)
+	bool checkBoundLeft()
+	{
+		if (mario.getY() == 0)
 			return false;
 		return true;
 	}
 
-	bool checkBoundRight(){
-		if(mario.getY() == 9)
+	bool checkBoundRight()
+	{
+		if (mario.getY() == 9)
 			return false;
 		return true;
 	}
 
-	void move(int k){
+	void newTurn()
+	{
+		// clear terminal
+
+		cout << "\033[2J\033[1;1H";
+		print_map();
+		cout << "Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario.getScore() << "\nHealth: " << mario.getHp() << "\nx: " << mario.getX() << "\ny: " << mario.getY() << endl;
+		int input;
+		cout<< "Enter direction: ";
+		cin >> input;
+		move(input);
+		
+		
+	}
+
+	void move(int k)
+	{
 		switch (k)
 		{
-		case 8:{
-			if(board[mario.getX()+1][mario.getY()] == "☁︎ "){
+		case 8:
+		{
+			if (board[mario.getX() + 1][mario.getY()] == "☁︎ ")
+			{
 				mario.decHp();
+				board[mario.getX()][mario.getY()]= ". ";
+				mario.setX(mario.getX() + 1);
+				newTurn();
 			}
-			if(board[mario.getX()+1][mario.getY()] == "⦿ "){
-				mario.setGemScore(mario.getScore()+1);
+			else if (board[mario.getX() + 1][mario.getY()] == "⦿ ")
+			{
+				mario.setGemScore(mario.getScore() + 1);
+				board[mario.getX()][mario.getY()]= ". ";
+				mario.setX(mario.getX() + 1);
+	
+				newTurn();
 			}
-			if(!checkBoundUp()){
-				int input;
-				cout<<"Invalid move, enter move: "<<endl;
-				cin>>input;
-				move(input);
+			else if (checkBoundUp())
+			{
+				// set new mario point
+				board[mario.getX()][mario.getY()]= ". ";
+				mario.setX(mario.getX() + 1);
+				
+				newTurn();
+
+			}
+			else{
+				newTurn();
 			}
 			
-			mario.setX(mario.getX()+1);
-		}break;
-		case 6:{if(board[mario.getX()][mario.getY()+1] == "☁︎ "){
+			
+		}
+		break;
+		case 6:
+		{
+			if (board[mario.getX()][mario.getY() + 1] == "☁︎ ")
+			{
 				mario.decHp();
 			}
-			if(board[mario.getX()][mario.getY()+1] == "⦿ "){
-				mario.setGemScore(mario.getScore()+1);
+			if (board[mario.getX()][mario.getY() + 1] == "⦿ ")
+			{
+				mario.setGemScore(mario.getScore() + 1);
 			}
-			if(!checkBoundRight()){
+			if (!checkBoundRight())
+			{
 				int input;
-				cout<<"Invalid move, enter move: "<<endl;
-				cin>>input;
+				cout << "Invalid move, enter move: " << endl;
+				cin >> input;
 				move(input);
 			}
-			
-			mario.setY(mario.getY()+1);
-		}break;
-		case 2:{
-			if(board[mario.getX()-1][mario.getY()] == "☁︎ "){
+
+			mario.setY(mario.getY() + 1);
+		}
+		break;
+		case 2:
+		{
+			if (board[mario.getX() - 1][mario.getY()] == "☁︎ ")
+			{
 				mario.decHp();
 			}
-			if(board[mario.getX()-1][mario.getY()] == "⦿ "){
-				mario.setGemScore(mario.getScore()+1);
+			if (board[mario.getX() - 1][mario.getY()] == "⦿ ")
+			{
+				mario.setGemScore(mario.getScore() + 1);
 			}
-			if(!checkBoundDown()){
+			if (!checkBoundDown())
+			{
 				int input;
-				cout<<"Invalid move, enter move: "<<endl;
-				cin>>input;
+				cout << "Invalid move, enter move: " << endl;
+				cin >> input;
 				move(input);
 			}
-			
-			mario.setX(mario.getX()-1);
-		}break;
-		case 4:{
-			if(board[mario.getX()][mario.getY()-1] == "☁︎ "){
+
+			mario.setX(mario.getX() - 1);
+		}
+		break;
+		case 4:
+		{
+			if (board[mario.getX()][mario.getY() - 1] == "☁︎ ")
+			{
 				mario.decHp();
 			}
-			if(board[mario.getX()][mario.getY()-1] == "⦿ "){
-				mario.setGemScore(mario.getScore()+1);
+			if (board[mario.getX()][mario.getY() - 1] == "⦿ ")
+			{
+				mario.setGemScore(mario.getScore() + 1);
 			}
-			if(!checkBoundLeft()){
+			if (!checkBoundLeft())
+			{
 				int input;
-				cout<<"Invalid move, enter move: "<<endl;
-				cin>>input;
+				cout << "Invalid move, enter move: " << endl;
+				cin >> input;
 				move(input);
 			}
-			
-			mario.setY(mario.getY()-1);
-		}break;
+
+			mario.setY(mario.getY() - 1);
+		}
+		break;
 		}
 	}
-	
+
 	void print_map()
-	{	
+	{
 		int count = 0;
 		cout << "print_map() called" << endl;
 		for (int i = 9; i >= 0; i--)
 		{
-			for (int j = 0; j < 10; j++){
-				if(i == mario.getX() && j == mario.getY())
-			  		board[i][j] = "∺ ";
-				
-				cout<<board[i][j];
+			for (int j = 0; j < 10; j++)
+			{
+				if (i == mario.getX() && j == mario.getY())
+					board[i][j] = "∺ ";
+
+				cout << board[i][j];
 			}
 			cout << endl;
 		}
 	}
 
-	// randomly waza3 gems and obstacles on the map
+	// randomly distribute gems and obstacles on the map
 	void randomize_map()
 	{
 		//⚇ mario, ⦿ gem, ☁︎ obstacle
 		cout << "randomize_map() called" << endl;
-			
 
 		for (int i = 9; i >= 0; i--)
 		{
-			for (int j = 0; j < 10; j++){
+			for (int j = 0; j < 10; j++)
+			{
 				board[i][j] = ". ";
 			}
-		}	
+		}
 
 		srand(time(0));
-		for(int i = 0; i < 50; i++){
-			do{
+		for (int i = 0; i < 50; i++)
+		{
+			do
+			{
 				gemX[i] = (rand() % 10);
 				gemY[i] = (rand() % 10);
-				if(gemX[i] == 0 && gemY[i] == 0){
+				if (gemX[i] == 0 && gemY[i] == 0)
+				{
 					gemX[i] = (rand() % 9) + 1;
 					gemY[i] = (rand() % 9) + 1;
 				}
-			}while(board[gemX[i]][gemY[i]] != ". ");
-			
-			board[gemX[i]][gemY[i]] = "⦿ "; 
-				gemCount++;
+			} while (board[gemX[i]][gemY[i]] != ". ");
+
+			board[gemX[i]][gemY[i]] = "⦿ ";
+			gemCount++;
 		}
-		
-		
-		for(int i = 0; i < 25; i++){
+
+		for (int i = 0; i < 25; i++)
+		{
 			do
 			{
 				obstX[i] = (rand() % 10);
 				obstY[i] = (rand() % 10);
-			
-				if((obstX[i] == 0 && obstY[i] == 0)){
+
+				if ((obstX[i] == 0 && obstY[i] == 0))
+				{
 					obstX[i] = (rand() % 9) + 1;
 					obstY[i] = (rand() % 9) + 1;
 				}
-				
+
 			} while (board[obstX[i]][obstY[i]] != ". ");
-			
+
 			board[obstX[i]][obstY[i]] = "☁︎ ";
-				obstCount++;
+			obstCount++;
 		}
-		
-		
-		//if there are duplicate points betweeen gems and obstacles
-		for(int i = 0; i < 50; i++){
-			for(int j = 0; j < 25; j++){
-				
-				while((obstX[j] == gemX[i]) && (obstY[j] == gemY[i])){
+
+		// if there are duplicate points betweeen gems and obstacles
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 25; j++)
+			{
+
+				while ((obstX[j] == gemX[i]) && (obstY[j] == gemY[i]))
+				{
 					obstX[j] = (rand() % 9) + 1;
 					obstY[j] = (rand() % 9) + 1;
 				}
@@ -245,10 +313,20 @@ public:
 	}
 };
 
-// GRABY TEST LEARNER PERMITS HAHA GAY WAMEN grayb
 int main()
 {
-	Map();
+	//Map();
+// cout<<"WAAAAAA";
+// 	int x;
+// 	cin>>x;
 	
+// 	if(x==1)
+// 		cout << "\033[2J\033[1;1H";
+
+// 	cout << "The screen has been cleared!";
+
 	return 0;
 }
+
+
+
