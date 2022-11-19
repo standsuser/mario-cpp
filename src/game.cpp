@@ -44,6 +44,12 @@ public:
 	void decHp(){
 		this->hp-=40; 
 	}
+	int getScore(){
+		return this->gemScore;
+	}
+	void setGemScore(int x){
+		this->gemScore = x;
+	}
 	
 	
 };
@@ -67,23 +73,98 @@ public:
 		randomize_map();
 		print_map();
 		cout<<"Gem count: "<<gemCount<<"\nObst count: "<<obstCount<<endl;
-		int* p = (int*) (mario.getX());
-		mario.setX(*p++);
-		cout<<mario.getX();
+		
+	}
+	bool checkBoundUp(){
+		if(mario.getX() == 0)
+			return false;
+		return true;
+	}
+
+	bool checkBoundDown(){
+		if(mario.getX() == 9)
+			return false;
+		return true;
+	}
+
+	bool checkBoundLeft(){
+		if(mario.getY() == 0)
+			return false;
+		return true;
+	}
+
+	bool checkBoundRight(){
+		if(mario.getY() == 9)
+			return false;
+		return true;
 	}
 
 	void move(int k){
 		switch (k)
 		{
-		// case 8:{
-		// 	if(board[mario.getX()][mario.getY()] == "☁︎ "){
-		// 		mario.decHp();
-		// 	}
-		// 	int* p = (int*) (mario.getX());
-		// 	mario.setX(*p++);
-		// }break;
-		// default:
-		// cout<<endl;
+		case 8:{
+			if(board[mario.getX()+1][mario.getY()] == "☁︎ "){
+				mario.decHp();
+			}
+			if(board[mario.getX()+1][mario.getY()] == "⦿ "){
+				mario.setGemScore(mario.getScore()+1);
+			}
+			if(!checkBoundUp()){
+				int input;
+				cout<<"Invalid move, enter move: "<<endl;
+				cin>>input;
+				move(input);
+			}
+			
+			mario.setX(mario.getX()+1);
+		}break;
+		case 6:{if(board[mario.getX()][mario.getY()+1] == "☁︎ "){
+				mario.decHp();
+			}
+			if(board[mario.getX()][mario.getY()+1] == "⦿ "){
+				mario.setGemScore(mario.getScore()+1);
+			}
+			if(!checkBoundRight()){
+				int input;
+				cout<<"Invalid move, enter move: "<<endl;
+				cin>>input;
+				move(input);
+			}
+			
+			mario.setY(mario.getY()+1);
+		}break;
+		case 2:{
+			if(board[mario.getX()-1][mario.getY()] == "☁︎ "){
+				mario.decHp();
+			}
+			if(board[mario.getX()-1][mario.getY()] == "⦿ "){
+				mario.setGemScore(mario.getScore()+1);
+			}
+			if(!checkBoundDown()){
+				int input;
+				cout<<"Invalid move, enter move: "<<endl;
+				cin>>input;
+				move(input);
+			}
+			
+			mario.setX(mario.getX()-1);
+		}break;
+		case 4:{
+			if(board[mario.getX()][mario.getY()-1] == "☁︎ "){
+				mario.decHp();
+			}
+			if(board[mario.getX()][mario.getY()-1] == "⦿ "){
+				mario.setGemScore(mario.getScore()+1);
+			}
+			if(!checkBoundLeft()){
+				int input;
+				cout<<"Invalid move, enter move: "<<endl;
+				cin>>input;
+				move(input);
+			}
+			
+			mario.setY(mario.getY()-1);
+		}break;
 		}
 	}
 	
