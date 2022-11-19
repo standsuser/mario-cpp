@@ -1,5 +1,7 @@
 #include <iostream>
 #include <random>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 class Champion
@@ -7,7 +9,6 @@ class Champion
 private:
 	int hp;
 	int gemScore;
-	
 	int champX;
 	int champY;
 
@@ -31,7 +32,19 @@ public:
 	int getY(){
 		return this->champY;
 	}
-
+	void setX(int x){
+		this->champX = x;
+	}
+	void setY(int y){
+		this->champY = y;
+	}
+	int getHp(){
+		return this->hp;
+	}
+	void decHp(){
+		this->hp-=40; 
+	}
+	
 	
 };
 
@@ -44,15 +57,34 @@ private:
 	int gemY[50];
 	int obstX[25];
 	int obstY[25];
-	int gemDoneCount;
-	int obstCountDone;
+	int gemCount;
+	int obstCount;
 public:
 
 	Map()
 	{
 		cout << "Constructor Map() is called" << endl;
 		randomize_map();
-		// printshit();
+		print_map();
+		cout<<"Gem count: "<<gemCount<<"\nObst count: "<<obstCount<<endl;
+		int* p = (int*) (mario.getX());
+		mario.setX(*p++);
+		cout<<mario.getX();
+	}
+
+	void move(int k){
+		switch (k)
+		{
+		// case 8:{
+		// 	if(board[mario.getX()][mario.getY()] == "☁︎ "){
+		// 		mario.decHp();
+		// 	}
+		// 	int* p = (int*) (mario.getX());
+		// 	mario.setX(*p++);
+		// }break;
+		// default:
+		// cout<<endl;
+		}
 	}
 	
 	void print_map()
@@ -63,104 +95,79 @@ public:
 		{
 			for (int j = 0; j < 10; j++){
 				if(i == mario.getX() && j == mario.getY())
-				 	board[i][j] = "⚇ ";
-				else if(i == gemX[i] && j == gemY[j]){
-					board[i][j] = "⦿ ";
-				}else if(i == obstX[i] && j == obstY[j]){
-					board[i][j] = "☁︎ ";
-				}else board[i][j] = ". ";
+			  		board[i][j] = "∺ ";
+				
+				cout<<board[i][j];
 			}
 			cout << endl;
 		}
-
-		
-		
 	}
-
-	// pointer that points to 7eta men el board
-
-	void printshit(int x, int y){
-		print_map();
-		for(int i = 0; i < 50; i++){
-			for(int j = 0; j < 50; j++){
-				// if(){
-
-				// }
-			}
-		}
-		for(int i = 9; i >= 0; i--){
-			for(int j = 0; j < 10; j++){
-				cout<<board[i][j];
-			}
-			cout<<endl;
-		}
-
-
-	}
-
-	
 
 	// randomly waza3 gems and obstacles on the map
 	void randomize_map()
 	{
 		//⚇ mario, ⦿ gem, ☁︎ obstacle
 		cout << "randomize_map() called" << endl;
-		int gemCount;
-		int obstCount;		
-
-		for(int i = 0; i < 50; i++){
-			srand(time(0));
-			gemX[i] = (rand() % 10);
-			gemY[i] = (rand() % 10);
-			if(gemX[i] == 0 && gemY[i] == 0){
-				gemX[i] = (rand() % 9) + 1;
-				gemY[i] = (rand() % 9) + 1;
-			}
-			gemCount++; 
-		}
-
-		for(int i = 0; i < 25; i++){
-			srand(time(0));
-			obstX[i] = (rand() % 10);
-			obstY[i] = (rand() % 10);
 			
-			if((obstX[i] == 0 && obstY[i] == 0)){
-				obstX[i] = (rand() % 9) + 1;
-				obstY[i] = (rand() % 9) + 1;
-			}
-			obstCount++;
-		}
 
+		for (int i = 9; i >= 0; i--)
+		{
+			for (int j = 0; j < 10; j++){
+				board[i][j] = ". ";
+			}
+		}	
+
+		srand(time(0));
+		for(int i = 0; i < 50; i++){
+			do{
+				gemX[i] = (rand() % 10);
+				gemY[i] = (rand() % 10);
+				if(gemX[i] == 0 && gemY[i] == 0){
+					gemX[i] = (rand() % 9) + 1;
+					gemY[i] = (rand() % 9) + 1;
+				}
+			}while(board[gemX[i]][gemY[i]] != ". ");
+			
+			board[gemX[i]][gemY[i]] = "⦿ "; 
+				gemCount++;
+		}
+		
+		
+		for(int i = 0; i < 25; i++){
+			do
+			{
+				obstX[i] = (rand() % 10);
+				obstY[i] = (rand() % 10);
+			
+				if((obstX[i] == 0 && obstY[i] == 0)){
+					obstX[i] = (rand() % 9) + 1;
+					obstY[i] = (rand() % 9) + 1;
+				}
+				
+			} while (board[obstX[i]][obstY[i]] != ". ");
+			
+			board[obstX[i]][obstY[i]] = "☁︎ ";
+				obstCount++;
+		}
+		
+		
 		//if there are duplicate points betweeen gems and obstacles
 		for(int i = 0; i < 50; i++){
 			for(int j = 0; j < 25; j++){
-				if((obstX[j] == gemX[i]) && (obstY[j] == gemY[i])){
+				
+				while((obstX[j] == gemX[i]) && (obstY[j] == gemY[i])){
 					obstX[j] = (rand() % 9) + 1;
 					obstY[j] = (rand() % 9) + 1;
 				}
 			}
 		}
-
-		// for(int i = 0; i < 50;i++){
-		// 	for(int j = 0; j<50; j++){
-		// 		if(i == j)
-		// 			cout<<"⦿ ";
-		// 	}
-		// }
-
-
 	}
-
-
 };
 
 // GRABY TEST LEARNER PERMITS HAHA GAY WAMEN grayb
 int main()
 {
-	int a[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};
-	int* aOfFirst = *a; // address of first element fel big array
-	int aOfSecondPosition = *a[1]; //address of second element fel big array
-	int insideOfSecond = *(a[1]); //address of first element fel second small array
-	cout<<aOfFirst<<": a of first  \n"<<aOfSecondPosition<<": a of second: \n "<<insideOfSecond<<endl;
+	Map();
+	
 	return 0;
 }
