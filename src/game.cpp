@@ -80,14 +80,16 @@ private:
 	int obstY[25];
 	int gemCount;
 	int obstCount;
+	int flag = 0;
 
 public:
 	Map()
-	{
-		cout << "Constructor Map() is called" << endl;
+	{	
 		randomize_map();	
-				print_map();
-		
+		if(flag == 0){
+		cout << "Constructor Map() is called" << endl;
+		cout << "randomize_map() called" << endl;
+	}flag++;
 	}
 	void end(){
 		if(mario->getScore() == gemCount){
@@ -96,8 +98,8 @@ public:
 		}
 
 		else if(mario->getHp() <= 0){
-			
 			cout<<"You lost :( but you can go again :D"<<endl;
+			
 		exit(0);
 		}else{
 			return;
@@ -266,8 +268,8 @@ public:
 	}
 
 	void newGame(){
-		//Map();
-
+		cout << "\033[2J\033[1;1H";
+		print_map();
 		cout<<"Choose 1 to Randomize, Choose 2 to start the game"<<endl;
 		char rButton = getch();
 		
@@ -278,14 +280,13 @@ public:
 		}
 		
 		if(rButton == '1'){
-			system("CLS");
+			cout << "\033[2J\033[1;1H";
 			randomize_map();
-			
 			newGame();
 			
 		}else if(rButton == '2') {
+			cout << "\033[2J\033[1;1H";
 			cout << "print_map() called" << endl;
-			
 			newTurn();
 		}
 	}
@@ -313,7 +314,7 @@ public:
 		obstCount = 0;
 		
 		//⚇ mario, ⦿ gem, ☁︎ obstacle
-		cout << "randomize_map() called" << endl;
+		
 
 		for (int i = 9; i >= 0; i--)
 		{
@@ -378,9 +379,8 @@ public:
 
 int main()
 {
-	 Map m;
-	 m.newGame();
-	
+	 Map* m = new Map();
+	m->newGame();
 // cout<<"WAAAAAA";
 // 	int x;
 // 	cin>>x;
