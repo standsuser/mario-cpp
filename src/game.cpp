@@ -1,5 +1,4 @@
 #include <iostream>
-#include <random>
 #include <ctime>
 #include <cstdlib>
 #include <conio.h>
@@ -16,8 +15,10 @@ private:
 	int champY;
 
 public:
+	//Champion() = default;
 	Champion()
 	{
+		
 		cout << "Constructor champion() is called" << endl;
 		champY = 0; // Row
 		champX = 0; // Column
@@ -51,6 +52,9 @@ public:
 	void decHp()
 	{
 		this->hp -= 40;
+		if(this->hp <= 0){
+			this->hp = 0;
+		}
 	}
 	int getScore()
 	{
@@ -60,13 +64,16 @@ public:
 	{
 		this->gemScore = x;
 	}
+	void setHp(int x){
+		this->hp = x;
+	}
 };
 
 class Map
 {
 private:
 	string board[10][10];
-	Champion mario;
+	Champion* mario = new Champion();
 	int gemX[50];
 	int gemY[50];
 	int obstX[25];
@@ -78,51 +85,25 @@ public:
 	Map()
 	{
 		cout << "Constructor Map() is called" << endl;
-		randomize_map();
-		newTurn();
-		
+		randomize_map();	
+				print_map();
 		
 	}
 	void end(){
-		if(mario.getScore() == gemCount){
+		if(mario->getScore() == gemCount){
 			cout<<"Congrats you won!!"<<endl;
 		exit(0);
 		}
 
-		else if(mario.getHp() <= 0){
+		else if(mario->getHp() <= 0){
+			
 			cout<<"You lost :( but you can go again :D"<<endl;
 		exit(0);
 		}else{
 			return;
 		}
 	}
-	// bool checkBoundUp()
-	// {
-	// 	if (mario.getX() == 9)
-	// 		return false;
-	// 	return true;
-	// }
 
-	// bool checkBoundDown()
-	// {
-	// 	if (mario.getX() == 9)
-	// 		return false;
-	// 	return true;
-	// }
-
-	// bool checkBoundLeft()
-	// {
-	// 	if (mario.getY() == 0)
-	// 		return false;
-	// 	return true;
-	// }
-
-	// bool checkBoundRight()
-	// {
-	// 	if (mario.getY() == 9)
-	// 		return false;
-	// 	return true;
-	// }
 
 	void newTurn()
 	{
@@ -130,42 +111,43 @@ public:
 
 		cout << "\033[2J\033[1;1H";
 		print_map();
-		cout << "Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario.getScore() << "\nHealth: " << mario.getHp() << "\nx: " << mario.getX() << "\ny: " << mario.getY() << endl;
-		int input;
+		cout << "Total Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
+		char input;
 		end();
 		cout<< "Enter direction: ";
-		cin >> input;
+		input = getch();
 		move(input);
 		
 	}
 
-	void move(int k)
+	void move(char k)
 	{
+		
 		switch (k)
 		{
-		case 8:
-		{	if (mario.getX() == 9){
+		case '8':
+		{	if (mario->getX() == 9){
 				newTurn();
 		}
-			if (board[mario.getX() + 1][mario.getY()] == "☁︎ ")
+			if (board[mario->getX() + 1][mario->getY()] == "☁︎ ")
 			{
-				mario.decHp();
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() + 1);
+				mario->decHp();
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() + 1);
 				
 				newTurn();
 			}
-			else if (board[mario.getX() + 1][mario.getY()] == "⦿ ")
+			else if (board[mario->getX() + 1][mario->getY()] == "⦿ ")
 			{
-				mario.setGemScore(mario.getScore() + 1);
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() + 1);
+				mario->setGemScore(mario->getScore() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() + 1);
 				
 				newTurn();
-			}else if (board[mario.getX() + 1][mario.getY()] == ". ")
+			}else if (board[mario->getX() + 1][mario->getY()] == ". ")
 			{
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() + 1);
 				
 				newTurn();
 			}
@@ -177,29 +159,29 @@ public:
 			
 		}
 		break;
-		case 6: //board[mario.getX()][mario.getY() + 1]
-		{	if (mario.getY() == 9){
+		case '6': //board[mario.getX()][mario.getY() + 1]
+		{	if (mario->getY() == 9){
 				newTurn();
 		}
-			if (board[mario.getX() ][mario.getY() + 1] == "☁︎ ")
+			if (board[mario->getX() ][mario->getY() + 1] == "☁︎ ")
 			{
-				mario.decHp();
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() + 1);
+				mario->decHp();
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() + 1);
 				
 				newTurn();
 			}
-			else if (board[mario.getX()][mario.getY() + 1] == "⦿ ")
+			else if (board[mario->getX()][mario->getY() + 1] == "⦿ ")
 			{
-				mario.setGemScore(mario.getScore() + 1);
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() + 1);
+				mario->setGemScore(mario->getScore() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() + 1);
 				
 				newTurn();
-			}else if (board[mario.getX()][mario.getY() + 1] == ". ")
+			}else if (board[mario->getX()][mario->getY() + 1] == ". ")
 			{
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() + 1);
 				
 				newTurn();
 			}
@@ -211,29 +193,29 @@ public:
 			
 		}
 		break;
-		case 2: //board[mario.getX() - 1][mario.getY()]
-		{	if (mario.getX() == 0){
+		case '2': //board[mario.getX() - 1][mario.getY()]
+		{	if (mario->getX() == 0){
 				newTurn();
 		}
-			if (board[mario.getX() - 1][mario.getY()] == "☁︎ ")
+			if (board[mario->getX() - 1][mario->getY()] == "☁︎ ")
 			{
-				mario.decHp();
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() - 1);
+				mario->decHp();
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() - 1);
 				
 				newTurn();
 			}
-			else if (board[mario.getX() - 1][mario.getY()] == "⦿ ")
+			else if (board[mario->getX() - 1][mario->getY()] == "⦿ ")
 			{
-				mario.setGemScore(mario.getScore() + 1);
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() - 1);
+				mario->setGemScore(mario->getScore() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() - 1);
 				
 				newTurn();
-			}else if (board[mario.getX() - 1][mario.getY()] == ". ")
+			}else if (board[mario->getX() - 1][mario->getY()] == ". ")
 			{
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setX(mario.getX() - 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setX(mario->getX() - 1);
 				
 				newTurn();
 			}
@@ -245,29 +227,29 @@ public:
 			
 		}
 		break;
-		case 4: //board[mario.getX()][mario.getY() - 1]
-		{	if (mario.getY() == 0){
+		case '4': //board[mario.getX()][mario.getY() - 1]
+		{	if (mario->getY() == 0){
 				newTurn();
 		}
-			if (board[mario.getX() ][mario.getY() - 1] == "☁︎ ")
+			if (board[mario->getX() ][mario->getY() - 1] == "☁︎ ")
 			{
-				mario.decHp();
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() - 1);
+				mario->decHp();
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() - 1);
 				
 				newTurn();
 			}
-			else if (board[mario.getX()][mario.getY() - 1] == "⦿ ")
+			else if (board[mario->getX()][mario->getY() - 1] == "⦿ ")
 			{
-				mario.setGemScore(mario.getScore() + 1);
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() - 1);
+				mario->setGemScore(mario->getScore() + 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() - 1);
 				
 				newTurn();
-			}else if (board[mario.getX()][mario.getY() - 1] == ". ")
+			}else if (board[mario->getX()][mario->getY() - 1] == ". ")
 			{
-				board[mario.getX()][mario.getY()]= ". ";
-				mario.setY(mario.getY() - 1);
+				board[mario->getX()][mario->getY()]= ". ";
+				mario->setY(mario->getY() - 1);
 				
 				newTurn();
 			}
@@ -277,20 +259,46 @@ public:
 			}
 			
 			
+		}break;
+		default:
+			newTurn();
+		}	
+	}
+
+	void newGame(){
+		//Map();
+
+		cout<<"Choose 1 to Randomize, Choose 2 to start the game"<<endl;
+		char rButton = getch();
+		
+	
+		while (rButton != '1' && rButton != '2'){
+			cout<<"Choose 1 to Randomize again, Choose 2 to start the game"<<endl;
+			rButton=getch();
 		}
-		break;
+		
+		if(rButton == '1'){
+			system("CLS");
+			randomize_map();
+			
+			newGame();
+			
+		}else if(rButton == '2') {
+			cout << "print_map() called" << endl;
+			
+			newTurn();
 		}
 	}
 
 	void print_map()
 	{
 		int count = 0;
-		cout << "print_map() called" << endl;
+		
 		for (int i = 9; i >= 0; i--)
 		{
 			for (int j = 0; j < 10; j++)
 			{
-				if (i == mario.getX() && j == mario.getY())
+				if (i == mario->getX() && j == mario->getY())
 					board[i][j] = "∺ ";
 
 				cout << board[i][j];
@@ -302,6 +310,7 @@ public:
 	// randomly distribute gems and obstacles on the map
 	void randomize_map()
 	{	gemCount = 0;
+		obstCount = 0;
 		
 		//⚇ mario, ⦿ gem, ☁︎ obstacle
 		cout << "randomize_map() called" << endl;
@@ -369,7 +378,9 @@ public:
 
 int main()
 {
-	Map();
+	 Map m;
+	 m.newGame();
+	
 // cout<<"WAAAAAA";
 // 	int x;
 // 	cin>>x;
@@ -378,6 +389,17 @@ int main()
 // 		cout << "\033[2J\033[1;1H";
 
 // 	cout << "The screen has been cleared!";
+//  std::string word;
+//     char c = getch();
+//     //while (mario->hp !=0 || mario->getScore() == Map->gemCount) //  game not ended
+// 	int x=0;
+// 	while(x=0)
+//     {
+//         word.push_back(c);
+//         std::cout << c;
+//         c = getch();
+//     }
+//     std::cout << c;
 
 	return 0;
 }
