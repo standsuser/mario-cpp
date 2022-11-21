@@ -72,7 +72,7 @@ public:
 class Map
 {
 private:
-	string board[10][10];
+	string** board;
 	Champion* mario = new Champion();
 	int gemX[50];
 	int gemY[50];
@@ -86,6 +86,10 @@ public:
 	Map()
 	{	
 		randomize_map();
+		board = new string*[10];
+		for(int i = 0; i < 10;i++){
+			board[i] = new string[10];
+		}
 		if(flag == 0){
 			cout << "Constructor Map() is called" << endl;
 			cout << "randomize_map() called" << endl;
