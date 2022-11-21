@@ -26,7 +26,7 @@ public:
 		gemScore = 0;
 	}
 	void print_champ_info()
-	{
+	{	
 		cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
 	}
 	int getX()
@@ -80,7 +80,6 @@ private:
 	int obstY[25];
 	int gemCount;
 	int obstCount;
-	int flag = 0;
 
 public:
 	Map()
@@ -90,11 +89,8 @@ public:
 			board[i] = new string[10];
 		}
 		randomize_map();
-		if(flag == 0){
-			cout << "Constructor Map() is called" << endl;
-			cout << "randomize_map() called" << endl;
-		}
-		flag++;
+		cout << "Constructor Map() is called" << endl;
+		cout << "randomize_map() is called" << endl;
 	}
 	void end(){
 		if(mario->getScore() == gemCount){
@@ -126,7 +122,7 @@ public:
 		
 		cout << "\033[2J\033[1;1H";
 		print_map();
-		cout<<" 8 -> up, 4 -> Left, 2 -> Down, 6 -> Right"<<endl;
+		cout<<" 8 -> Up, 2 -> Down, 4 -> Left, 6 -> Right"<<endl;
 		cout << "Total Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
 		char input;
 		end();
@@ -283,6 +279,7 @@ public:
 
 	void newGame(){
 		
+		cout<<"print_map() called"<<endl;
 		print_map();
 		char rButton = 0;
 	
@@ -292,9 +289,9 @@ public:
 		}
 		
 		if(rButton == '1'){
-			//cout << "\033[2J\033[1;1H";
 			randomize_map();
 			cout << "\033[2J\033[1;1H";
+			Map* m = new Map();
 			newGame();
 			
 		}else if(rButton == '2') {
@@ -306,8 +303,7 @@ public:
 
 	void print_map()
 	{
-		int count = 0;	
-		cout<<"print_map() called"<<endl;
+		
 		
 		for (int i = 9; i >= 0; i--)
 		{
