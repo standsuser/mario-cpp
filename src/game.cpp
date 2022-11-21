@@ -123,7 +123,7 @@ public:
 		cout << "\033[2J\033[1;1H";
 		print_map();
 		cout<<" 8 -> Up, 2 -> Down, 4 -> Left, 6 -> Right"<<endl;
-		cout << "Total Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
+		cout << "Total Gem count (⦿): " << gemCount << "\nObst count (☁︎): " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
 		char input;
 		end();
 		cout<< "Enter direction: ";
@@ -303,8 +303,6 @@ public:
 
 	void print_map()
 	{
-		
-		
 		for (int i = 9; i >= 0; i--)
 		{
 			for (int j = 0; j < 10; j++)
@@ -323,7 +321,7 @@ public:
 	{	gemCount = 0;
 		obstCount = 0;
 		
-		//⚇ mario, ⦿ gem, ☁︎ obstacle
+		//∺ mario, ⦿ gem, ☁︎ obstacle
 		
 
 		for (int i = 9; i >= 0; i--)
@@ -335,6 +333,8 @@ public:
 		}
 
 		srand(time(0));
+
+		//Generate Gems
 		for (int i = 0; i < 50; i++)
 		{
 			do
@@ -352,6 +352,7 @@ public:
 			gemCount++;
 		}
 
+		//Generate Obstacles
 		for (int i = 0; i < 25; i++)
 		{
 			do
@@ -391,26 +392,6 @@ int main()
 {
 	Map* m = new Map();
 	m->newGame();
-// cout<<"WAAAAAA";
-// 	int x;
-// 	cin>>x;
-	
-// 	if(x==1)
-// 		cout << "\033[2J\033[1;1H";
-
-// 	cout << "The screen has been cleared!";
-//  std::string word;
-//     char c = getch();
-//     //while (mario->hp !=0 || mario->getScore() == Map->gemCount) //  game not ended
-// 	int x=0;
-// 	while(x=0)
-//     {
-//         word.push_back(c);
-//         std::cout << c;
-//         c = getch();
-//     }
-//     std::cout << c;
-
 	return 0;
 }
 
