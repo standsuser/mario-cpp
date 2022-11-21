@@ -72,7 +72,7 @@ public:
 class Map
 {
 private:
-	string** board;
+	string board[10][10];
 	Champion* mario = new Champion();
 	int gemX[50];
 	int gemY[50];
@@ -86,10 +86,10 @@ public:
 	Map()
 	{	
 		randomize_map();
-		board = new string*[10];
-		for(int i = 0; i < 10;i++){
-			board[i] = new string[10];
-		}
+		// board = new string*[10];
+		// for(int i = 0; i < 10;i++){
+		// 	board[i] = new string[10];
+		// }
 		if(flag == 0){
 			cout << "Constructor Map() is called" << endl;
 			cout << "randomize_map() called" << endl;
@@ -118,6 +118,7 @@ public:
 		
 		cout << "\033[2J\033[1;1H";
 		print_map();
+		cout<<" 8 -> up, 4 -> Left, 2 -> Down, 6 -> Right"<<endl;
 		cout << "Total Gem count: " << gemCount << "\nObst count: " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
 		char input;
 		end();
