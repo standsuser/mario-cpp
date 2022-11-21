@@ -72,7 +72,7 @@ public:
 class Map
 {
 private:
-	string board[10][10];
+	string** board;
 	Champion* mario = new Champion();
 	int gemX[50];
 	int gemY[50];
@@ -85,11 +85,11 @@ private:
 public:
 	Map()
 	{	
+		 board = new string*[10];
+		 for(int i = 0; i < 10;i++){
+			board[i] = new string[10];
+		}
 		randomize_map();
-		// board = new string*[10];
-		// for(int i = 0; i < 10;i++){
-		// 	board[i] = new string[10];
-		// }
 		if(flag == 0){
 			cout << "Constructor Map() is called" << endl;
 			cout << "randomize_map() called" << endl;
@@ -99,11 +99,19 @@ public:
 	void end(){
 		if(mario->getScore() == gemCount){
 			cout<<"Congrats you won!!"<<endl;
+			for(int i = 0; i < 5; ++i){
+    			delete[] board[i];//deletes an inner array of integer;
+			}
+			delete[] board;//delete pointer holding array of pointers;
 		exit(0);
 		}
 
 		else if(mario->getHp() <= 0){
 			cout<<"You lost :( but you can go again :D"<<endl;
+			for(int i = 0; i < 5; ++i){
+    			delete[] board[i];//deletes an inner array of integer;
+			}
+			delete[] board;//delete pointer holding array of pointers;
 			
 		exit(0);
 		}else{
