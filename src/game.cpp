@@ -2,7 +2,6 @@
 #include <ctime>
 #include <cstdlib>
 #include <conio.h>
-#include <stdlib.h>
 #include <string.h>
 using namespace std;
 
@@ -95,24 +94,25 @@ public:
 	void end(){
 		if(mario->getScore() == gemCount){
 			cout<<"Congrats you won!!"<<endl;
-			for(int i = 0; i < 5; ++i){
-    			delete[] board[i];//deletes an inner array of integer;
-			}
-			delete[] board;//delete pointer holding array of pointers;
+			
 		exit(0);
 		}
 
 		else if(mario->getHp() <= 0){
 			cout<<"You lost :( but you can go again :D"<<endl;
-			for(int i = 0; i < 5; ++i){
-    			delete[] board[i];//deletes an inner array of integer;
-			}
-			delete[] board;//delete pointer holding array of pointers;
-			
+						
 		exit(0);
 		}else{
 			return;
 		}
+	}
+
+	~Map(){
+		for(int i = 0; i < 5; ++i){
+    			delete(board[i]);//deletes an inner array of integer;
+			}
+			delete(board);//delete pointer holding array of pointers;
+		delete(mario);
 	}
 
 
