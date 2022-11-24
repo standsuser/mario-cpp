@@ -108,7 +108,7 @@ public:
 	}
 
 	~Map(){
-		for(int i = 0; i < 5; ++i){
+		for(int i = 0; i < 10; ++i){
     			delete(board[i]);//deletes an inner array of integer;
 			}
 			delete(board);//delete pointer holding array of pointers;
@@ -122,7 +122,7 @@ public:
 		
 		cout << "\033[2J\033[1;1H";
 		print_map();
-		cout<<" 8 -> Up, 2 -> Down, 4 -> Left, 6 -> Right"<<endl;
+		cout<<" 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right"<<endl;
 		cout << "Total Gem count (⦿): " << gemCount << "\nObst count (☁︎): " << obstCount << "\nScore: " << mario->getScore() << "\nHealth: " << mario->getHp() << "\nx: " << mario->getX() << "\ny: " << mario->getY() << endl;
 		char input;
 		end();
@@ -205,7 +205,7 @@ public:
 			
 		}
 		break;
-		case '2': //board[mario.getX() - 1][mario.getY()]
+		case '5': //board[mario.getX() - 1][mario.getY()]
 		{	if (mario->getX() == 0){
 				newTurn();
 		}
