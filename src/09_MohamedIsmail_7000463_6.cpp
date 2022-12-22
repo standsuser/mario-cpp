@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <string.h>
 using namespace std;
+srand(time(0));
 
 class Champion
 {
@@ -60,7 +61,7 @@ public:
 	{
 		return this->gemScore;
 	}
-	void setGemScore(int x)
+	void setScore(int x)
 	{
 		this->gemScore = x;
 	}
@@ -353,8 +354,6 @@ public:
 			}
 		}
 
-		srand(time(0));
-
 		// Generate Gems
 		for (int i = 0; i < 50; i++)
 		{
@@ -369,7 +368,7 @@ public:
 				}
 			} while (board[gemX[i]][gemY[i]] != '. ');
 
-			board[gemX[i]][gemY[i]] = '⦿ ';
+			board[gemX[i]][gemY[i]] = 'G ';
 			gemCount++;
 		}
 
@@ -494,6 +493,137 @@ public:
 		this->y = n;
 	}
 };
+
+class Map
+{
+private:
+	int rows[10];
+	int col[10];
+	Cell **board;
+	int gemCount, obstCount;
+	// The declaration down there is for when the gem class and the obstacle class is created;
+	//  Gem gems[40];
+	//  Obstacle obst[20];
+
+public:
+	Map()
+	{
+		board = new Cell *[10];
+		for (int i = 0; i < 10; i++)
+		{
+			board[i] = new Cell[10];
+		}
+	}
+
+	void randomize_map()
+	{
+		gemCount = 0;
+		obstCount = 0;
+
+		// ∺ mario, ⦿ gem, ☁︎ obstacle
+
+		for (int i = 9; i >= 0; i--)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				board[i][j] = Cell();
+				board[i][j].setX(i);
+				board[i][j].setY(j);
+			}
+		}
+
+		srand(time(0));
+	}
+};
+class Cell
+{
+private:
+	char type;
+	int x, y;
+
+public:
+	Cell()
+	{
+		this->type = '. ';
+		this->x = 0;
+		this->y = 0;
+	}
+
+	char getType()
+	{
+		return this->type;
+	}
+
+	void setType(char c)
+	{
+		this->type = c;
+	}
+
+	int getX()
+	{
+		return this->x;
+	}
+
+	void setX(int n)
+	{
+		this->x = n;
+	}
+
+	int getY()
+	{
+		return this->y;
+	}
+
+	void setY(int n)
+	{
+		this->y = n;
+	}
+};
+
+class Obstacle
+{
+private:
+	int takedmg;
+
+public:
+	Obstacle()
+	{
+		takedmg = rand() % 5 + 1
+	}
+
+	virtual void execute(Champion c){};
+};
+
+class Bomb : public Obstacle
+{
+public:
+	void execute(Champion c)
+	{
+
+		int x = c.getHp() - takedmg;
+
+		if (x < 0)
+			x = 0;
+		c.setHp(x);
+
+		cout << "bomb excuted with dmg = " << takedmg << endl;
+	}
+};
+
+class Thief() : public Obstacle{
+					public :
+						execute(Champion c){
+
+							int x = c.getScore - takedmg;
+
+if (x < 0)
+	x = 0;
+c.setScore(x);
+
+cout << "thief executed with dmg = " << takedmg << endl;
+}
+}
+;
 
 int main()
 {
