@@ -4,7 +4,6 @@
 #include <conio.h>
 #include <string.h>
 using namespace std;
-srand(time(0));
 
 class Champion
 {
@@ -162,7 +161,7 @@ public:
 			}
 			else if (board[mario->getX() + 1][mario->getY()] == 'G ')
 			{
-				mario->setGemScore(mario->getScore() + 1);
+				mario->setScore(mario->getScore() + 1);
 				board[mario->getX()][mario->getY()] = '. ';
 				mario->setX(mario->getX() + 1);
 
@@ -198,7 +197,7 @@ public:
 			}
 			else if (board[mario->getX()][mario->getY() + 1] == 'G ')
 			{
-				mario->setGemScore(mario->getScore() + 1);
+				mario->setScore(mario->getScore() + 1);
 				board[mario->getX()][mario->getY()] = '. ';
 				mario->setY(mario->getY() + 1);
 
@@ -234,7 +233,7 @@ public:
 			}
 			else if (board[mario->getX() - 1][mario->getY()] == 'G ')
 			{
-				mario->setGemScore(mario->getScore() + 1);
+				mario->setScore(mario->getScore() + 1);
 				board[mario->getX()][mario->getY()] = '. ';
 				mario->setX(mario->getX() - 1);
 
@@ -270,7 +269,7 @@ public:
 			}
 			else if (board[mario->getX()][mario->getY() - 1] == 'G ')
 			{
-				mario->setGemScore(mario->getScore() + 1);
+				mario->setScore(mario->getScore() + 1);
 				board[mario->getX()][mario->getY()] = '. ';
 				mario->setY(mario->getY() - 1);
 
@@ -415,9 +414,8 @@ private:
 	int col[10];
 	Cell **board;
 	int gemCount, obstCount;
-	// The declaration down there is for when the gem class and the obstacle class is created;
-	//  Gem gems[40];
-	//  Obstacle obst[20];
+	int thievesX[10], thievesY[10], bombsX[10], bombsY[10];
+	Obstacle obstacles[20];
 
 public:
 	Map()
@@ -429,12 +427,19 @@ public:
 		}
 	}
 
+	~Map()
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			delete (board[i]); // deletes an inner array of integer;
+		}
+		delete (board); // delete pointer holding array of pointers;
+	}
+
 	void randomize_map()
 	{
 		gemCount = 0;
 		obstCount = 0;
-
-		// ∺ mario, ⦿ gem, ☁︎ obstacle
 
 		for (int i = 9; i >= 0; i--)
 		{
@@ -447,6 +452,66 @@ public:
 		}
 
 		srand(time(0));
+
+		// Thieves locations set
+		for (int i = 0; i < 10; i++)
+		{
+			do
+			{
+				thievesX[i] = (rand() % 10);
+				thievesY[i] = (rand() % 10);
+				if (thievesX[i] == 0 && thievesY[i] == 0)
+				{
+					thievesX[i] = (rand() % 9) + 1;
+					thievesY[i] = (rand() % 9) + 1;
+				}
+			} while (board[thievesX[i]][thievesY[i]].getType() != '. ');
+
+			board[thievesX[i]][thievesY[i]].setType('O ');
+			obstCount++;
+		}
+
+		// Bombs locations set
+		for (int i = 0; i < 10; i++)
+		{
+			do
+			{
+				bombsX[i] = (rand() % 10);
+				bombsY[i] = (rand() % 10);
+				if (bombsX[i] == 0 && bombsY[i] == 0)
+				{
+					bombsX[i] = (rand() % 9) + 1;
+					bombsY[i] = (rand() % 9) + 1;
+				}
+			} while (board[bombsX[i]][bombsY[i]].getType() != '. ');
+
+			board[bombsX[i]][bombsY[i]].setType('O ');
+			obstCount++;
+		}
+
+		// Creating those obstacles
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				if (board[i][j].getType() == 'O ')
+				{
+					if (thievesX[i] == i && thievesY[j] == j)
+						Obstacle o = Thief();
+
+					if (bombsX[i] == i && bombsY[j] == j)
+						Obstacle o = Bomb();
+				}
+
+				if (board[i][j].getType() == 'C ')
+				{
+				}
+
+				if (board[i][j].getType() == 'G ')
+				{
+				}
+			}
+		}
 	}
 };
 class Cell
@@ -494,93 +559,7 @@ public:
 	}
 };
 
-class Map
-{
-private:
-	int rows[10];
-	int col[10];
-	Cell **board;
-	int gemCount, obstCount;
-	// The declaration down there is for when the gem class and the obstacle class is created;
-	//  Gem gems[40];
-	//  Obstacle obst[20];
-
-public:
-	Map()
-	{
-		board = new Cell *[10];
-		for (int i = 0; i < 10; i++)
-		{
-			board[i] = new Cell[10];
-		}
-	}
-
-	void randomize_map()
-	{
-		gemCount = 0;
-		obstCount = 0;
-
-		// ∺ mario, ⦿ gem, ☁︎ obstacle
-
-		for (int i = 9; i >= 0; i--)
-		{
-			for (int j = 0; j < 10; j++)
-			{
-				board[i][j] = Cell();
-				board[i][j].setX(i);
-				board[i][j].setY(j);
-			}
-		}
-
-		srand(time(0));
-	}
-};
-class Cell
-{
-private:
-	char type;
-	int x, y;
-
-public:
-	Cell()
-	{
-		this->type = '. ';
-		this->x = 0;
-		this->y = 0;
-	}
-
-	char getType()
-	{
-		return this->type;
-	}
-
-	void setType(char c)
-	{
-		this->type = c;
-	}
-
-	int getX()
-	{
-		return this->x;
-	}
-
-	void setX(int n)
-	{
-		this->x = n;
-	}
-
-	int getY()
-	{
-		return this->y;
-	}
-
-	void setY(int n)
-	{
-		this->y = n;
-	}
-};
-
-class Obstacle
+class Obstacle : public Map
 {
 private:
 	int takedmg;
@@ -588,10 +567,15 @@ private:
 public:
 	Obstacle()
 	{
-		takedmg = rand() % 5 + 1
+		takedmg = rand() % 5 + 1;
 	}
 
 	virtual void execute(Champion c){};
+
+	int getTakeDmg()
+	{
+		return this->takedmg;
+	}
 };
 
 class Bomb : public Obstacle
@@ -600,30 +584,31 @@ public:
 	void execute(Champion c)
 	{
 
-		int x = c.getHp() - takedmg;
+		int x = c.getHp() - this->getTakeDmg();
 
 		if (x < 0)
 			x = 0;
 		c.setHp(x);
 
-		cout << "bomb excuted with dmg = " << takedmg << endl;
+		cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
 	}
 };
 
-class Thief() : public Obstacle{
-					public :
-						execute(Champion c){
+class Thief : public Obstacle
+{
+public:
+	void execute(Champion c)
+	{
 
-							int x = c.getScore - takedmg;
+		int x = c.getScore() - this->getTakeDmg();
 
-if (x < 0)
-	x = 0;
-c.setScore(x);
+		if (x < 0)
+			x = 0;
+		c.setScore(x);
 
-cout << "thief executed with dmg = " << takedmg << endl;
-}
-}
-;
+		cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
+	}
+};
 
 int main()
 {
