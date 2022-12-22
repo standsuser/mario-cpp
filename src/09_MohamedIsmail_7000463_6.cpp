@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <string.h>
 using namespace std;
+srand(time(0));
 
 class Champion
 {
@@ -59,7 +60,7 @@ public:
 	{
 		return this->gemScore;
 	}
-	void setGemScore(int x)
+	void setScore(int x)
 	{
 		this->gemScore = x;
 	}
@@ -332,7 +333,7 @@ public:
 			}
 		}
 
-		srand(time(0));
+
 
 		//Generate Gems
 		for (int i = 0; i < 50; i++)
@@ -387,6 +388,51 @@ public:
 		}
 	}
 };
+
+
+
+	class Obstacle(){
+		private:
+		int takedmg;
+
+		public:
+		Obstacle(){
+			takedmg = rand()%5+1
+		}
+
+		virtual execute(Champion c) 
+
+	};
+
+	class Bomb():public Obstacle{
+		public:
+		execute(Champion c) {
+
+			int x = c.getHp - takedmg;
+
+			if (x<0)
+				x=0;
+			c.setHp(x);
+
+			cout<< "bomb excuted with dmg = "<< takedmg << endl;
+		}
+
+	};
+
+	
+	class Thief():public Obstacle{
+		public:
+		execute(Champion c) {
+
+			int x = c.getScore - takedmg;
+
+			if(x<0)
+				x=0;
+			c.setScore(x);
+
+		cout<<"thief executed with dmg = "<< takedmg << endl;
+		}
+	};
 
 int main()
 {
