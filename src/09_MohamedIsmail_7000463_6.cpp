@@ -558,7 +558,40 @@ public:
 		this->y = n;
 	}
 };
+class Gem{
+private:
+	int points;
+public:
+	Gem(){
+        srand(time(0));
+		points = rand() % (5) + 5;
+        
+	}
+	int getPoints(){
+		return this->points;
+	}
+    void execute(Champion c){
+        
+    }
+};
+class Potion : public Gem{	
+public:
+    void execute(Champion c){
+		c.setHp(c.getHp() + this->getPoints());
+		if (c.getHp() == 100){
+			c.setHp(100); 
+		}
+		cout<<"Potion executed with points = " << this->getPoints() << endl;
+    }
+};
+class Coin : public Gem{
 
+public:
+	void execute(Champion c){
+		c.setScore(c.getScore() + this->getPoints());
+		cout<<"Coin executed with points = " << this->getPoints() << endl;
+	}
+};
 class Obstacle : public Map
 {
 private:
@@ -612,7 +645,11 @@ public:
 
 int main()
 {
-	Map2 *m = new Map2();
+	/*Map2 *m = new Map2();
 	m->newGame();
-	return 0;
+	return 0;*/
+	Potion x = Potion();
+  	Champion a = Champion();
+  	x.execute(a);
+  	return 0;
 }
