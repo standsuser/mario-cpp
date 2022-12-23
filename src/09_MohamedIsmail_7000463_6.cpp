@@ -3,72 +3,15 @@
 #include <cstdlib>
 #include <conio.h>
 #include <string.h>
+#include "Bomb.h"
+#include "Cell.h"
+#include "Coin.h"
+#include "Champion.h"
+#include "Gem.h"
+#include "Obstacle.h"
+#include "Potion.h"
+#include "Thief.h"
 using namespace std;
-
-class Champion
-{
-private:
-	int hp;
-	int gemScore;
-	int champX;
-	int champY;
-
-public:
-	// Champion() = default;
-	Champion()
-	{
-
-		cout << "Constructor champion() is called" << endl;
-		champY = 0; // Row
-		champX = 0; // Column
-		hp = 100;
-		gemScore = 0;
-	}
-	void print_champ_info()
-	{
-		cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
-	}
-	int getX()
-	{
-		return this->champX;
-	}
-	int getY()
-	{
-		return this->champY;
-	}
-	void setX(int x)
-	{
-		this->champX = x;
-	}
-	void setY(int y)
-	{
-		this->champY = y;
-	}
-	int getHp()
-	{
-		return this->hp;
-	}
-	void decHp()
-	{
-		this->hp -= 40;
-		if (this->hp <= 0)
-		{
-			this->hp = 0;
-		}
-	}
-	int getScore()
-	{
-		return this->gemScore;
-	}
-	void setScore(int x)
-	{
-		this->gemScore = x;
-	}
-	void setHp(int x)
-	{
-		this->hp = x;
-	}
-};
 
 class Map2
 {
@@ -151,25 +94,25 @@ public:
 			{
 				newTurn();
 			}
-			if (board[mario->getX() + 1][mario->getY()] == 'O ')
+			if (board[mario->getX() + 1][mario->getY()] == 'O')
 			{
 				mario->decHp();
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() + 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX() + 1][mario->getY()] == 'G ')
+			else if (board[mario->getX() + 1][mario->getY()] == 'G')
 			{
 				mario->setScore(mario->getScore() + 1);
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() + 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX() + 1][mario->getY()] == '. ')
+			else if (board[mario->getX() + 1][mario->getY()] == '.')
 			{
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() + 1);
 
 				newTurn();
@@ -187,25 +130,25 @@ public:
 			{
 				newTurn();
 			}
-			if (board[mario->getX()][mario->getY() + 1] == 'O ')
+			if (board[mario->getX()][mario->getY() + 1] == 'O')
 			{
 				mario->decHp();
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() + 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX()][mario->getY() + 1] == 'G ')
+			else if (board[mario->getX()][mario->getY() + 1] == 'G')
 			{
 				mario->setScore(mario->getScore() + 1);
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() + 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX()][mario->getY() + 1] == '. ')
+			else if (board[mario->getX()][mario->getY() + 1] == '.')
 			{
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() + 1);
 
 				newTurn();
@@ -223,25 +166,25 @@ public:
 			{
 				newTurn();
 			}
-			if (board[mario->getX() - 1][mario->getY()] == 'O ')
+			if (board[mario->getX() - 1][mario->getY()] == 'O')
 			{
 				mario->decHp();
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() - 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX() - 1][mario->getY()] == 'G ')
+			else if (board[mario->getX() - 1][mario->getY()] == 'G')
 			{
 				mario->setScore(mario->getScore() + 1);
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() - 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX() - 1][mario->getY()] == '. ')
+			else if (board[mario->getX() - 1][mario->getY()] == '.')
 			{
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setX(mario->getX() - 1);
 
 				newTurn();
@@ -259,25 +202,25 @@ public:
 			{
 				newTurn();
 			}
-			if (board[mario->getX()][mario->getY() - 1] == 'O ')
+			if (board[mario->getX()][mario->getY() - 1] == 'O')
 			{
 				mario->decHp();
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() - 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX()][mario->getY() - 1] == 'G ')
+			else if (board[mario->getX()][mario->getY() - 1] == 'G')
 			{
 				mario->setScore(mario->getScore() + 1);
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() - 1);
 
 				newTurn();
 			}
-			else if (board[mario->getX()][mario->getY() - 1] == '. ')
+			else if (board[mario->getX()][mario->getY() - 1] == '.')
 			{
-				board[mario->getX()][mario->getY()] = '. ';
+				board[mario->getX()][mario->getY()] = '.';
 				mario->setY(mario->getY() - 1);
 
 				newTurn();
@@ -311,7 +254,7 @@ public:
 		{
 			randomize_map();
 			cout << "\033[2J\033[1;1H";
-			Map *m = new Map();
+			Map2 *m = new Map2();
 			newGame();
 		}
 		else if (rButton == '2')
@@ -329,7 +272,7 @@ public:
 			for (int j = 0; j < 10; j++)
 			{
 				if (i == mario->getX() && j == mario->getY())
-					board[i][j] = 'c ';
+					board[i][j] = 'c';
 
 				cout << board[i][j];
 			}
@@ -349,7 +292,7 @@ public:
 		{
 			for (int j = 0; j < 10; j++)
 			{
-				board[i][j] = '. ';
+				board[i][j] = '.';
 			}
 		}
 
@@ -365,9 +308,9 @@ public:
 					gemX[i] = (rand() % 9) + 1;
 					gemY[i] = (rand() % 9) + 1;
 				}
-			} while (board[gemX[i]][gemY[i]] != '. ');
+			} while (board[gemX[i]][gemY[i]] != '.');
 
-			board[gemX[i]][gemY[i]] = 'G ';
+			board[gemX[i]][gemY[i]] = 'G';
 			gemCount++;
 		}
 
@@ -385,9 +328,9 @@ public:
 					obstY[i] = (rand() % 9) + 1;
 				}
 
-			} while (board[obstX[i]][obstY[i]] != '. ');
+			} while (board[obstX[i]][obstY[i]] != '.');
 
-			board[obstX[i]][obstY[i]] = 'O ';
+			board[obstX[i]][obstY[i]] = 'O';
 			obstCount++;
 		}
 
@@ -414,12 +357,14 @@ private:
 	int col[10];
 	Cell **board;
 	int gemCount, obstCount;
-	int thievesX[10], thievesY[10], bombsX[10], bombsY[10];
+	int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[20], potionsY[20], coinsX[20], coinsY[20];
 	Obstacle obstacles[20];
+	Champion *c;
 
 public:
 	Map()
 	{
+		c = new Champion();
 		board = new Cell *[10];
 		for (int i = 0; i < 10; i++)
 		{
@@ -436,6 +381,20 @@ public:
 		delete (board); // delete pointer holding array of pointers;
 	}
 
+	void print_map()
+	{
+		for (int i = 9; i >= 0; i--)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				if (i == c->getX() && j == c->getY())
+					board[i][j].setType('c');
+
+				cout << board[i][j].toString();
+			}
+			cout << endl;
+		}
+	}
 	void randomize_map()
 	{
 		gemCount = 0;
@@ -453,7 +412,7 @@ public:
 
 		srand(time(0));
 
-		// Thieves locations set
+		// Thieves & Bombs locations set
 		for (int i = 0; i < 10; i++)
 		{
 			do
@@ -468,12 +427,10 @@ public:
 			} while (board[thievesX[i]][thievesY[i]].getType() != '. ');
 
 			board[thievesX[i]][thievesY[i]].setType('O ');
+			board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
+			board[thievesX[i]][thievesY[i]].setY(thievesY[i]);
 			obstCount++;
-		}
 
-		// Bombs locations set
-		for (int i = 0; i < 10; i++)
-		{
 			do
 			{
 				bombsX[i] = (rand() % 10);
@@ -486,10 +443,48 @@ public:
 			} while (board[bombsX[i]][bombsY[i]].getType() != '. ');
 
 			board[bombsX[i]][bombsY[i]].setType('O ');
+			board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
+			board[bombsX[i]][bombsY[i]].setY(bombsY[i]);
 			obstCount++;
 		}
 
-		// Creating those obstacles
+		// Coins & potions locations set
+		for (int i = 0; i < 40; i++)
+		{
+			do
+			{
+				coinsX[i] = (rand() % 20);
+				coinsY[i] = (rand() % 20);
+				if (coinsX[i] == 0 && coinsY[i] == 0)
+				{
+					coinsX[i] = (rand() % 19) + 1;
+					coinsY[i] = (rand() % 19) + 1;
+				}
+			} while (board[coinsX[i]][coinsY[i]].getType() != '. ');
+
+			board[coinsX[i]][coinsY[i]].setType('G ');
+			board[coinsX[i]][coinsY[i]].setX(coinsX[i]);
+			board[coinsX[i]][coinsY[i]].setY(coinsY[i]);
+			gemCount++;
+
+			do
+			{
+				potionsX[i] = (rand() % 20);
+				potionsY[i] = (rand() % 20);
+				if (potionsX[i] == 0 && potionsY[i] == 0)
+				{
+					potionsX[i] = (rand() % 19) + 1;
+					potionsY[i] = (rand() % 19) + 1;
+				}
+			} while (board[potionsX[i]][potionsY[i]].getType() != '. ');
+
+			board[potionsX[i]][potionsY[i]].setType('G ');
+			board[potionsX[i]][potionsY[i]].setX(potionsX[i]);
+			board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
+			gemCount++;
+		}
+
+		// Creating those Gems
 		for (int i = 0; i < 10; i++)
 		{
 			for (int j = 0; j < 10; j++)
@@ -497,159 +492,61 @@ public:
 				if (board[i][j].getType() == 'O ')
 				{
 					if (thievesX[i] == i && thievesY[j] == j)
-						Obstacle o = Thief();
+						Obstacle *o = new Thief();
 
 					if (bombsX[i] == i && bombsY[j] == j)
-						Obstacle o = Bomb();
+						Obstacle *o = new Bomb();
 				}
 
 				if (board[i][j].getType() == 'C ')
 				{
+					Champion *c = new Champion();
 				}
 
 				if (board[i][j].getType() == 'G ')
 				{
+					if (potionsX[i] == i && potionsY[j] == j)
+						Gem *g = new Potion();
+
+					if (coinsX[i] == i && coinsY[j] == j)
+						Gem *g = new Coin();
+				}
+			}
+		}
+
+		// In case there are duplicates
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+
+				// relocating coins
+				while ((coinsX[i] == (thievesX[i] || bombsX[i])) && (coinsY[j] == (thievesY[j] || bombsY[j])))
+				{
+					coinsX[j] = (rand() % 19) + 1;
+					coinsY[j] = (rand() % 19) + 1;
+				}
+
+				// Relocating Potions
+				while ((potionsX[i] == (thievesX[i] || bombsX[i])) && (potionsY[j] == (thievesY[j] || bombsY[j])))
+				{
+					potionsY[j] = (rand() % 19) + 1;
+					potionsX[j] = (rand() % 19) + 1;
 				}
 			}
 		}
 	}
 };
-class Cell
-{
-private:
-	char type;
-	int x, y;
-
-public:
-	Cell()
-	{
-		this->type = '. ';
-		this->x = 0;
-		this->y = 0;
-	}
-
-	char getType()
-	{
-		return this->type;
-	}
-
-	void setType(char c)
-	{
-		this->type = c;
-	}
-
-	int getX()
-	{
-		return this->x;
-	}
-
-	void setX(int n)
-	{
-		this->x = n;
-	}
-
-	int getY()
-	{
-		return this->y;
-	}
-
-	void setY(int n)
-	{
-		this->y = n;
-	}
-};
-class Gem{
-private:
-	int points;
-public:
-	Gem(){
-        srand(time(0));
-		points = rand() % (5) + 5;
-        
-	}
-	int getPoints(){
-		return this->points;
-	}
-    void execute(Champion c){
-        
-    }
-};
-class Potion : public Gem{	
-public:
-    void execute(Champion c){
-		c.setHp(c.getHp() + this->getPoints());
-		if (c.getHp() == 100){
-			c.setHp(100); 
-		}
-		cout<<"Potion executed with points = " << this->getPoints() << endl;
-    }
-};
-class Coin : public Gem{
-
-public:
-	void execute(Champion c){
-		c.setScore(c.getScore() + this->getPoints());
-		cout<<"Coin executed with points = " << this->getPoints() << endl;
-	}
-};
-class Obstacle : public Map
-{
-private:
-	int takedmg;
-
-public:
-	Obstacle()
-	{
-		takedmg = rand() % 5 + 1;
-	}
-
-	virtual void execute(Champion c){};
-
-	int getTakeDmg()
-	{
-		return this->takedmg;
-	}
-};
-
-class Bomb : public Obstacle
-{
-public:
-	void execute(Champion c)
-	{
-
-		int x = c.getHp() - this->getTakeDmg();
-
-		if (x < 0)
-			x = 0;
-		c.setHp(x);
-
-		cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
-	}
-};
-
-class Thief : public Obstacle
-{
-public:
-	void execute(Champion c)
-	{
-
-		int x = c.getScore() - this->getTakeDmg();
-
-		if (x < 0)
-			x = 0;
-		c.setScore(x);
-
-		cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
-	}
-};
 
 int main()
 {
-	/*Map2 *m = new Map2();
-	m->newGame();
-	return 0;*/
-	Potion x = Potion();
-  	Champion a = Champion();
-  	x.execute(a);
-  	return 0;
+
+	// Potion x = Potion();
+	// Champion a = Champion();
+	// x.execute(a);
+
+	Map *m = new Map();
+	m->randomize_map();
+	m->print_map();
+	return 0;
 }
