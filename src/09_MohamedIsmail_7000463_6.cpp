@@ -8,6 +8,8 @@
 #include "Coin.h"
 #include "Champion.h"
 #include "Gem.h"
+#include "Luigi.h"
+#include "Mario.h"
 #include "Obstacle.h"
 #include "Potion.h"
 #include "Thief.h"
@@ -358,7 +360,7 @@ private:
 	Cell **board;
 	int gemCount, obstCount;
 	int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[20], potionsY[20], coinsX[20], coinsY[20];
-	Obstacle obstacles[20];
+	Obstacle *obstacles[20];
 	Champion *c;
 
 public:
@@ -381,6 +383,37 @@ public:
 		delete (board); // delete pointer holding array of pointers;
 	}
 
+	void newGame()
+	{
+
+		cout << "print_map() called" << endl;
+		print_map();
+		char rButton = 0;
+		if (rButton == 'M')
+			c = new Mario();
+		else if (rButton == 'L')
+			c = new Luigi();
+
+		while ((rButton != '1' && rButton != '2') || (rButton != 'M' && rButton != 'L'))
+		{
+			cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
+			rButton = getch();
+		}
+
+		if (rButton == '1')
+		{
+			randomize_map();
+			cout << "\033[2J\033[1;1H";
+			Map2 *m = new Map2();
+			newGame();
+		}
+		else if (rButton == '2')
+		{
+			cout << "\033[2J\033[1;1H";
+			cout << "print_map() called" << endl;
+			newTurn();
+		}
+	}
 	void print_map()
 	{
 		for (int i = 9; i >= 0; i--)
@@ -390,7 +423,7 @@ public:
 				if (i == c->getX() && j == c->getY())
 					board[i][j].setType('c');
 
-				cout << board[i][j].toString();
+				cout << board[i][j].toString() << " ";
 			}
 			cout << endl;
 		}

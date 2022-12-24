@@ -1,6 +1,6 @@
 #ifndef CHAMPION_H
 #define CHAMPION_H
-class Champion
+class Champion : public Map
 {
 private:
     int hp;
@@ -23,6 +23,12 @@ public:
     {
         cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
     }
+
+    void useAbility()
+    {
+        cout << "Ability x is called" << endl;
+    }
+
     int getX()
     {
         return this->champX;
