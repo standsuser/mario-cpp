@@ -1,6 +1,7 @@
 #ifndef GEM_H
 #define GEM_H
-class Gem : public Map
+
+class Gem 
 {
 private:
     int points;
