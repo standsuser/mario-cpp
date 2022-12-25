@@ -6,17 +6,12 @@ private:
     int points;
 
 public:
-    Gem()
-    {
+    Gem();
+    /*{
         srand(time(0));
         points = rand() % (5) + 5;
-    }
-    int getPoints()
-    {
-        return this->points;
-    }
-    virtual void execute(Champion c)
-    {
-    }
+    }*/
+    int getPoints();
+    virtual void execute(Champion c);
 };
 #endif

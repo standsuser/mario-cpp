@@ -1,10 +1,13 @@
 #ifndef BOMB_H
 #define BOMB_H
+#include "Champion.h"
+#include "Obstacle.h"
+
 class Bomb : public Obstacle
 {
 public:
-    void execute(Champion c)
-    {
+    void execute(Champion c);
+    /*{
 
         int x = c.getHp() - this->getTakeDmg();
 
@@ -13,6 +16,6 @@ public:
         c.setHp(x);
 
         cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
-    }
+    }*/
 };
 #endif
