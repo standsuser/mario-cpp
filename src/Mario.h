@@ -8,10 +8,7 @@ public:
     // and we remove the getting damage line or something and  we make him not see obstacles aslan fa msh far2a m3ah
     // haye3mel eih
 
-    void useAbility(char c)
-    {
-        cout << "Mario Ability is called" << endl;
-    }
+    void useAbility(char c);
 };
 
 #endif

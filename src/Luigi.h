@@ -15,8 +15,8 @@ class Luigi : public Champion
     //  and we can use ability while in spawn as well and probably he will spawn somewhere else
     //  and mario will be the original champion
 public:
-    void useAbility()
-    {
+    void useAbility();
+    /*{
         cout << "Luigi Ability is called" << endl;
 
         for (int i = 0; i < 10; i++)
@@ -33,6 +33,6 @@ public:
                 board[j][luigi->getY()] = '. ';
             }
         }
-    }
+    }*/
 };
 #endif

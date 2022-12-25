@@ -3,8 +3,8 @@
 class Thief : public Obstacle
 {
 public:
-    void execute(Champion c)
-    {
+    void execute(Champion c);
+    /*{
 
         int x = c.getScore() - this->getTakeDmg();
 
@@ -13,6 +13,6 @@ public:
         c.setScore(x);
 
         cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
-    }
+    }*/
 };
 #endif

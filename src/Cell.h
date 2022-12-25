@@ -1,5 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
+#include <string>
 class Cell
 {
 private:
@@ -7,46 +8,25 @@ private:
     int x, y;
 
 public:
-    Cell()
-    {
+    Cell();
+    /*{
         this->type = '. ';
         this->x = 0;
         this->y = 0;
-    }
+    }*/
 
-    char getType()
-    {
-        return this->type;
-    }
+    char getType();
 
-    void setType(char c)
-    {
-        this->type = c;
-    }
+    void setType(char c);
 
-    int getX()
-    {
-        return this->x;
-    }
+    int getX();
 
-    void setX(int n)
-    {
-        this->x = n;
-    }
+    void setX(int n);
 
-    int getY()
-    {
-        return this->y;
-    }
+    int getY();
 
-    void setY(int n)
-    {
-        this->y = n;
-    }
+    void setY(int n);
 
-    string toString()
-    {
-        return "" + this->type;
-    }
+    string toString();
 };
 #endif
