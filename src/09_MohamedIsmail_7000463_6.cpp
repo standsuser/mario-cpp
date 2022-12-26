@@ -9,53 +9,76 @@ using namespace std;
 
 //------------------------------champion---------------------------------
 
-class Champion
+class Champion 
 {
 private:
-	int hp;
-	int gemScore;
-	int champX;
-	int champY;
+    int hp;
+    int gemScore;
+    int champX;
+    int champY;
 
 public:
-	Champion() = default;
-	Champion()
-	{
+    // Champion() = default;
+    Champion()
+    {
 
-		cout << "Constructor champion() is called" << endl;
-		champY = 9; // Row
-		champX = 0; // Column
-		hp = 100;
-		gemScore = 0;
-	}
-	void print_champ_info()
-	{
-		cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
-	}
+        cout << "Constructor champion() is called" << endl;
+        champY = 9; // Row
+        champX = 0; // Column
+        hp = 100;
+        gemScore = 0;
+    }
+    void print_champ_info()
+    {
+        cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
+    }
 
-	void useAbility()
-	{
-		cout << "Ability x is called" << endl;
-	}
+    void useAbility()
+    {
+        cout << "Ability x is called" << endl;
+    }
 
-	int getX();
-	int getY();
-	void setX(int x);
-	void setY(int y);
-	int getHp();
-	void decHp()
-	{
-		this->hp -= 40;
-		if (this->hp <= 0)
-		{
-			this->hp = 0;
-		}
-	}
-	int getScore();
-	void setScore(int x);
-	void setHp(int x);
+    int getX()
+    {
+        return this->champX;
+    }
+    int getY()
+    {
+        return this->champY;
+    }
+    void setX(int x)
+    {
+        this->champX = x;
+    }
+    void setY(int y)
+    {
+        this->champY = y;
+    }
+    int getHp()
+    {
+        return this->hp;
+    }
+    void decHp()
+    {
+        this->hp -= 40;
+        if (this->hp <= 0)
+        {
+            this->hp = 0;
+        }
+    }
+    int getScore()
+    {
+        return this->gemScore;
+    }
+    void setScore(int x)
+    {
+        this->gemScore = x;
+    }
+    void setHp(int x)
+    {
+        this->hp = x;
+    }
 };
-
 
 class Luigi : public Champion
 {
@@ -78,14 +101,14 @@ public:
 
         for (int i = 0; i < 10; i++)
         {
-            if (board[Luigi->getX()][i].getType() == 'O ')
+            if (board[luigi->getX()][i].getType() == 'O ')
             {
-                board[Luigi->getX()][i] = '. ';
+                board[luigi->getX()][i] = '. ';
             }
         }
         for (int j = 0; j < 10; j++)
         {
-            if (board[j][Luigi->getX()].getType() == 'O ')
+            if (board[j][luigi->getX()].getType() == 'O ')
             {
                 board[j][luigi->getY()] = '. ';
             }
@@ -101,7 +124,10 @@ public:
     // and we remove the getting damage line or something and  we make him not see obstacles aslan fa msh far2a m3ah
     // haye3mel eih
 
-    void useAbility(char c);
+    void useAbility(char c)
+    {
+        cout << "Mario Ability is called" << endl;
+    }
 };
 
 //dont forget REMAINING ABILITY COUNTER//
@@ -113,70 +139,78 @@ public:
 
 
 //------------------------------obstacle---------------------------
-class Obstacle
+class Obstacle 
 {
 private:
-	int takedmg;
+    int takedmg;
 
 public:
-	Obstacle()
-	{
-		srand(time(0));
-		takedmg = rand() % 5 + 1;
-	}
+    Obstacle()
+    {
+        srand(time(0));
+        takedmg = rand() % 5 + 1;
+    }
 
-	virtual void execute(Champion c);
+    virtual void execute(Champion c){};
 
-	int getTakeDmg();
+    int getTakeDmg()
+    {
+        return this->takedmg;
+    }
 };
 
 class Thief : public Obstacle
 {
 public:
-	void execute(Champion c)
-	{
+    void execute(Champion c)
+    {
 
-		int x = c.getScore() - this->getTakeDmg();
+        int x = c.getScore() - this->getTakeDmg();
 
-		if (x < 0)
-			x = 0;
-		c.setScore(x);
+        if (x < 0)
+            x = 0;
+        c.setScore(x);
 
-		cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
-	}
+        cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
+    }
 };
 
 class Bomb : public Obstacle
 {
 public:
-	void execute(Champion c)
-	{
+    void execute(Champion c)
+    {
 
-		int x = c.getHp() - this->getTakeDmg();
+        int x = c.getHp() - this->getTakeDmg();
 
-		if (x < 0)
-			x = 0;
-		c.setHp(x);
+        if (x < 0)
+            x = 0;
+        c.setHp(x);
 
-		cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
-	}
+        cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
+    }
 };
 
 //--------------------------------gem --------------------------
 
-class Gem
+class Gem 
 {
 private:
-	int points;
+    int points;
 
 public:
-	Gem()
-	{
-		srand(time(0));
-		points = rand() % (5) + 5;
-	}
-	int getPoints();
-	virtual void execute(Champion c);
+    Gem()
+    {
+        srand(time(0));
+        points = rand() % (5) + 5;
+    }
+    int getPoints()
+    {
+        return this->points;
+    }
+    virtual void execute(Champion c)
+    {
+    }
 };
 
 class Coin : public Gem
@@ -214,30 +248,51 @@ public:
 class Cell
 {
 private:
-	char type;
-	int x, y;
+    char type;
+    int x, y;
 
 public:
-	Cell()
-	{
-		this->type = '. ';
-		this->x = 0;
-		this->y = 0;
-	}
+    Cell()
+    {
+        this->type = '. ';
+        this->x = 0;
+        this->y = 0;
+    }
 
-	char getType();
+    char getType()
+    {
+        return this->type;
+    }
 
-	void setType(char c);
+    void setType(char c)
+    {
+        this->type = c;
+    }
 
-	int getX();
+    int getX()
+    {
+        return this->x;
+    }
 
-	void setX(int n);
+    void setX(int n)
+    {
+        this->x = n;
+    }
 
-	int getY();
+    int getY()
+    {
+        return this->y;
+    }
 
-	void setY(int n);
+    void setY(int n)
+    {
+        this->y = n;
+    }
 
-	std::string toString();
+    string toString()
+    {
+        return "" + this->type;
+    }
 };
 
 //-----------------old map---------------
@@ -352,7 +407,7 @@ public:
         {
             randomize_map();
             cout << "\033[2J\033[1;1H";
-            Map2 *m = new Map2();
+            Map *m = new Map();
             newGame();
         }
         else if (rButton == '2')
