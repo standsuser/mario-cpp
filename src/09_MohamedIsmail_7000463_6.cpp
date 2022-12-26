@@ -17,6 +17,7 @@ private:
     int gemScore;
     int champX;
     int champY;
+    int RemaningAbilityMoves;
 
 public:
     // Champion() = default;
@@ -28,10 +29,11 @@ public:
         champX = 0; // Column
         hp = 100;
         gemScore = 0;
+        RemaningAbilityMoves =2;
     }
     void print_champ_info()
     {
-        cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
+        cout << "Current hp: " << hp << "  , Score: " << gemScore  << "Remaining Ability Moves: " << RemaningAbilityMoves<< endl;
     }
 
     void useAbility()
@@ -79,6 +81,14 @@ public:
     {
         this->hp = x;
     }
+    int getRemainingAbilityMoves(){
+        return this->RemaningAbilityMoves;
+    }
+
+      void setRemainingAbilityMoves(int x){
+         this->RemaningAbilityMoves=x;
+    }
+
 };
 
 // class Luigi : public Champion
@@ -138,7 +148,7 @@ public:
     }
 };
 
-// dont forget REMAINING ABILITY COUNTER//
+
 
 //------------------------------obstacle---------------------------
 class Obstacle
@@ -302,7 +312,7 @@ private:
     int col[10];
     Cell **board;
     int gemCount, obstCount;
-    int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[20], potionsY[20], coinsX[20], coinsY[20];
+    int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[10], potionsY[10], coinsX[10], coinsY[10];
     Obstacle *obstacles[20];
     Champion *c;
 
@@ -549,7 +559,7 @@ public:
         cout << "\033[2J\033[1;1H";
         print_map();
         cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
-        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
+        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << "\nRemaining Ability Moves: " << c->getRemainingAbilityMoves() << endl;
         char input;
         end();
         cout << "Enter direction: ";
@@ -598,13 +608,18 @@ public:
             {
                 newTurn();
             }
+            
             if (board[c->getX() + 1][c->getY()].getType() == 'o')
             {
                 if(marioActive==false){
                 c->decHp();
-                }
-                board[c->getX()][c->getY()].setType('.');
+                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() + 1);
+                }
+                else{
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() + 2);
+                }
 
                 newTurn();
             }
