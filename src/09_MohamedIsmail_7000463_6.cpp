@@ -6,6 +6,7 @@
 //-------------------------------//
 
 using namespace std;
+bool marioActive=false;
 
 //------------------------------champion---------------------------------
 
@@ -124,9 +125,16 @@ public:
     // and we remove the getting damage line or something and  we make him not see obstacles aslan fa msh far2a m3ah
     // haye3mel eih
 
-    void useAbility(char c)
+    void useAbility()
     {
+
+        //In Class Mario the useAbility() method allows you to move 2 steps at a time allowing you to jump 
+        //over an obstacle without having any damage. It must print “Mario Ability is called”
         cout << "Mario Ability is called" << endl;
+         marioActive=true;
+
+
+        
     }
 };
 
@@ -284,62 +292,6 @@ public:
     }
 };
 
-//-----------------old map---------------
-
-// class Map2
-// {
-// private:
-// 	char **board;
-// 	Champion *mario = new Champion();
-// 	int gemX[50];
-// 	int gemY[50];
-// 	int obstX[25];
-// 	int obstY[25];
-// 	int gemCount;
-// 	int obstCount;
-
-// public:
-// 	Map2()
-// 	{
-// 		board = new char *[10];
-// 		for (int i = 0; i < 10; i++)
-// 		{
-// 			board[i] = new char[10];
-// 		}
-// 		randomize_map();
-// 		cout << "Constructor Map() is called" << endl;
-// 		cout << "randomize_map() is called" << endl;
-// 	}
-// 	void end()
-// 	{
-// 		if (mario->getScore() == gemCount)
-// 		{
-// 			cout << "Congrats you won!!" << endl;
-
-// 			exit(0);
-// 		}
-
-// 		else if (mario->getHp() <= 0)
-// 		{
-// 			cout << "You lost :( but you can go again :D" << endl;
-
-// 			exit(0);
-// 		}
-// 		else
-// 		{
-// 			return;
-// 		}
-// 	}
-
-// 	~Map2()
-// 	{
-// 		for (int i = 0; i < 10; ++i)
-// 		{
-// 			delete (board[i]); // deletes an inner array of integer;
-// 		}
-// 		delete (board); // delete pointer holding array of pointers;
-// 		delete (mario);
-// 	}
 
 //----------------------------------------------------------------------------------------NEW MAP----------------------------------------------------------------------------------
 
@@ -614,7 +566,7 @@ public:
             {
                 delete (board[i]); 
             }
-            delete[] board; 
+            delete(board); 
             exit(0);
         }
 
@@ -626,7 +578,7 @@ public:
                 delete (board[i]);
                 
             }
-            delete[] board; 
+            delete(board) ; 
             exit(0);
         }
         else
@@ -648,7 +600,9 @@ public:
             }
             if (board[c->getX() + 1][c->getY()].getType() == 'o')
             {
+                if(marioActive==false){
                 c->decHp();
+                }
                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() + 1);
 
