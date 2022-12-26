@@ -9,7 +9,7 @@ using namespace std;
 
 //------------------------------champion---------------------------------
 
-class Champion 
+class Champion
 {
 private:
     int hp;
@@ -130,16 +130,10 @@ public:
     }
 };
 
-//dont forget REMAINING ABILITY COUNTER//
-
-
-
-
-
-
+// dont forget REMAINING ABILITY COUNTER//
 
 //------------------------------obstacle---------------------------
-class Obstacle 
+class Obstacle
 {
 private:
     int takedmg;
@@ -193,7 +187,7 @@ public:
 
 //--------------------------------gem --------------------------
 
-class Gem 
+class Gem
 {
 private:
     int points;
@@ -237,11 +231,6 @@ public:
         cout << "Potion executed with points = " << this->getPoints() << endl;
     }
 };
-
-
-
-
-
 
 //--------------------------------cell-------------------------------------
 
@@ -352,7 +341,6 @@ public:
 // 		delete (mario);
 // 	}
 
-
 //----------------------------------------------------------------------------------------NEW MAP----------------------------------------------------------------------------------
 
 class Map
@@ -388,27 +376,34 @@ public:
     }
 
     void newGame()
-	{
-
+    {
+         randomize_map();
         cout << "print_map() called" << endl;
         print_map();
         char rButton = 0;
-        
 
-        while (rButton != 'M' && rButton != 'L'){
+        while (rButton != 'M' && rButton != 'L')
+        {
             cout << "Choose your champion! Choose M for Mario , Choose L for Luigi" << endl;
             rButton = getch();
         }
-    
 
         if (rButton == 'M')
+        {
             c = new Mario();
+            cout << "\033[2J\033[1;1H";
+            print_map();
+        }
         else if (rButton == 'L')
-        //    c = new Luigi();
+        {
+            //    c = new Luigi();
+            cout << "\033[2J\033[1;1H";
+            print_map();
+        }
 
         while (rButton != '1' && rButton != '2')
         {
-            cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
+            cout << "Choose 1 to Randomize, Choose 2 to start the game" << endl;
             rButton = getch();
         }
 
@@ -435,7 +430,7 @@ public:
                 if (i == c->getX() && j == c->getY())
                     board[i][j].setType('c');
 
-                cout << board[i][j].getType()  << " ";
+                cout << board[i][j].getType() << " ";
             }
             cout << endl;
         }
@@ -581,308 +576,300 @@ public:
             }
         }
     }
-	void newTurn()
-	{
-		// clear terminal
+    void newTurn()
+    {
+        // clear terminal
 
-		cout << "\033[2J\033[1;1H";
-		print_map();
-		cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
-		cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
-		char input;
-		//end();
-		cout << "Enter direction: ";
-		input = getch();
-		move(input);
-	}
-	void move(char k)
-	{
+        cout << "\033[2J\033[1;1H";
+        print_map();
+        cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
+        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
+        char input;
+        // end();
+        cout << "Enter direction: ";
+        input = getch();
+        move(input);
+    }
+    void move(char k)
+    {
 
-		switch (k)
-		{
-		case '8':
-		{
-			if (c->getX() == 9)
-			{
-				newTurn();
-			}
-			if (board[c->getX() + 1][c->getY()].getType() == 'o')
-			{
-				c->decHp();
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() + 1);
+        switch (k)
+        {
+        case '8':
+        {
+            if (c->getX() == 9)
+            {
+                newTurn();
+            }
+            if (board[c->getX() + 1][c->getY()].getType() == 'o')
+            {
+                c->decHp();
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() + 1);
 
-				newTurn();
-			}
-			else if (board[c->getX() + 1][c->getY()].getType() == 'g')
-			{
-				c->setScore(c->getScore() + 1);
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() + 1);
+                newTurn();
+            }
+            else if (board[c->getX() + 1][c->getY()].getType() == 'g')
+            {
+                c->setScore(c->getScore() + 1);
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() + 1);
 
-				newTurn();
-			}
-			else if (board[c->getX() + 1][c->getY()].getType() == '.')
-			{
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() + 1);
+                newTurn();
+            }
+            else if (board[c->getX() + 1][c->getY()].getType() == '.')
+            {
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() + 1);
 
-				newTurn();
-			}
+                newTurn();
+            }
 
-			else
-			{
-				newTurn();
-			}
-		}
-		break;
-		case '6': // board[mario.getX()][mario.getY() + 1]
-		{
-			if (c->getY() == 9)
-			{
-				newTurn();
-			}
-			if (board[c->getX()][c->getY() + 1].getType() == 'o')
-			{
-				c->decHp();
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() + 1);
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '6': // board[mario.getX()][mario.getY() + 1]
+        {
+            if (c->getY() == 9)
+            {
+                newTurn();
+            }
+            if (board[c->getX()][c->getY() + 1].getType() == 'o')
+            {
+                c->decHp();
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() + 1);
 
-				newTurn();
-			}
-			else if (board[c->getX()][c->getY() + 1].getType() == 'g')
-			{
-				c->setScore(c->getScore() + 1);
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() + 1);
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() + 1].getType() == 'g')
+            {
+                c->setScore(c->getScore() + 1);
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() + 1);
 
-				newTurn();
-			}
-			else if (board[c->getX()][c->getY() + 1].getType() == '.')
-			{
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() + 1);
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() + 1].getType() == '.')
+            {
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() + 1);
 
-				newTurn();
-			}
+                newTurn();
+            }
 
-			else
-			{
-				newTurn();
-			}
-		}
-		break;
-		case '5': // board[mario.getX() - 1][mario.getY()]
-		{
-			if (c->getX() == 0)
-			{
-				newTurn();
-			}
-			if (board[c->getX() - 1][c->getY()].getType() == 'o')
-			{
-				c->decHp();
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() - 1);
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '5': // board[mario.getX() - 1][mario.getY()]
+        {
+            if (c->getX() == 0)
+            {
+                newTurn();
+            }
+            if (board[c->getX() - 1][c->getY()].getType() == 'o')
+            {
+                c->decHp();
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() - 1);
 
-				newTurn();
-			}
-			else if (board[c->getX() - 1][c->getY()].getType() == 'g')
-			{
-				c->setScore(c->getScore() + 1);
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() - 1);
+                newTurn();
+            }
+            else if (board[c->getX() - 1][c->getY()].getType() == 'g')
+            {
+                c->setScore(c->getScore() + 1);
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() - 1);
 
-				newTurn();
-			}
-			else if (board[c->getX() - 1][c->getY()].getType() == '.')
-			{
-				board[c->getX()][c->getY()].setType('.');
-				c->setX(c->getX() - 1);
+                newTurn();
+            }
+            else if (board[c->getX() - 1][c->getY()].getType() == '.')
+            {
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() - 1);
 
-				newTurn();
-			}
+                newTurn();
+            }
 
-			else
-			{
-				newTurn();
-			}
-		}
-		break;
-		case '4': // board[mario.getX()][mario.getY() - 1]
-		{
-			if (c->getY() == 0)
-			{
-				newTurn();
-			}
-			if (board[c->getX()][c->getY() - 1].getType() == 'o')
-			{
-				c->decHp();
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() - 1);
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '4': // board[mario.getX()][mario.getY() - 1]
+        {
+            if (c->getY() == 0)
+            {
+                newTurn();
+            }
+            if (board[c->getX()][c->getY() - 1].getType() == 'o')
+            {
+                c->decHp();
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() - 1);
 
-				newTurn();
-			}
-			else if (board[c->getX()][c->getY() - 1].getType() == 'g')
-			{
-				c->setScore(c->getScore() + 1);
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() - 1);
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() - 1].getType() == 'g')
+            {
+                c->setScore(c->getScore() + 1);
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() - 1);
 
-				newTurn();
-			}
-			else if (board[c->getX()][c->getY() - 1].getType() == '.')
-			{
-				board[c->getX()][c->getY()].setType('.');
-				c->setY(c->getY() - 1);
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() - 1].getType() == '.')
+            {
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() - 1);
 
-				newTurn();
-			}
+                newTurn();
+            }
 
-			else
-			{
-				newTurn();
-			}
-		}
-		break;
-		default:
-			newTurn();
-		}
-	}
-//----------------------------------new game---------------------
-	// void newGame()
-	// {
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        default:
+            newTurn();
+        }
+    }
+    //----------------------------------new game---------------------
+    // void newGame()
+    // {
 
-	// 	cout << "print_map() called" << endl;
-	// 	print_map();
-	// 	char rButton = 0;
+    // 	cout << "print_map() called" << endl;
+    // 	print_map();
+    // 	char rButton = 0;
 
-	// 	while (rButton != '1' && rButton != '2')
-	// 	{
-	// 		cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
-	// 		rButton = getch();
-	// 	}
+    // 	while (rButton != '1' && rButton != '2')
+    // 	{
+    // 		cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
+    // 		rButton = getch();
+    // 	}
 
-	// 	if (rButton == '1')
-	// 	{
-	// 		randomize_map();
-	// 		cout << "\033[2J\033[1;1H";
-	// 		Map *m = new Map();
-	// 		newGame();
-	// 	}
-	// 	else if (rButton == '2')
-	// 	{
-	// 		cout << "\033[2J\033[1;1H";
-	// 		cout << "print_map() called" << endl;
-	// 		newTurn();
-	// 	}
-	// }
+    // 	if (rButton == '1')
+    // 	{
+    // 		randomize_map();
+    // 		cout << "\033[2J\033[1;1H";
+    // 		Map *m = new Map();
+    // 		newGame();
+    // 	}
+    // 	else if (rButton == '2')
+    // 	{
+    // 		cout << "\033[2J\033[1;1H";
+    // 		cout << "print_map() called" << endl;
+    // 		newTurn();
+    // 	}
+    // }
 
-	// void print_map()
-	// {
-	// 	for (int i = 9; i >= 0; i--)
-	// 	{
-	// 		for (int j = 0; j < 10; j++)
-	// 		{
-	// 			if (i == c->getX() && j == c->getY())
-	// 				board[i][j] = 'c';
+    // void print_map()
+    // {
+    // 	for (int i = 9; i >= 0; i--)
+    // 	{
+    // 		for (int j = 0; j < 10; j++)
+    // 		{
+    // 			if (i == c->getX() && j == c->getY())
+    // 				board[i][j] = 'c';
 
-	// 			cout << board[i][j];
-	// 		}
-	// 		cout << endl;
-	// 	}
-	// }
+    // 			cout << board[i][j];
+    // 		}
+    // 		cout << endl;
+    // 	}
+    // }
 
-	// randomly distribute gems and obstacles on the map
-	// void randomize_map() // second one for sum reason
-	// {
-	// 	gemCount = 0;
-	// 	obstCount = 0;
+    // randomly distribute gems and obstacles on the map
+    // void randomize_map() // second one for sum reason
+    // {
+    // 	gemCount = 0;
+    // 	obstCount = 0;
 
-	// 	// ∺ mario, ⦿ gem, ☁︎ obstacle
+    // 	// ∺ mario, ⦿ gem, ☁︎ obstacle
 
-	// 	for (int i = 9; i >= 0; i--)
-	// 	{
-	// 		for (int j = 0; j < 10; j++)
-	// 		{
-	// 			board[i][j] = '.';
-	// 		}
-	// 	}
+    // 	for (int i = 9; i >= 0; i--)
+    // 	{
+    // 		for (int j = 0; j < 10; j++)
+    // 		{
+    // 			board[i][j] = '.';
+    // 		}
+    // 	}
 
-	// 	// Generate Gems
-	// 	for (int i = 0; i < 50; i++)
-	// 	{
-	// 		do
-	// 		{
-	// 			gemX[i] = (rand() % 10);
-	// 			gemY[i] = (rand() % 10);
-	// 			if (gemX[i] == 0 && gemY[i] == 0)
-	// 			{
-	// 				gemX[i] = (rand() % 9) + 1;
-	// 				gemY[i] = (rand() % 9) + 1;
-	// 			}
-	// 		} while (board[gemX[i]][gemY[i]] != '.');
+    // 	// Generate Gems
+    // 	for (int i = 0; i < 50; i++)
+    // 	{
+    // 		do
+    // 		{
+    // 			gemX[i] = (rand() % 10);
+    // 			gemY[i] = (rand() % 10);
+    // 			if (gemX[i] == 0 && gemY[i] == 0)
+    // 			{
+    // 				gemX[i] = (rand() % 9) + 1;
+    // 				gemY[i] = (rand() % 9) + 1;
+    // 			}
+    // 		} while (board[gemX[i]][gemY[i]] != '.');
 
-	// 		board[gemX[i]][gemY[i]] = 'g';
-	// 		gemCount++;
-	// 	}
+    // 		board[gemX[i]][gemY[i]] = 'g';
+    // 		gemCount++;
+    // 	}
 
-	// 	// Generate Obstacles
-	// 	for (int i = 0; i < 25; i++)
-	// 	{
-	// 		do
-	// 		{
-	// 			obstX[i] = (rand() % 10);
-	// 			obstY[i] = (rand() % 10);
+    // 	// Generate Obstacles
+    // 	for (int i = 0; i < 25; i++)
+    // 	{
+    // 		do
+    // 		{
+    // 			obstX[i] = (rand() % 10);
+    // 			obstY[i] = (rand() % 10);
 
-	// 			if ((obstX[i] == 0 && obstY[i] == 0))
-	// 			{
-	// 				obstX[i] = (rand() % 9) + 1;
-	// 				obstY[i] = (rand() % 9) + 1;
-	// 			}
+    // 			if ((obstX[i] == 0 && obstY[i] == 0))
+    // 			{
+    // 				obstX[i] = (rand() % 9) + 1;
+    // 				obstY[i] = (rand() % 9) + 1;
+    // 			}
 
-	// 		} while (board[obstX[i]][obstY[i]] != '.');
+    // 		} while (board[obstX[i]][obstY[i]] != '.');
 
-	// 		board[obstX[i]][obstY[i]] = 'o';
-	// 		obstCount++;
-	// 	}
+    // 		board[obstX[i]][obstY[i]] = 'o';
+    // 		obstCount++;
+    // 	}
 
-	// 	// if there are duplicate points betweeen gems and obstacles
-	// 	for (int i = 0; i < 50; i++)
-	// 	{
-	// 		for (int j = 0; j < 25; j++)
-	// 		{
+    // 	// if there are duplicate points betweeen gems and obstacles
+    // 	for (int i = 0; i < 50; i++)
+    // 	{
+    // 		for (int j = 0; j < 25; j++)
+    // 		{
 
-	// 			while ((obstX[j] == gemX[i]) && (obstY[j] == gemY[i]))
-	// 			{
-	// 				obstX[j] = (rand() % 9) + 1;
-	// 				obstY[j] = (rand() % 9) + 1;
-	// 			}
-	// 		}
-	// 	}
-	// }
+    // 			while ((obstX[j] == gemX[i]) && (obstY[j] == gemY[i]))
+    // 			{
+    // 				obstX[j] = (rand() % 9) + 1;
+    // 				obstY[j] = (rand() % 9) + 1;
+    // 			}
+    // 		}
+    // 	}
+    // }
 
-};//END OF MAP CLASS
+}; // END OF MAP CLASS
 
-
-
-
-
-	//----------------------------new turn and move ---------------------------
-
-
+//----------------------------new turn and move ---------------------------
 
 int main()
 {
 
-	// Potion x = Potion();
-	// Champion a = Champion();
-	// x.execute(a);
+    // Potion x = Potion();
+    // Champion a = Champion();
+    // x.execute(a);
 
-
-
-	//Map();
-	Map *m = new Map();
-	//m->randomize_map();
-	m->newGame();
-	return 0;
+    // Map();
+    Map *m = new Map();
+    // m->randomize_map();
+    m->newGame();
+    return 0;
 }
