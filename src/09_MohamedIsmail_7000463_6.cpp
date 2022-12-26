@@ -766,7 +766,7 @@ public:
 		{
 			randomize_map();
 			cout << "\033[2J\033[1;1H";
-			Map2 *m = new Map2();
+			Map *m = new Map();
 			newGame();
 		}
 		else if (rButton == '2')
@@ -869,8 +869,12 @@ int main()
 	// Champion a = Champion();
 	// x.execute(a);
 
-	Map *m = new Map();
-	m->randomize_map();
-	m->print_map();
+
+
+
+	Map();
+//	Map *m = new Map();
+//	m->randomize_map();
+//	m->print_map();
 	return 0;
 }
