@@ -377,18 +377,15 @@ public:
 
     void newGame()
     {
-         randomize_map();
+        randomize_map();
         cout << "print_map() called" << endl;
         print_map();
         rand_start();
-  
     }
 
-
-
-    void rand_start(){
-              char mButton;
-
+    void rand_start()
+    {
+        char mButton;
 
         while (mButton != '1' && mButton != '2')
         {
@@ -411,8 +408,9 @@ public:
             newTurn();
         }
     }
-    void choose_champ(){
-                print_map();
+    void choose_champ()
+    {
+        print_map();
 
         char rButton;
 
@@ -435,7 +433,7 @@ public:
             print_map();
         }
     }
-    
+
     void print_map()
     {
         for (int i = 9; i >= 0; i--)
@@ -455,15 +453,14 @@ public:
         gemCount = 0;
         obstCount = 0;
 
-        for (int i = 9; i >= 0; i--) //what even is this
+        for (int i = 9; i >= 0; i--) // what even is this
         {
             for (int j = 0; j < 10; j++)
             {
                 board[i][j] = Cell();
                 board[i][j].setX(i);
                 board[i][j].setY(j);
-                 board[i][j].setType('.');
-
+                board[i][j].setType('.');
             }
         }
 
@@ -540,8 +537,8 @@ public:
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
         }
-        
-     //   Creating those Gems
+
+        //   Creating those Gems
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -571,8 +568,8 @@ public:
             }
         }
 
-     //   In case there are duplicates
-        for (int i = 0; i < 10; i++) //unnecessary
+        //   In case there are duplicates
+        for (int i = 0; i < 10; i++) // unnecessary
         {
             for (int j = 0; j < 10; j++)
             {
@@ -602,11 +599,42 @@ public:
         cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
         cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
         char input;
-        // end();
+        end();
         cout << "Enter direction: ";
         input = getch();
         move(input);
     }
+
+    void end()
+    {
+        if (c->getScore() == gemCount)
+        {
+            cout << "Congrats you won!!" << endl;
+            for (int i = 0; i < 5; ++i)
+            {
+                delete (board[i]); 
+            }
+            delete[] board; 
+            exit(0);
+        }
+
+        else if (c->getHp() <= 0)
+        {
+            cout << "You lost :( but you can try again :D" << endl;
+            for (int i = 0; i < 5; ++i)
+            {
+                delete (board[i]);
+                
+            }
+            delete[] board; 
+            exit(0);
+        }
+        else
+        {
+            return;
+        }
+    }
+
     void move(char k)
     {
 
