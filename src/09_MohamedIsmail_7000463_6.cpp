@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <conio.h>
 #include <stdlib.h>
-#include <string.h>
 //-------------------------------//
 
 using namespace std;
@@ -255,7 +254,7 @@ private:
 public:
     Cell()
     {
-        this->type = '. ';
+        this->type = '.';
         this->x = 0;
         this->y = 0;
     }
@@ -292,7 +291,7 @@ public:
 
     string toString()
     {
-        return "" + getType();
+        return getType() + "";
     }
 };
 
@@ -436,7 +435,7 @@ public:
                 if (i == c->getX() && j == c->getY())
                     board[i][j].setType('c');
 
-                cout << board[i][j].toString() << " ";
+                cout <<board[i][j].toString() << " ";
             }
             cout << endl;
         }
