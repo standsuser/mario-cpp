@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <conio.h>
+#include <stdlib.h>
 #include <string.h>
 //-------------------------------//
 
@@ -80,41 +81,41 @@ public:
     }
 };
 
-class Luigi : public Champion
-{
+// class Luigi : public Champion
+// {
 
-    // idea :  in whatever direction luigi moves we clean
-    //  the hypothetical place he was gonna move into ,that way we preserve the obstacles that are before him
-    //  if the ability was called, by cleaning I mean we just replace everything by dots or whatever the symbol of tile is
-    // defensive programming for luigi not to "clean himself" off the "lain" or not to clean mario as well so no cleaning
-    //  champions , also cleaning will save the point object thingies but remove obstacles
-    //  and we need to define what is front , I am guessing whateever last move he makes is the front so if he moved right
-    //  then the whole right direction will be clean
-    // IF luigi is somewhere and he moved in the another somewhere direction
-    //  useABility()
-    //  and we can use ability while in spawn as well and probably he will spawn somewhere else
-    //  and mario will be the original champion
-public:
-    void useAbility()
-    {
-        cout << "Luigi Ability is called" << endl;
+//     // idea :  in whatever direction luigi moves we clean
+//     //  the hypothetical place he was gonna move into ,that way we preserve the obstacles that are before him
+//     //  if the ability was called, by cleaning I mean we just replace everything by dots or whatever the symbol of tile is
+//     // defensive programming for luigi not to "clean himself" off the "lain" or not to clean mario as well so no cleaning
+//     //  champions , also cleaning will save the point object thingies but remove obstacles
+//     //  and we need to define what is front , I am guessing whateever last move he makes is the front so if he moved right
+//     //  then the whole right direction will be clean
+//     // IF luigi is somewhere and he moved in the another somewhere direction
+//     //  useABility()
+//     //  and we can use ability while in spawn as well and probably he will spawn somewhere else
+//     //  and mario will be the original champion
+// public:
+//     void useAbility()
+//     {
+//         cout << "Luigi Ability is called" << endl;
 
-        for (int i = 0; i < 10; i++)
-        {
-            if (board[luigi->getX()][i].getType() == 'o ')
-            {
-                board[luigi->getX()][i] = '. ';
-            }
-        }
-        for (int j = 0; j < 10; j++)
-        {
-            if (board[j][luigi->getX()].getType() == 'o ')
-            {
-                board[j][luigi->getY()] = '. ';
-            }
-        }
-    }
-};
+//         for (int i = 0; i < 10; i++)
+//         {
+//             if (board[luigi->getX()][i].getType() == 'o ')
+//             {
+//                 board[luigi->getX()][i] = '. ';
+//             }
+//         }
+//         for (int j = 0; j < 10; j++)
+//         {
+//             if (board[j][luigi->getX()].getType() == 'o ')
+//             {
+//                 board[j][luigi->getY()] = '. ';
+//             }
+//         }
+//     }
+// };
 
 class Mario : public Champion
 {
@@ -291,7 +292,7 @@ public:
 
     string toString()
     {
-        return "" + this->type;
+        return "" + getType();
     }
 };
 
@@ -375,6 +376,7 @@ public:
         {
             board[i] = new Cell[10];
         }
+        newGame();
     }
 
     ~Map()
@@ -392,12 +394,20 @@ public:
         cout << "print_map() called" << endl;
         print_map();
         char rButton = 0;
+        
+
+        while (rButton != 'M' && rButton != 'L'){
+            cout << "Choose your champion! Choose M for Mario , Choose L for Luigi" << endl;
+            rButton = getch();
+        }
+    
+
         if (rButton == 'M')
             c = new Mario();
         else if (rButton == 'L')
-            c = new Luigi();
+        //    c = new Luigi();
 
-        while ((rButton != '1' && rButton != '2') || (rButton != 'M' && rButton != 'L'))
+        while (rButton != '1' && rButton != '2')
         {
             cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
             rButton = getch();
@@ -873,7 +883,7 @@ int main()
 
 	//Map();
 	Map *m = new Map();
-	m->randomize_map();
-	m->print_map();
+	//m->randomize_map();
+	m->newGame();
 	return 0;
 }
