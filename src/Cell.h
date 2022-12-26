@@ -27,6 +27,6 @@ public:
 
     void setY(int n);
 
-    string toString();
+    std::string toString();
 };
 #endif
