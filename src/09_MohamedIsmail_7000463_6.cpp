@@ -101,14 +101,14 @@ public:
 
         for (int i = 0; i < 10; i++)
         {
-            if (board[luigi->getX()][i].getType() == 'O ')
+            if (board[luigi->getX()][i].getType() == 'o ')
             {
                 board[luigi->getX()][i] = '. ';
             }
         }
         for (int j = 0; j < 10; j++)
         {
-            if (board[j][luigi->getX()].getType() == 'O ')
+            if (board[j][luigi->getX()].getType() == 'o ')
             {
                 board[j][luigi->getY()] = '. ';
             }
@@ -462,7 +462,7 @@ public:
                 }
             } while (board[thievesX[i]][thievesY[i]].getType() != '.');
 
-            board[thievesX[i]][thievesY[i]].setType('O ');
+            board[thievesX[i]][thievesY[i]].setType('o ');
             board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
             board[thievesX[i]][thievesY[i]].setY(thievesY[i]);
             obstCount++;
@@ -478,7 +478,7 @@ public:
                 }
             } while (board[bombsX[i]][bombsY[i]].getType() != '.');
 
-            board[bombsX[i]][bombsY[i]].setType('O ');
+            board[bombsX[i]][bombsY[i]].setType('o ');
             board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
             board[bombsX[i]][bombsY[i]].setY(bombsY[i]);
             obstCount++;
@@ -498,7 +498,7 @@ public:
                 }
             } while (board[coinsX[i]][coinsY[i]].getType() != '.');
 
-            board[coinsX[i]][coinsY[i]].setType('G');
+            board[coinsX[i]][coinsY[i]].setType('g');
             board[coinsX[i]][coinsY[i]].setX(coinsX[i]);
             board[coinsX[i]][coinsY[i]].setY(coinsY[i]);
             gemCount++;
@@ -514,7 +514,7 @@ public:
                 }
             } while (board[potionsX[i]][potionsY[i]].getType() != '.');
 
-            board[potionsX[i]][potionsY[i]].setType('G');
+            board[potionsX[i]][potionsY[i]].setType('g');
             board[potionsX[i]][potionsY[i]].setX(potionsX[i]);
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
@@ -525,7 +525,7 @@ public:
         {
             for (int j = 0; j < 10; j++)
             {
-                if (board[i][j].getType() == 'O')
+                if (board[i][j].getType() == 'o')
                 {
                     if (thievesX[i] == i && thievesY[j] == j)
                         Obstacle *o = new Thief();
@@ -534,12 +534,12 @@ public:
                         Obstacle *o = new Bomb();
                 }
 
-                if (board[i][j].getType() == 'C')
+                if (board[i][j].getType() == 'c')
                 {
                     Champion *c = new Champion();
                 }
 
-                if (board[i][j].getType() == 'G')
+                if (board[i][j].getType() == 'g')
                 {
                     if (potionsX[i] == i && potionsY[j] == j)
                         Gem *g = new Potion();
@@ -579,7 +579,7 @@ public:
 		cout << "\033[2J\033[1;1H";
 		print_map();
 		cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
-		cout << "Total Gem count (G): " << gemCount << "\nObst count (O): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
+		cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
 		char input;
 		//end();
 		cout << "Enter direction: ";
@@ -597,7 +597,7 @@ public:
 			{
 				newTurn();
 			}
-			if (board[c->getX() + 1][c->getY()].getType() == 'O')
+			if (board[c->getX() + 1][c->getY()].getType() == 'o')
 			{
 				c->decHp();
 				board[c->getX()][c->getY()].setType('.');
@@ -605,7 +605,7 @@ public:
 
 				newTurn();
 			}
-			else if (board[c->getX() + 1][c->getY()].getType() == 'G')
+			else if (board[c->getX() + 1][c->getY()].getType() == 'g')
 			{
 				c->setScore(c->getScore() + 1);
 				board[c->getX()][c->getY()].setType('.');
@@ -633,7 +633,7 @@ public:
 			{
 				newTurn();
 			}
-			if (board[c->getX()][c->getY() + 1].getType() == 'O')
+			if (board[c->getX()][c->getY() + 1].getType() == 'o')
 			{
 				c->decHp();
 				board[c->getX()][c->getY()].setType('.');
@@ -641,7 +641,7 @@ public:
 
 				newTurn();
 			}
-			else if (board[c->getX()][c->getY() + 1].getType() == 'G')
+			else if (board[c->getX()][c->getY() + 1].getType() == 'g')
 			{
 				c->setScore(c->getScore() + 1);
 				board[c->getX()][c->getY()].setType('.');
@@ -669,7 +669,7 @@ public:
 			{
 				newTurn();
 			}
-			if (board[c->getX() - 1][c->getY()].getType() == 'O')
+			if (board[c->getX() - 1][c->getY()].getType() == 'o')
 			{
 				c->decHp();
 				board[c->getX()][c->getY()].setType('.');
@@ -677,7 +677,7 @@ public:
 
 				newTurn();
 			}
-			else if (board[c->getX() - 1][c->getY()].getType() == 'G')
+			else if (board[c->getX() - 1][c->getY()].getType() == 'g')
 			{
 				c->setScore(c->getScore() + 1);
 				board[c->getX()][c->getY()].setType('.');
@@ -705,7 +705,7 @@ public:
 			{
 				newTurn();
 			}
-			if (board[c->getX()][c->getY() - 1].getType() == 'O')
+			if (board[c->getX()][c->getY() - 1].getType() == 'o')
 			{
 				c->decHp();
 				board[c->getX()][c->getY()].setType('.');
@@ -713,7 +713,7 @@ public:
 
 				newTurn();
 			}
-			else if (board[c->getX()][c->getY() - 1].getType() == 'G')
+			else if (board[c->getX()][c->getY() - 1].getType() == 'g')
 			{
 				c->setScore(c->getScore() + 1);
 				board[c->getX()][c->getY()].setType('.');
@@ -813,7 +813,7 @@ public:
 	// 			}
 	// 		} while (board[gemX[i]][gemY[i]] != '.');
 
-	// 		board[gemX[i]][gemY[i]] = 'G';
+	// 		board[gemX[i]][gemY[i]] = 'g';
 	// 		gemCount++;
 	// 	}
 
@@ -833,7 +833,7 @@ public:
 
 	// 		} while (board[obstX[i]][obstY[i]] != '.');
 
-	// 		board[obstX[i]][obstY[i]] = 'O';
+	// 		board[obstX[i]][obstY[i]] = 'o';
 	// 		obstCount++;
 	// 	}
 
