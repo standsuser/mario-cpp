@@ -353,7 +353,7 @@ public:
 // 	}
 
 
-//--------------------------NEW MAP-----------------------------
+//----------------------------------------------------------------------------------------NEW MAP----------------------------------------------------------------------------------
 
 class Map
 {
@@ -460,7 +460,7 @@ public:
                     thievesX[i] = (rand() % 9) + 1;
                     thievesY[i] = (rand() % 9) + 1;
                 }
-            } while (board[thievesX[i]][thievesY[i]].getType() != '. ');
+            } while (board[thievesX[i]][thievesY[i]].getType() != '.');
 
             board[thievesX[i]][thievesY[i]].setType('O ');
             board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
@@ -476,7 +476,7 @@ public:
                     bombsX[i] = (rand() % 9) + 1;
                     bombsY[i] = (rand() % 9) + 1;
                 }
-            } while (board[bombsX[i]][bombsY[i]].getType() != '. ');
+            } while (board[bombsX[i]][bombsY[i]].getType() != '.');
 
             board[bombsX[i]][bombsY[i]].setType('O ');
             board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
@@ -496,9 +496,9 @@ public:
                     coinsX[i] = (rand() % 19) + 1;
                     coinsY[i] = (rand() % 19) + 1;
                 }
-            } while (board[coinsX[i]][coinsY[i]].getType() != '. ');
+            } while (board[coinsX[i]][coinsY[i]].getType() != '.');
 
-            board[coinsX[i]][coinsY[i]].setType('G ');
+            board[coinsX[i]][coinsY[i]].setType('G');
             board[coinsX[i]][coinsY[i]].setX(coinsX[i]);
             board[coinsX[i]][coinsY[i]].setY(coinsY[i]);
             gemCount++;
@@ -512,9 +512,9 @@ public:
                     potionsX[i] = (rand() % 19) + 1;
                     potionsY[i] = (rand() % 19) + 1;
                 }
-            } while (board[potionsX[i]][potionsY[i]].getType() != '. ');
+            } while (board[potionsX[i]][potionsY[i]].getType() != '.');
 
-            board[potionsX[i]][potionsY[i]].setType('G ');
+            board[potionsX[i]][potionsY[i]].setType('G');
             board[potionsX[i]][potionsY[i]].setX(potionsX[i]);
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
@@ -525,7 +525,7 @@ public:
         {
             for (int j = 0; j < 10; j++)
             {
-                if (board[i][j].getType() == 'O ')
+                if (board[i][j].getType() == 'O')
                 {
                     if (thievesX[i] == i && thievesY[j] == j)
                         Obstacle *o = new Thief();
@@ -534,12 +534,12 @@ public:
                         Obstacle *o = new Bomb();
                 }
 
-                if (board[i][j].getType() == 'C ')
+                if (board[i][j].getType() == 'C')
                 {
                     Champion *c = new Champion();
                 }
 
-                if (board[i][j].getType() == 'G ')
+                if (board[i][j].getType() == 'G')
                 {
                     if (potionsX[i] == i && potionsY[j] == j)
                         Gem *g = new Potion();
