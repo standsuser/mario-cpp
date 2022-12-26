@@ -23,7 +23,7 @@ public:
     {
 
         cout << "Constructor champion() is called" << endl;
-        champY = 9; // Row
+        champY = 0; // Row
         champX = 0; // Column
         hp = 100;
         gemScore = 0;
@@ -435,7 +435,7 @@ public:
                 if (i == c->getX() && j == c->getY())
                     board[i][j].setType('c');
 
-                cout <<board[i][j].toString() << " ";
+                cout << board[i][j].getType()  << " ";
             }
             cout << endl;
         }
