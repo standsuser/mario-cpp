@@ -421,6 +421,7 @@ public:
             newTurn();
         }
     }
+    
     void print_map()
     {
         for (int i = 9; i >= 0; i--)
@@ -440,15 +441,15 @@ public:
         gemCount = 0;
         obstCount = 0;
 
-        for (int i = 9; i >= 0; i--)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                board[i][j] = Cell();
-                board[i][j].setX(i);
-                board[i][j].setY(j);
-            }
-        }
+        // for (int i = 9; i >= 0; i--) //what even is this
+        // {
+        //     for (int j = 0; j < 10; j++)
+        //     {
+        //         board[i][j] = Cell();
+        //         board[i][j].setX(i);
+        //         board[i][j].setY(j);
+        //     }
+        // }
 
         srand(time(0));
 
@@ -466,7 +467,7 @@ public:
                 }
             } while (board[thievesX[i]][thievesY[i]].getType() != '.');
 
-            board[thievesX[i]][thievesY[i]].setType('o ');
+            board[thievesX[i]][thievesY[i]].setType('o');
             board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
             board[thievesX[i]][thievesY[i]].setY(thievesY[i]);
             obstCount++;
@@ -482,7 +483,7 @@ public:
                 }
             } while (board[bombsX[i]][bombsY[i]].getType() != '.');
 
-            board[bombsX[i]][bombsY[i]].setType('o ');
+            board[bombsX[i]][bombsY[i]].setType('o');
             board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
             board[bombsX[i]][bombsY[i]].setY(bombsY[i]);
             obstCount++;
@@ -493,12 +494,12 @@ public:
         {
             do
             {
-                coinsX[i] = (rand() % 20);
-                coinsY[i] = (rand() % 20);
+                coinsX[i] = (rand() % 10); // changed to 10 cuz it can nvr be 20 it's a coordinate
+                coinsY[i] = (rand() % 10);
                 if (coinsX[i] == 0 && coinsY[i] == 0)
                 {
-                    coinsX[i] = (rand() % 19) + 1;
-                    coinsY[i] = (rand() % 19) + 1;
+                    coinsX[i] = (rand() % 9) + 1;
+                    coinsY[i] = (rand() % 9) + 1;
                 }
             } while (board[coinsX[i]][coinsY[i]].getType() != '.');
 
@@ -509,12 +510,12 @@ public:
 
             do
             {
-                potionsX[i] = (rand() % 20);
-                potionsY[i] = (rand() % 20);
+                potionsX[i] = (rand() % 10);
+                potionsY[i] = (rand() % 10);
                 if (potionsX[i] == 0 && potionsY[i] == 0)
                 {
-                    potionsX[i] = (rand() % 19) + 1;
-                    potionsY[i] = (rand() % 19) + 1;
+                    potionsX[i] = (rand() % 9) + 1;
+                    potionsY[i] = (rand() % 9) + 1;
                 }
             } while (board[potionsX[i]][potionsY[i]].getType() != '.');
 
