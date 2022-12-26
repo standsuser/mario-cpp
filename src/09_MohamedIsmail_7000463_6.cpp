@@ -6,7 +6,7 @@
 //-------------------------------//
 
 using namespace std;
-bool marioActive=false;
+bool marioActive = false;
 
 //------------------------------champion---------------------------------
 
@@ -29,11 +29,11 @@ public:
         champX = 0; // Column
         hp = 100;
         gemScore = 0;
-        RemaningAbilityMoves =2;
+        RemaningAbilityMoves = 2;
     }
     void print_champ_info()
     {
-        cout << "Current hp: " << hp << "  , Score: " << gemScore  << "Remaining Ability Moves: " << RemaningAbilityMoves<< endl;
+        cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
     }
 
     void useAbility()
@@ -81,14 +81,15 @@ public:
     {
         this->hp = x;
     }
-    int getRemainingAbilityMoves(){
+    int getRemainingAbilityMoves()
+    {
         return this->RemaningAbilityMoves;
     }
 
-      void setRemainingAbilityMoves(int x){
-         this->RemaningAbilityMoves=x;
+    void setRemainingAbilityMoves(int x)
+    {
+        this->RemaningAbilityMoves = x;
     }
-
 };
 
 // class Luigi : public Champion
@@ -138,17 +139,12 @@ public:
     void useAbility()
     {
 
-        //In Class Mario the useAbility() method allows you to move 2 steps at a time allowing you to jump 
-        //over an obstacle without having any damage. It must print “Mario Ability is called”
+        // In Class Mario the useAbility() method allows you to move 2 steps at a time allowing you to jump
+        // over an obstacle without having any damage. It must print “Mario Ability is called”
         cout << "Mario Ability is called" << endl;
-         marioActive=true;
-
-
-        
+        marioActive = true;
     }
 };
-
-
 
 //------------------------------obstacle---------------------------
 class Obstacle
@@ -301,7 +297,6 @@ public:
         return getType() + "";
     }
 };
-
 
 //----------------------------------------------------------------------------------------NEW MAP----------------------------------------------------------------------------------
 
@@ -574,9 +569,9 @@ public:
             cout << "Congrats you won!!" << endl;
             for (int i = 0; i < 5; ++i)
             {
-                delete (board[i]); 
+                delete (board[i]);
             }
-            delete(board); 
+            delete (board);
             exit(0);
         }
 
@@ -586,9 +581,8 @@ public:
             for (int i = 0; i < 5; ++i)
             {
                 delete (board[i]);
-                
             }
-            delete(board) ; 
+            delete (board);
             exit(0);
         }
         else
@@ -608,33 +602,48 @@ public:
             {
                 newTurn();
             }
-            
+
             if (board[c->getX() + 1][c->getY()].getType() == 'o')
             {
-                if(marioActive==false){
-                c->decHp();
-                 board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
+                if (marioActive == false)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 1);
                 }
-                else{
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 2);
+                else
+                {
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 2);
                 }
 
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == 'g')
             {
+
                 c->setScore(c->getScore() + 1);
                 board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
+                if (marioActive == false)
+                {
+
+                    c->setX(c->getX() + 1);
+                }
+                else
+                    c->setX(c->getX() + 2);
 
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == '.')
             {
                 board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
+                          if (marioActive == false)
+                {
+
+                    c->setX(c->getX() + 1);
+                }
+                else
+                    c->setX(c->getX() + 2); //CONTINUE SWITCH MARIO IFS
 
                 newTurn();
             }
