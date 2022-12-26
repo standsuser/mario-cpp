@@ -454,7 +454,7 @@ public:
         srand(time(0));
 
         // Thieves & Bombs locations set
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; obstCount < 20; i++)
         {
             do
             {
@@ -490,7 +490,7 @@ public:
         }
 
         // Coins & potions locations set
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; gemCount < 40; i++)
         {
             do
             {
@@ -524,8 +524,8 @@ public:
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
         }
-
-        // Creating those Gems
+        
+     //   Creating those Gems
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -539,10 +539,10 @@ public:
                         Obstacle *o = new Bomb();
                 }
 
-                if (board[i][j].getType() == 'c')
-                {
-                    Champion *c = new Champion();
-                }
+                // if (board[i][j].getType() == 'c')
+                // {
+                //     Champion *c = new Champion();
+                // }
 
                 if (board[i][j].getType() == 'g')
                 {
@@ -555,8 +555,8 @@ public:
             }
         }
 
-        // In case there are duplicates
-        for (int i = 0; i < 10; i++)
+     //   In case there are duplicates
+        for (int i = 0; i < 10; i++) //unnecessary
         {
             for (int j = 0; j < 10; j++)
             {
