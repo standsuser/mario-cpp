@@ -380,7 +380,41 @@ public:
          randomize_map();
         cout << "print_map() called" << endl;
         print_map();
-        char rButton = 0;
+        rand_start();
+  
+    }
+
+
+
+    void rand_start(){
+              char mButton;
+
+
+        while (mButton != '1' && mButton != '2')
+        {
+            cout << "Choose 1 to Randomize, Choose 2 to start the game" << endl;
+            mButton = getch();
+        }
+
+        if (mButton == '1')
+        {
+            randomize_map();
+            cout << "\033[2J\033[1;1H";
+            Map *m = new Map();
+            newGame();
+        }
+        else if (mButton == '2')
+        {
+            cout << "\033[2J\033[1;1H";
+            cout << "print_map() called" << endl;
+            choose_champ();
+            newTurn();
+        }
+    }
+    void choose_champ(){
+                print_map();
+
+        char rButton;
 
         while (rButton != 'M' && rButton != 'L')
         {
@@ -399,26 +433,6 @@ public:
             //    c = new Luigi();
             cout << "\033[2J\033[1;1H";
             print_map();
-        }
-
-        while (rButton != '1' && rButton != '2')
-        {
-            cout << "Choose 1 to Randomize, Choose 2 to start the game" << endl;
-            rButton = getch();
-        }
-
-        if (rButton == '1')
-        {
-            randomize_map();
-            cout << "\033[2J\033[1;1H";
-            Map *m = new Map();
-            newGame();
-        }
-        else if (rButton == '2')
-        {
-            cout << "\033[2J\033[1;1H";
-            cout << "print_map() called" << endl;
-            newTurn();
         }
     }
     
@@ -441,15 +455,17 @@ public:
         gemCount = 0;
         obstCount = 0;
 
-        // for (int i = 9; i >= 0; i--) //what even is this
-        // {
-        //     for (int j = 0; j < 10; j++)
-        //     {
-        //         board[i][j] = Cell();
-        //         board[i][j].setX(i);
-        //         board[i][j].setY(j);
-        //     }
-        // }
+        for (int i = 9; i >= 0; i--) //what even is this
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                board[i][j] = Cell();
+                board[i][j].setX(i);
+                board[i][j].setY(j);
+                 board[i][j].setType('.');
+
+            }
+        }
 
         srand(time(0));
 
