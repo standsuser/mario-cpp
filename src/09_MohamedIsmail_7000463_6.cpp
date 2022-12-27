@@ -36,7 +36,7 @@ public:
         cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
     }
 
-    void useAbility()
+    virtual void useAbility()
     {
         cout << "Ability x is called" << endl;
     }
@@ -136,7 +136,7 @@ public:
     // and we remove the getting damage line or something and  we make him not see obstacles aslan fa msh far2a m3ah
     // haye3mel eih
 
-    void useAbility()
+     void useAbility()
     {
 
         // In Class Mario the useAbility() method allows you to move 2 steps at a time allowing you to jump
@@ -314,7 +314,7 @@ private:
 public:
     Map()
     {
-        c = new Champion();
+      //  c = new Champion();
         board = new Cell *[10];
         for (int i = 0; i < 10; i++)
         {
@@ -559,6 +559,9 @@ public:
         end();
         cout << "Enter direction: ";
         input = getch();
+        if(input='X'){
+           c.useAbility();
+        }
         move(input);
     }
 
@@ -591,6 +594,29 @@ public:
         }
     }
 
+    void marioAbilityHelper(int k)
+    {
+
+        switch (k)
+        {
+        case '8':
+            if (board[c->getX() + 2][c->getY()].getType() == 'o')
+                c->decHp();
+
+            board[c->getX()][c->getY()].setType('.');
+            if (c->getX() + 2 == 9)
+            {
+                newTurn();
+            }
+            c->setX(c->getX() + 2);
+
+
+
+
+
+        }
+    }
+
     void move(char k)
     {
 
@@ -613,8 +639,7 @@ public:
                 }
                 else
                 {
-                    board[c->getX()][c->getY()].setType('.');
-                    c->setX(c->getX() + 2);
+                    marioAbilityHelper(k);
                 }
 
                 newTurn();
@@ -786,118 +811,7 @@ public:
             newTurn();
         }
     }
-    //----------------------------------new game---------------------
-    // void newGame()
-    // {
 
-    // 	cout << "print_map() called" << endl;
-    // 	print_map();
-    // 	char rButton = 0;
-
-    // 	while (rButton != '1' && rButton != '2')
-    // 	{
-    // 		cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
-    // 		rButton = getch();
-    // 	}
-
-    // 	if (rButton == '1')
-    // 	{
-    // 		randomize_map();
-    // 		cout << "\033[2J\033[1;1H";
-    // 		Map *m = new Map();
-    // 		newGame();
-    // 	}
-    // 	else if (rButton == '2')
-    // 	{
-    // 		cout << "\033[2J\033[1;1H";
-    // 		cout << "print_map() called" << endl;
-    // 		newTurn();
-    // 	}
-    // }
-
-    // void print_map()
-    // {
-    // 	for (int i = 9; i >= 0; i--)
-    // 	{
-    // 		for (int j = 0; j < 10; j++)
-    // 		{
-    // 			if (i == c->getX() && j == c->getY())
-    // 				board[i][j] = 'c';
-
-    // 			cout << board[i][j];
-    // 		}
-    // 		cout << endl;
-    // 	}
-    // }
-
-    // randomly distribute gems and obstacles on the map
-    // void randomize_map() // second one for sum reason
-    // {
-    // 	gemCount = 0;
-    // 	obstCount = 0;
-
-    // 	// ∺ mario, ⦿ gem, ☁︎ obstacle
-
-    // 	for (int i = 9; i >= 0; i--)
-    // 	{
-    // 		for (int j = 0; j < 10; j++)
-    // 		{
-    // 			board[i][j] = '.';
-    // 		}
-    // 	}
-
-    // 	// Generate Gems
-    // 	for (int i = 0; i < 50; i++)
-    // 	{
-    // 		do
-    // 		{
-    // 			gemX[i] = (rand() % 10);
-    // 			gemY[i] = (rand() % 10);
-    // 			if (gemX[i] == 0 && gemY[i] == 0)
-    // 			{
-    // 				gemX[i] = (rand() % 9) + 1;
-    // 				gemY[i] = (rand() % 9) + 1;
-    // 			}
-    // 		} while (board[gemX[i]][gemY[i]] != '.');
-
-    // 		board[gemX[i]][gemY[i]] = 'g';
-    // 		gemCount++;
-    // 	}
-
-    // 	// Generate Obstacles
-    // 	for (int i = 0; i < 25; i++)
-    // 	{
-    // 		do
-    // 		{
-    // 			obstX[i] = (rand() % 10);
-    // 			obstY[i] = (rand() % 10);
-
-    // 			if ((obstX[i] == 0 && obstY[i] == 0))
-    // 			{
-    // 				obstX[i] = (rand() % 9) + 1;
-    // 				obstY[i] = (rand() % 9) + 1;
-    // 			}
-
-    // 		} while (board[obstX[i]][obstY[i]] != '.');
-
-    // 		board[obstX[i]][obstY[i]] = 'o';
-    // 		obstCount++;
-    // 	}
-
-    // 	// if there are duplicate points betweeen gems and obstacles
-    // 	for (int i = 0; i < 50; i++)
-    // 	{
-    // 		for (int j = 0; j < 25; j++)
-    // 		{
-
-    // 			while ((obstX[j] == gemX[i]) && (obstY[j] == gemY[i]))
-    // 			{
-    // 				obstX[j] = (rand() % 9) + 1;
-    // 				obstY[j] = (rand() % 9) + 1;
-    // 			}
-    // 		}
-    // 	}
-    // }
 
 }; // END OF MAP CLASS
 
