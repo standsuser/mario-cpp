@@ -605,7 +605,7 @@ public:
 
             if (board[c->getX() + 1][c->getY()].getType() == 'o')
             {
-                if (marioActive == false)
+                if (!marioActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
@@ -624,7 +624,7 @@ public:
 
                 c->setScore(c->getScore() + 1);
                 board[c->getX()][c->getY()].setType('.');
-                if (marioActive == false)
+                if (!marioActive)
                 {
 
                     c->setX(c->getX() + 1);
@@ -637,13 +637,13 @@ public:
             else if (board[c->getX() + 1][c->getY()].getType() == '.')
             {
                 board[c->getX()][c->getY()].setType('.');
-                          if (marioActive == false)
+                if (!marioActive)
                 {
 
                     c->setX(c->getX() + 1);
                 }
                 else
-                    c->setX(c->getX() + 2); //CONTINUE SWITCH MARIO IFS
+                    c->setX(c->getX() + 2); // CONTINUE SWITCH MARIO IFS
 
                 newTurn();
             }
@@ -662,17 +662,37 @@ public:
             }
             if (board[c->getX()][c->getY() + 1].getType() == 'o')
             {
-                c->decHp();
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                if (!marioActive)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else
+                {
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 2);
+                }
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() + 1].getType() == 'g')
             {
-                c->setScore(c->getScore() + 1);
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                if (!marioActive)
+                {
+                    c->setScore(c->getScore() + 1);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else
+                {
+                    if (board[c->getX()][c->getY() + 2].getType() == 'g')
+                    {
+                        c->setScore(c->getScore() + 1);
+                        board[c->getX()][c->getY()].setType('.');
+                        c->setY(c->getY() + 2);
+                    }
+                }
 
                 newTurn();
             }
