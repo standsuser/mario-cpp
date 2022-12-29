@@ -36,7 +36,7 @@ public:
         cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
     }
 
-    void useAbility()
+   virtual void useAbility()
     {
         cout << "Ability x is called" << endl;
     }
@@ -560,6 +560,21 @@ public:
         end();
         cout << "Enter direction: ";
         input = getch();
+        if( input =='X'){
+        c->useAbility();
+        if(c->getRemainingAbilityMoves()<=0){
+
+            cout<<"no ability moves left"<<endl;
+            marioActive=false;
+            newTurn();
+        }
+        else{
+        c->setRemainingAbilityMoves(c->getRemainingAbilityMoves()-1);
+        }
+
+        move(input = getch());
+        }
+        else
         move(input);
     }
 
@@ -592,12 +607,13 @@ public:
         }
     }
 
-    void marioAbilityHelper(char k)
+    void marioAbilityHelper(int k)
     {
 
+                marioActive=false; //doesnt work globaly like outside the method i tried pointer and it didnt work
         switch (k)
         {
-        case '8':
+        case 8:
         {
             if (c->getX() == 9)
             {
@@ -613,12 +629,11 @@ public:
             else
             {
                 board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
-               * marioActive=false; //doesnt work globaly like outside the method i tried pointer and it didnt work
+                c->setX(c->getX() + 2);
                 move(8); // move second step and pickup gem/get hit with obst
             }
         }
-        case '6':
+        case 6:
         {
             if (c->getY() == 9)
             {
@@ -640,7 +655,7 @@ public:
             }
         }
 
-        case '5': // board[mario.getX() - 1][mario.getY()]
+        case 5: // board[mario.getX() - 1][mario.getY()]
         {
             if (c->getX() == 0)
             {
@@ -662,7 +677,7 @@ public:
             }
         }
 
-        case '4': // board[mario.getX()][mario.getY() - 1]
+        case 4: // board[mario.getX()][mario.getY() - 1]
         {
             if (c->getY() == 0)
             {
@@ -939,6 +954,5 @@ int main()
     // Map();
     Map *m = new Map();
     // m->randomize_map();
-    m->newGame();
     return 0;
 }
