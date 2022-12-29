@@ -7,7 +7,7 @@
 
 using namespace std;
 bool marioActive = false;
-
+bool luigiActive = false;
 //------------------------------champion---------------------------------
 
 class Champion
@@ -36,7 +36,7 @@ public:
     //     cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
     // }
 
-   virtual void useAbility()
+    virtual void useAbility()
     {
         cout << "Ability x is called" << endl;
     }
@@ -143,7 +143,6 @@ public:
         // over an obstacle without having any damage. It must print “Mario Ability is called”
         cout << "Mario Ability is called" << endl;
         marioActive = true;
-        
     }
 };
 
@@ -560,22 +559,25 @@ public:
         end();
         cout << "Enter direction: ";
         input = getch();
-        if( input =='X'){
-        c->useAbility();
-        if(c->getRemainingAbilityMoves()<=0){
+        if (input == 'X')
+        {
+            c->useAbility();
+            if (c->getRemainingAbilityMoves() <= 0)
+            {
 
-            cout<<"no ability moves left"<<endl;
-            marioActive=false;
-            newTurn();
-        }
-        else{
-        c->setRemainingAbilityMoves(c->getRemainingAbilityMoves()-1);
-        }
+                cout << "no ability moves left" << endl;
+                marioActive = false;
+                newTurn();
+            }
+            else
+            {
+                c->setRemainingAbilityMoves(c->getRemainingAbilityMoves() - 1);
+            }
 
-        move(input = getch());
+            move(input = getch());
         }
         else
-        move(input);
+            move(input);
     }
 
     void end()
@@ -610,7 +612,7 @@ public:
     void marioAbilityHelper(int k)
     {
 
-                marioActive=false; //doesnt work globaly like outside the method i tried pointer and it didnt work
+        marioActive = false; // doesnt work globaly like outside the method i tried pointer and it didnt work
         switch (k)
         {
         case 8:
@@ -630,6 +632,15 @@ public:
             {
                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() + 2);
+                if (board[c->getX()][c->getY()].getType() == 'g')
+                {
+                    c->setScore(c->getScore() + 1);
+                }
+
+                if (board[c->getX()][c->getY()].getType() == 'o')
+                {
+                    c->setHp(c->getHp() - 20);
+                }
                 move(8); // move second step and pickup gem/get hit with obst
             }
         }
@@ -648,9 +659,18 @@ public:
             }
             else
             {
-
                 board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                c->setY(c->getY() + 2);
+                if (board[c->getX()][c->getY()].getType() == 'g')
+                {
+                    c->setScore(c->getScore() + 1);
+                }
+
+                if (board[c->getX()][c->getY()].getType() == 'o')
+                {
+                    c->setHp(c->getHp() - 20);
+                }
+
                 move(6);
             }
         }
@@ -672,7 +692,16 @@ public:
             {
 
                 board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() - 1);
+                c->setX(c->getX() - 2);
+                if (board[c->getX()][c->getY()].getType() == 'g')
+                {
+                    c->setScore(c->getScore() + 1);
+                }
+
+                if (board[c->getX()][c->getY()].getType() == 'o')
+                {
+                    c->setHp(c->getHp() - 20);
+                }
                 move(5);
             }
         }
@@ -694,10 +723,219 @@ public:
             {
 
                 board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() - 1);
+                c->setY(c->getY() - 2);
+                if (board[c->getX()][c->getY()].getType() == 'g')
+                {
+                    c->setScore(c->getScore() + 1);
+                }
+
+                if (board[c->getX()][c->getY()].getType() == 'o')
+                {
+                    c->setHp(c->getHp() - 20);
+                }
                 move(4);
             }
         }
+        }
+    }
+
+    void luigiAbilityHelper(int k)
+    {
+        luigiActive = true;
+        switch (k)
+        {
+        case '8':
+        {
+
+            if (!luigiActive)
+            {
+                move(k);
+            }
+            else
+            {
+                newTurn();
+            }
+
+            else if ()
+            {
+
+                if (!luigiActive)
+                {
+                }
+                else
+                    luigiAbilityHelper(8);
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                    board[c->getX()][c->getY()].setType('.');
+
+                    c->setX(c->getX() + 1);
+                }
+                else
+                    luigiAbilityHelper(8);
+
+                newTurn();
+            }
+
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '6': // board[mario.getX()][mario.getY() + 1]
+        {
+            if (c->getY() == 9)
+            {
+                newTurn();
+            }
+            if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(6);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(6);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(6);
+                }
+
+                newTurn();
+            }
+
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '5': // board[mario.getX() - 1][mario.getY()]
+        {
+            if (c->getX() == 0)
+            {
+                newTurn();
+            }
+            if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(5);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(5);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(5);
+                }
+
+                newTurn();
+            }
+
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        case '4': // board[mario.getX()][mario.getY() - 1]
+        {
+            if ()
+            {
+                newTurn();
+            }
+            if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(4);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(4);
+                }
+
+                newTurn();
+            }
+            else if ()
+            {
+                if (!luigiActive)
+                {
+                }
+                else
+                {
+                    luigiAbilityHelper(4);
+                }
+
+                newTurn();
+            }
+
+            else
+            {
+                newTurn();
+            }
+        }
+        break;
+        default:
+            newTurn();
         }
     }
 
@@ -708,7 +946,7 @@ public:
         {
         case '8':
         {
-            cout<<marioActive<<"";
+            cout << marioActive << "";
             if (c->getX() == 9)
             {
                 newTurn();
