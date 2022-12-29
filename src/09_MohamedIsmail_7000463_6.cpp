@@ -6,6 +6,7 @@
 //-------------------------------//
 
 using namespace std;
+bool marioActive = false;
 
 //------------------------------champion---------------------------------
 
@@ -16,6 +17,7 @@ private:
     int gemScore;
     int champX;
     int champY;
+    int RemaningAbilityMoves;
 
 public:
     // Champion() = default;
@@ -27,10 +29,11 @@ public:
         champX = 0; // Column
         hp = 100;
         gemScore = 0;
+        RemaningAbilityMoves = 2;
     }
     void print_champ_info()
     {
-        cout << "Current hp: " << hp << "  , Score: " << gemScore << " Location: " << endl;
+        cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
     }
 
     void useAbility()
@@ -78,6 +81,15 @@ public:
     {
         this->hp = x;
     }
+    int getRemainingAbilityMoves()
+    {
+        return this->RemaningAbilityMoves;
+    }
+
+    void setRemainingAbilityMoves(int x)
+    {
+        this->RemaningAbilityMoves = x;
+    }
 };
 
 // class Luigi : public Champion
@@ -124,13 +136,16 @@ public:
     // and we remove the getting damage line or something and  we make him not see obstacles aslan fa msh far2a m3ah
     // haye3mel eih
 
-    void useAbility(char c)
+    void useAbility()
     {
+
+        // In Class Mario the useAbility() method allows you to move 2 steps at a time allowing you to jump
+        // over an obstacle without having any damage. It must print “Mario Ability is called”
         cout << "Mario Ability is called" << endl;
+        marioActive = true;
+        
     }
 };
-
-// dont forget REMAINING ABILITY COUNTER//
 
 //------------------------------obstacle---------------------------
 class Obstacle
@@ -284,63 +299,6 @@ public:
     }
 };
 
-//-----------------old map---------------
-
-// class Map2
-// {
-// private:
-// 	char **board;
-// 	Champion *mario = new Champion();
-// 	int gemX[50];
-// 	int gemY[50];
-// 	int obstX[25];
-// 	int obstY[25];
-// 	int gemCount;
-// 	int obstCount;
-
-// public:
-// 	Map2()
-// 	{
-// 		board = new char *[10];
-// 		for (int i = 0; i < 10; i++)
-// 		{
-// 			board[i] = new char[10];
-// 		}
-// 		randomize_map();
-// 		cout << "Constructor Map() is called" << endl;
-// 		cout << "randomize_map() is called" << endl;
-// 	}
-// 	void end()
-// 	{
-// 		if (mario->getScore() == gemCount)
-// 		{
-// 			cout << "Congrats you won!!" << endl;
-
-// 			exit(0);
-// 		}
-
-// 		else if (mario->getHp() <= 0)
-// 		{
-// 			cout << "You lost :( but you can go again :D" << endl;
-
-// 			exit(0);
-// 		}
-// 		else
-// 		{
-// 			return;
-// 		}
-// 	}
-
-// 	~Map2()
-// 	{
-// 		for (int i = 0; i < 10; ++i)
-// 		{
-// 			delete (board[i]); // deletes an inner array of integer;
-// 		}
-// 		delete (board); // delete pointer holding array of pointers;
-// 		delete (mario);
-// 	}
-
 //----------------------------------------------------------------------------------------NEW MAP----------------------------------------------------------------------------------
 
 class Map
@@ -350,7 +308,7 @@ private:
     int col[10];
     Cell **board;
     int gemCount, obstCount;
-    int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[20], potionsY[20], coinsX[20], coinsY[20];
+    int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[10], potionsY[10], coinsX[10], coinsY[10];
     Obstacle *obstacles[20];
     Champion *c;
 
@@ -377,10 +335,42 @@ public:
 
     void newGame()
     {
-         randomize_map();
+        randomize_map();
         cout << "print_map() called" << endl;
         print_map();
-        char rButton = 0;
+        rand_start();
+    }
+
+    void rand_start()
+    {
+        char mButton;
+
+        while (mButton != '1' && mButton != '2')
+        {
+            cout << "Choose 1 to Randomize, Choose 2 to start the game" << endl;
+            mButton = getch();
+        }
+
+        if (mButton == '1')
+        {
+            randomize_map();
+            cout << "\033[2J\033[1;1H";
+            Map *m = new Map();
+            newGame();
+        }
+        else if (mButton == '2')
+        {
+            cout << "\033[2J\033[1;1H";
+            cout << "print_map() called" << endl;
+            choose_champ();
+            newTurn();
+        }
+    }
+    void choose_champ()
+    {
+        print_map();
+
+        char rButton;
 
         while (rButton != 'M' && rButton != 'L')
         {
@@ -400,28 +390,8 @@ public:
             cout << "\033[2J\033[1;1H";
             print_map();
         }
-
-        while (rButton != '1' && rButton != '2')
-        {
-            cout << "Choose 1 to Randomize, Choose 2 to start the game" << endl;
-            rButton = getch();
-        }
-
-        if (rButton == '1')
-        {
-            randomize_map();
-            cout << "\033[2J\033[1;1H";
-            Map *m = new Map();
-            newGame();
-        }
-        else if (rButton == '2')
-        {
-            cout << "\033[2J\033[1;1H";
-            cout << "print_map() called" << endl;
-            newTurn();
-        }
     }
-    
+
     void print_map()
     {
         for (int i = 9; i >= 0; i--)
@@ -441,15 +411,16 @@ public:
         gemCount = 0;
         obstCount = 0;
 
-        // for (int i = 9; i >= 0; i--) //what even is this
-        // {
-        //     for (int j = 0; j < 10; j++)
-        //     {
-        //         board[i][j] = Cell();
-        //         board[i][j].setX(i);
-        //         board[i][j].setY(j);
-        //     }
-        // }
+        for (int i = 9; i >= 0; i--) // what even is this
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                board[i][j] = Cell();
+                board[i][j].setX(i);
+                board[i][j].setY(j);
+                board[i][j].setType('.');
+            }
+        }
 
         srand(time(0));
 
@@ -524,8 +495,8 @@ public:
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
         }
-        
-     //   Creating those Gems
+
+        //   Creating those Gems
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -555,8 +526,8 @@ public:
             }
         }
 
-     //   In case there are duplicates
-        for (int i = 0; i < 10; i++) //unnecessary
+        //   In case there are duplicates
+        for (int i = 0; i < 10; i++) // unnecessary
         {
             for (int j = 0; j < 10; j++)
             {
@@ -584,14 +555,44 @@ public:
         cout << "\033[2J\033[1;1H";
         print_map();
         cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
-        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << endl;
+        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << "\nRemaining Ability Moves: " << c->getRemainingAbilityMoves() << endl;
         char input;
-        // end();
+        end();
         cout << "Enter direction: ";
         input = getch();
         move(input);
     }
-    void move(char k)
+
+    void end()
+    {
+        if (c->getScore() == gemCount)
+        {
+            cout << "Congrats you won!!" << endl;
+            for (int i = 0; i < 5; ++i)
+            {
+                delete (board[i]);
+            }
+            delete (board);
+            exit(0);
+        }
+
+        else if (c->getHp() <= 0)
+        {
+            cout << "You lost :( but you can try again :D" << endl;
+            for (int i = 0; i < 5; ++i)
+            {
+                delete (board[i]);
+            }
+            delete (board);
+            exit(0);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    void marioAbilityHelper(char k)
     {
 
         switch (k)
@@ -600,28 +601,144 @@ public:
         {
             if (c->getX() == 9)
             {
+                cout << "out of range!";
+
                 newTurn();
             }
-            if (board[c->getX() + 1][c->getY()].getType() == 'o')
+            else if (c->getX() + 1 == 9)
             {
-                c->decHp();
+                cout << "out of range!";
+                newTurn();
+            }
+            else
+            {
                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() + 1);
+               * marioActive=false; //doesnt work globaly like outside the method i tried pointer and it didnt work
+                move(8); // move second step and pickup gem/get hit with obst
+            }
+        }
+        case '6':
+        {
+            if (c->getY() == 9)
+            {
+                cout << "out of range!";
+
+                newTurn();
+            }
+            else if (c->getY() + 1 == 9)
+            {
+                cout << "out of range!";
+                newTurn();
+            }
+            else
+            {
+
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() + 1);
+                move(6);
+            }
+        }
+
+        case '5': // board[mario.getX() - 1][mario.getY()]
+        {
+            if (c->getX() == 0)
+            {
+                cout << "out of range!";
+
+                newTurn();
+            }
+            else if (c->getX() - 1 == 0)
+            {
+                cout << "out of range!";
+                newTurn();
+            }
+            else
+            {
+
+                board[c->getX()][c->getY()].setType('.');
+                c->setX(c->getX() - 1);
+                move(5);
+            }
+        }
+
+        case '4': // board[mario.getX()][mario.getY() - 1]
+        {
+            if (c->getY() == 0)
+            {
+                cout << "out of range!";
+
+                newTurn();
+            }
+            else if (c->getY() - 1 == 0)
+            {
+                cout << "out of range!";
+                newTurn();
+            }
+            else
+            {
+
+                board[c->getX()][c->getY()].setType('.');
+                c->setY(c->getY() - 1);
+                move(4);
+            }
+        }
+        }
+    }
+
+    void move(char k)
+    {
+
+        switch (k)
+        {
+        case '8':
+        {
+            cout<<marioActive<<"";
+            if (c->getX() == 9)
+            {
+                newTurn();
+            }
+
+            if (board[c->getX() + 1][c->getY()].getType() == 'o')
+            {
+                if (marioActive == false)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 1);
+                }
+                else
+                {
+                    marioAbilityHelper(8);
+                }
 
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == 'g')
             {
-                c->setScore(c->getScore() + 1);
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
+
+                if (marioActive == false)
+                {
+
+                    c->setScore(c->getScore() + 1);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 1);
+                }
+                else
+                    marioAbilityHelper(8);
 
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == '.')
             {
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() + 1);
+                if (marioActive == false)
+                {
+                    board[c->getX()][c->getY()].setType('.');
+
+                    c->setX(c->getX() + 1);
+                }
+                else
+                    marioAbilityHelper(8);
 
                 newTurn();
             }
@@ -640,24 +757,45 @@ public:
             }
             if (board[c->getX()][c->getY() + 1].getType() == 'o')
             {
-                c->decHp();
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                if (!marioActive)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else
+                {
+                    marioAbilityHelper(6);
+                }
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() + 1].getType() == 'g')
             {
-                c->setScore(c->getScore() + 1);
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                if (!marioActive)
+                {
+                    c->setScore(c->getScore() + 1);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else
+                {
+                    marioAbilityHelper(6);
+                }
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() + 1].getType() == '.')
             {
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() + 1);
+                if (!marioActive)
+                {
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else
+                {
+                    marioAbilityHelper(6);
+                }
 
                 newTurn();
             }
@@ -676,24 +814,45 @@ public:
             }
             if (board[c->getX() - 1][c->getY()].getType() == 'o')
             {
-                c->decHp();
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() - 1);
+                if (!marioActive)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(5);
+                }
 
                 newTurn();
             }
             else if (board[c->getX() - 1][c->getY()].getType() == 'g')
             {
-                c->setScore(c->getScore() + 1);
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() - 1);
+                if (!marioActive)
+                {
+                    c->setScore(c->getScore() + 1);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(5);
+                }
 
                 newTurn();
             }
             else if (board[c->getX() - 1][c->getY()].getType() == '.')
             {
-                board[c->getX()][c->getY()].setType('.');
-                c->setX(c->getX() - 1);
+                if (!marioActive)
+                {
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(5);
+                }
 
                 newTurn();
             }
@@ -712,24 +871,45 @@ public:
             }
             if (board[c->getX()][c->getY() - 1].getType() == 'o')
             {
-                c->decHp();
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() - 1);
+                if (!marioActive)
+                {
+                    c->decHp();
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(4);
+                }
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() - 1].getType() == 'g')
             {
-                c->setScore(c->getScore() + 1);
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() - 1);
+                if (!marioActive)
+                {
+                    c->setScore(c->getScore() + 1);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(4);
+                }
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() - 1].getType() == '.')
             {
-                board[c->getX()][c->getY()].setType('.');
-                c->setY(c->getY() - 1);
+                if (!marioActive)
+                {
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() - 1);
+                }
+                else
+                {
+                    marioAbilityHelper(4);
+                }
 
                 newTurn();
             }
@@ -744,118 +924,6 @@ public:
             newTurn();
         }
     }
-    //----------------------------------new game---------------------
-    // void newGame()
-    // {
-
-    // 	cout << "print_map() called" << endl;
-    // 	print_map();
-    // 	char rButton = 0;
-
-    // 	while (rButton != '1' && rButton != '2')
-    // 	{
-    // 		cout << "Choose 1 to Randomize again, Choose 2 to start the game" << endl;
-    // 		rButton = getch();
-    // 	}
-
-    // 	if (rButton == '1')
-    // 	{
-    // 		randomize_map();
-    // 		cout << "\033[2J\033[1;1H";
-    // 		Map *m = new Map();
-    // 		newGame();
-    // 	}
-    // 	else if (rButton == '2')
-    // 	{
-    // 		cout << "\033[2J\033[1;1H";
-    // 		cout << "print_map() called" << endl;
-    // 		newTurn();
-    // 	}
-    // }
-
-    // void print_map()
-    // {
-    // 	for (int i = 9; i >= 0; i--)
-    // 	{
-    // 		for (int j = 0; j < 10; j++)
-    // 		{
-    // 			if (i == c->getX() && j == c->getY())
-    // 				board[i][j] = 'c';
-
-    // 			cout << board[i][j];
-    // 		}
-    // 		cout << endl;
-    // 	}
-    // }
-
-    // randomly distribute gems and obstacles on the map
-    // void randomize_map() // second one for sum reason
-    // {
-    // 	gemCount = 0;
-    // 	obstCount = 0;
-
-    // 	// ∺ mario, ⦿ gem, ☁︎ obstacle
-
-    // 	for (int i = 9; i >= 0; i--)
-    // 	{
-    // 		for (int j = 0; j < 10; j++)
-    // 		{
-    // 			board[i][j] = '.';
-    // 		}
-    // 	}
-
-    // 	// Generate Gems
-    // 	for (int i = 0; i < 50; i++)
-    // 	{
-    // 		do
-    // 		{
-    // 			gemX[i] = (rand() % 10);
-    // 			gemY[i] = (rand() % 10);
-    // 			if (gemX[i] == 0 && gemY[i] == 0)
-    // 			{
-    // 				gemX[i] = (rand() % 9) + 1;
-    // 				gemY[i] = (rand() % 9) + 1;
-    // 			}
-    // 		} while (board[gemX[i]][gemY[i]] != '.');
-
-    // 		board[gemX[i]][gemY[i]] = 'g';
-    // 		gemCount++;
-    // 	}
-
-    // 	// Generate Obstacles
-    // 	for (int i = 0; i < 25; i++)
-    // 	{
-    // 		do
-    // 		{
-    // 			obstX[i] = (rand() % 10);
-    // 			obstY[i] = (rand() % 10);
-
-    // 			if ((obstX[i] == 0 && obstY[i] == 0))
-    // 			{
-    // 				obstX[i] = (rand() % 9) + 1;
-    // 				obstY[i] = (rand() % 9) + 1;
-    // 			}
-
-    // 		} while (board[obstX[i]][obstY[i]] != '.');
-
-    // 		board[obstX[i]][obstY[i]] = 'o';
-    // 		obstCount++;
-    // 	}
-
-    // 	// if there are duplicate points betweeen gems and obstacles
-    // 	for (int i = 0; i < 50; i++)
-    // 	{
-    // 		for (int j = 0; j < 25; j++)
-    // 		{
-
-    // 			while ((obstX[j] == gemX[i]) && (obstY[j] == gemY[i]))
-    // 			{
-    // 				obstX[j] = (rand() % 9) + 1;
-    // 				obstY[j] = (rand() % 9) + 1;
-    // 			}
-    // 		}
-    // 	}
-    // }
 
 }; // END OF MAP CLASS
 
