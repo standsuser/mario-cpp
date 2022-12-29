@@ -31,10 +31,10 @@ public:
         gemScore = 0;
         RemaningAbilityMoves = 2;
     }
-    void print_champ_info()
-    {
-        cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
-    }
+    // void print_champ_info()
+    // {
+    //     cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
+    // }
 
    virtual void useAbility()
     {
