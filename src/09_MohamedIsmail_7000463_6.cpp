@@ -92,41 +92,27 @@ public:
     }
 };
 
-// class Luigi : public Champion
-// {
+class Luigi : public Champion
+{
 
-//     // idea :  in whatever direction luigi moves we clean
-//     //  the hypothetical place he was gonna move into ,that way we preserve the obstacles that are before him
-//     //  if the ability was called, by cleaning I mean we just replace everything by dots or whatever the symbol of tile is
-//     // defensive programming for luigi not to "clean himself" off the "lain" or not to clean mario as well so no cleaning
-//     //  champions , also cleaning will save the point object thingies but remove obstacles
-//     //  and we need to define what is front , I am guessing whateever last move he makes is the front so if he moved right
-//     //  then the whole right direction will be clean
-//     // IF luigi is somewhere and he moved in the another somewhere direction
-//     //  useABility()
-//     //  and we can use ability while in spawn as well and probably he will spawn somewhere else
-//     //  and mario will be the original champion
-// public:
-//     void useAbility()
-//     {
-//         cout << "Luigi Ability is called" << endl;
-
-//         for (int i = 0; i < 10; i++)
-//         {
-//             if (board[luigi->getX()][i].getType() == 'o ')
-//             {
-//                 board[luigi->getX()][i] = '. ';
-//             }
-//         }
-//         for (int j = 0; j < 10; j++)
-//         {
-//             if (board[j][luigi->getX()].getType() == 'o ')
-//             {
-//                 board[j][luigi->getY()] = '. ';
-//             }
-//         }
-//     }
-// };
+    //     // idea :  in whatever direction luigi moves we clean
+    //     //  the hypothetical place he was gonna move into ,that way we preserve the obstacles that are before him
+    //     //  if the ability was called, by cleaning I mean we just replace everything by dots or whatever the symbol of tile is
+    //     // defensive programming for luigi not to "clean himself" off the "lain" or not to clean mario as well so no cleaning
+    //     //  champions , also cleaning will save the point object thingies but remove obstacles
+    //     //  and we need to define what is front , I am guessing whateever last move he makes is the front so if he moved right
+    //     //  then the whole right direction will be clean
+    //     // IF luigi is somewhere and he moved in the another somewhere direction
+    //     //  useABility()
+    //     //  and we can use ability while in spawn as well and probably he will spawn somewhere else
+    //     //  and mario will be the original champion
+public:
+    void useAbility()
+    {
+        luigiActive = true;
+        cout << "Luigi Ability is called" << endl;
+    }
+};
 
 class Mario : public Champion
 {
@@ -385,7 +371,7 @@ public:
         }
         else if (rButton == 'L')
         {
-            //    c = new Luigi();
+            c = new Luigi();
             cout << "\033[2J\033[1;1H";
             print_map();
         }
@@ -567,6 +553,7 @@ public:
 
                 cout << "no ability moves left" << endl;
                 marioActive = false;
+                luigiActive = false;
                 newTurn();
             }
             else
@@ -741,201 +728,48 @@ public:
 
     void luigiAbilityHelper(int k)
     {
-        luigiActive = true;
+        luigiActive = false;
         switch (k)
         {
-        case '8':
+        case 8:
         {
 
-            if (!luigiActive)
+            for (int i = (9 - c->getX()); i >= 0; i--)
             {
-                move(k);
+                if (board[c->getX() + i][c->getY()].getType() == 'o')
+                    board[c->getX() + i][c->getY()].setType('.');
             }
-            else
+            break;
+        case 6: // board[mario.getX()][mario.getY() + 1]
+        {
+            for (int i = (9 - c->getY()); i >= 0; i--)
             {
-                newTurn();
-            }
-
-            else if ()
-            {
-
-                if (!luigiActive)
-                {
-                }
-                else
-                    luigiAbilityHelper(8);
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                    board[c->getX()][c->getY()].setType('.');
-
-                    c->setX(c->getX() + 1);
-                }
-                else
-                    luigiAbilityHelper(8);
-
-                newTurn();
-            }
-
-            else
-            {
-                newTurn();
+                if (board[c->getX()][c->getY() + i].getType() == 'o')
+                    board[c->getX()][c->getY() + i].setType('.');
             }
         }
         break;
-        case '6': // board[mario.getX()][mario.getY() + 1]
+        case 5: // board[mario.getX() - 1][mario.getY()]
         {
-            if (c->getY() == 9)
+            for (int i = (9 - c->getX()); i >= 0; i--)
             {
-                newTurn();
-            }
-            if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(6);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(6);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(6);
-                }
-
-                newTurn();
-            }
-
-            else
-            {
-                newTurn();
+                if (board[c->getX() - i][c->getY()].getType() == 'o')
+                    board[c->getX() - i][c->getY()].setType('.');
             }
         }
         break;
-        case '5': // board[mario.getX() - 1][mario.getY()]
+        case 4: // board[mario.getX()][mario.getY() - 1]
         {
-            if (c->getX() == 0)
+            for (int i = (c->getY()); i >= 0; i--)
             {
-                newTurn();
-            }
-            if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(5);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(5);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(5);
-                }
-
-                newTurn();
-            }
-
-            else
-            {
-                newTurn();
-            }
-        }
-        break;
-        case '4': // board[mario.getX()][mario.getY() - 1]
-        {
-            if ()
-            {
-                newTurn();
-            }
-            if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(4);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(4);
-                }
-
-                newTurn();
-            }
-            else if ()
-            {
-                if (!luigiActive)
-                {
-                }
-                else
-                {
-                    luigiAbilityHelper(4);
-                }
-
-                newTurn();
-            }
-
-            else
-            {
-                newTurn();
+                if (board[c->getX()][c->getY() - i].getType() == 'o')
+                    board[c->getX()][c->getY() - i].setType('.');
             }
         }
         break;
         default:
             newTurn();
+        }
         }
     }
 
@@ -954,44 +788,47 @@ public:
 
             if (board[c->getX() + 1][c->getY()].getType() == 'o')
             {
-                if (marioActive == false)
+                if (!marioActive && !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() + 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(8);
-                }
+                else
+                    luigiAbilityHelper(8);
 
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == 'g')
             {
 
-                if (marioActive == false)
+                if (!marioActive && !luigiActive)
                 {
 
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() + 1);
                 }
-                else
+                else if (marioActive)
                     marioAbilityHelper(8);
-
+                else
+                    luigiAbilityHelper(8);
                 newTurn();
             }
             else if (board[c->getX() + 1][c->getY()].getType() == '.')
             {
-                if (marioActive == false)
+                if (!marioActive && !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
 
                     c->setX(c->getX() + 1);
                 }
-                else
+                else if (marioActive)
                     marioAbilityHelper(8);
+                else
+                    luigiAbilityHelper(8);
 
                 newTurn();
             }
@@ -1010,45 +847,45 @@ public:
             }
             if (board[c->getX()][c->getY() + 1].getType() == 'o')
             {
-                if (!marioActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() + 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(6);
-                }
+                else
+                    luigiAbilityHelper(6);
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() + 1].getType() == 'g')
             {
-                if (!marioActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() + 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(6);
-                }
+                else
+                    luigiAbilityHelper(6);
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() + 1].getType() == '.')
             {
-                if (!marioActive)
+                if (!marioActive && !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() + 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(6);
-                }
+                else
+                    luigiAbilityHelper(6);
 
                 newTurn();
             }
@@ -1067,45 +904,45 @@ public:
             }
             if (board[c->getX() - 1][c->getY()].getType() == 'o')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(5);
-                }
+                else
+                    luigiAbilityHelper(5);
 
                 newTurn();
             }
             else if (board[c->getX() - 1][c->getY()].getType() == 'g')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(5);
-                }
+                else
+                    luigiAbilityHelper(5);
 
                 newTurn();
             }
             else if (board[c->getX() - 1][c->getY()].getType() == '.')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(5);
-                }
+                else
+                    luigiAbilityHelper(5);
 
                 newTurn();
             }
@@ -1124,45 +961,45 @@ public:
             }
             if (board[c->getX()][c->getY() - 1].getType() == 'o')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(4);
-                }
+                else
+                    luigiAbilityHelper(4);
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() - 1].getType() == 'g')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(4);
-                }
+                else
+                    luigiAbilityHelper(4);
 
                 newTurn();
             }
             else if (board[c->getX()][c->getY() - 1].getType() == '.')
             {
-                if (!marioActive)
+                if (!marioActive || !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
                 }
-                else
-                {
+                else if (marioActive)
                     marioAbilityHelper(4);
-                }
+                else
+                    luigiAbilityHelper(4);
 
                 newTurn();
             }
