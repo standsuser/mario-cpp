@@ -749,7 +749,7 @@ public:
         break;
         case 4: // board[mario.getX()][mario.getY() - 1]
         {
-            for (int i = (c->getY()); i >= 0; i--)
+            for (int i = (9 - c->getY()); i >= 0; i--)
             {
                 if (board[c->getX()][c->getY() - i].getType() == 'o')
                     board[c->getX()][c->getY() - i].setType('.');
@@ -893,7 +893,7 @@ public:
             }
             if (board[c->getX() - 1][c->getY()].getType() == 'o')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
@@ -908,7 +908,7 @@ public:
             }
             else if (board[c->getX() - 1][c->getY()].getType() == 'g')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
@@ -923,7 +923,7 @@ public:
             }
             else if (board[c->getX() - 1][c->getY()].getType() == '.')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
@@ -950,7 +950,7 @@ public:
             }
             if (board[c->getX()][c->getY() - 1].getType() == 'o')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
@@ -965,7 +965,7 @@ public:
             }
             else if (board[c->getX()][c->getY() - 1].getType() == 'g')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     c->setScore(c->getScore() + 1);
                     board[c->getX()][c->getY()].setType('.');
@@ -980,7 +980,7 @@ public:
             }
             else if (board[c->getX()][c->getY() - 1].getType() == '.')
             {
-                if (!marioActive || !luigiActive)
+                if (!marioActive && !luigiActive)
                 {
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
