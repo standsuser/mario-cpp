@@ -3,15 +3,83 @@
 #include <cstdlib>
 #include <conio.h>
 #include <stdlib.h>
+#include <chrono>
+#include <thread>
+#include <unistd.h>
 //-------------------------------//
 
 using namespace std;
+using namespace std::this_thread; // sleep_for, sleep_until
+using namespace std::chrono;      // nanoseconds, system_clock, seconds
 bool marioActive = false;
 bool luigiActive = false;
+int CompletedgemScore;
 string currentchamp = "empty";
 //------------------------------champion---------------------------------
+//--------------------------------cell-------------------------------------
 
-class Champion
+class Cell
+{
+private:
+    char type;
+    int x, y;
+    char objType;
+
+public:
+    Cell()
+    {
+        this->type = '.';
+        this->x = 0;
+        this->y = 0;
+    }
+
+    char getObjType()
+    {
+        return this->objType;
+    }
+
+    void setObjType(char c)
+    {
+        this->objType = c;
+    }
+
+    char getType()
+    {
+        return this->type;
+    }
+
+    void setType(char c)
+    {
+        this->type = c;
+    }
+
+    int getX()
+    {
+        return this->x;
+    }
+
+    void setX(int n)
+    {
+        this->x = n;
+    }
+
+    int getY()
+    {
+        return this->y;
+    }
+
+    void setY(int n)
+    {
+        this->y = n;
+    }
+
+    string toString()
+    {
+        return getType() + "";
+    }
+};
+
+class Champion : public Cell
 {
 private:
     int hp;
@@ -75,12 +143,12 @@ public:
         gemScore = x;
     }
 
-    void decScore(){
-        
+    void decScore()
+    {
     }
     void setHp(int k)
     {
-       hp = k;
+        hp = k;
     }
     int getRemainingAbilityMoves()
     {
@@ -120,6 +188,7 @@ class Obstacle
 {
 private:
     int takedmg;
+    char type;
 
 public:
     Obstacle()
@@ -152,6 +221,7 @@ public:
         c->setScore(x);
 
         cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
+        sleep(4);
     }
 };
 
@@ -165,34 +235,36 @@ public:
 
         if (x < 0)
             x = 0;
-     //   c->setHp(x);
+        //   c->setHp(x);
 
         cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
+        sleep(4);
     }
 };
 
 //--------------------------------gem --------------------------
 
-class Gem
+class Gem : public Cell
 {
 private:
-
+    int amount;
+    int name;
 
 public:
-    int imp;
     Gem()
     {
         srand(time(0));
-        imp = (rand() % 5) + 5;
+        this->amount = rand() % 6 + 5;
     }
-    // int getPoints()
-    // {
-    //     return points;
-    // }
+    int getPoints()
+    {
+        return this->amount;
+    }
 
-    // void setPoints(int z){
-    //     points=z;
-    // }
+    void setPoints(int z)
+    {
+        this->amount = z;
+    }
 
     virtual void execute(Champion c)
     {
@@ -205,19 +277,16 @@ class Coin : public Gem
 public:
     void execute(Champion *c)
     {
+        if (getPoints() == 100)
+        {
+            setPoints(rand() % 6 + 5);
+        }
+        int newScore = c->getScore() + getPoints();
+        CompletedgemScore += getPoints();
+        c->setScore(newScore);
 
-        // cout<<c->getHp()<<"ass"<<endl;
-        //         cout<<c->getHp()<<"ass3"<<endl;
-
-        // int newScore = c->getScore() + getPoints();
-        // c->setScore(newScore);
-
-
-
-
-
-
-        cout << "Coin executed with points = " << imp << endl;
+        cout << "Coin executed with points = " << getPoints() << endl;
+        sleep(4);
     }
 };
 
@@ -226,75 +295,13 @@ class Potion : public Gem
 public:
     void execute(Champion *c)
     {
-        // c->setHp(c->getHp() + this->getPoints());
-        // if (c->getHp() >= 100)
-        // {
-        //     c->setHp(100);
-        // }
-        cout << "Potion executed with points = " << imp << endl;
-    }
-};
-
-//--------------------------------cell-------------------------------------
-
-class Cell
-{
-private:
-    char type;
-    int x, y;
-    char objType;
-
-public:
-    Cell()
-    {
-        this->type = '.';
-        this->x = 0;
-        this->y = 0;
-    }
-
-    char getObjType()
-    {
-        return this->objType;
-    }
-
-    void setObjType(char c)
-    {
-        this->objType = c;
-    }
-
-    char getType()
-    {
-        return this->type;
-    }
-
-    void setType(char c)
-    {
-        this->type = c;
-    }
-
-    int getX()
-    {
-        return this->x;
-    }
-
-    void setX(int n)
-    {
-        this->x = n;
-    }
-
-    int getY()
-    {
-        return this->y;
-    }
-
-    void setY(int n)
-    {
-        this->y = n;
-    }
-
-    string toString()
-    {
-        return getType() + "";
+        c->setHp(c->getHp() + getPoints());
+        if (c->getHp() >= 100)
+        {
+            c->setHp(100);
+        }
+        cout << "Potion executed with points = " << getPoints() << endl;
+        sleep(4);
     }
 };
 
@@ -498,6 +505,7 @@ public:
             gemCount++;
         }
 
+        CompletedgemScore = gemCount;
         //   Creating those Gems and Obsts
         for (int i = 0; i < 10; i++)
         {
@@ -594,7 +602,7 @@ public:
 
     void end()
     {
-        if (c->getScore() >= gemCount)
+        if (c->getScore() >= CompletedgemScore)
         {
             cout << "Congrats you won!!" << endl;
             for (int i = 0; i < 5; ++i)
@@ -644,14 +652,26 @@ public:
             {
                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() + 2);
-                if (board[c->getX()][c->getY()].getType() == 'g')
+                if (board[c->getX()][c->getY()].getType() == 't')
                 {
-                    c->setScore(c->getScore() + 1);
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'o')
+                if (board[c->getX()][c->getY()].getType() == 'b')
                 {
-                    c->setHp(c->getHp() - 20);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == 'p')
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == '$')
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
                 }
                 move(8); // move second step and pickup gem/get hit with obst
             }
@@ -673,14 +693,26 @@ public:
             {
                 board[c->getX()][c->getY()].setType('.');
                 c->setY(c->getY() + 2);
-                if (board[c->getX()][c->getY()].getType() == 'g')
+                if (board[c->getX()][c->getY()].getType() == 't')
                 {
-                    c->setScore(c->getScore() + 1);
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'o')
+                if (board[c->getX()][c->getY()].getType() == 'b')
                 {
-                    c->setHp(c->getHp() - 20);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == 'p')
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == '$')
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
                 }
 
                 move(6);
@@ -705,14 +737,26 @@ public:
 
                 board[c->getX()][c->getY()].setType('.');
                 c->setX(c->getX() - 2);
-                if (board[c->getX()][c->getY()].getType() == 'g')
+                if (board[c->getX()][c->getY()].getType() == 't')
                 {
-                    c->setScore(c->getScore() + 1);
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'o')
+                if (board[c->getX()][c->getY()].getType() == 'b')
                 {
-                    c->setHp(c->getHp() - 20);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == 'p')
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == '$')
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
                 }
                 move(5);
             }
@@ -736,14 +780,26 @@ public:
 
                 board[c->getX()][c->getY()].setType('.');
                 c->setY(c->getY() - 2);
-                if (board[c->getX()][c->getY()].getType() == 'g')
+                if (board[c->getX()][c->getY()].getType() == 't')
                 {
-                    c->setScore(c->getScore() + 1);
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'o')
+                if (board[c->getX()][c->getY()].getType() == 'b')
                 {
-                    c->setHp(c->getHp() - 20);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == 'p')
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
+                }
+                if (board[c->getX()][c->getY()].getType() == '$')
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
                 }
                 move(4);
             }
@@ -761,7 +817,7 @@ public:
 
             for (int i = (9 - c->getX()); i >= 0; i--)
             {
-                if (board[c->getX() + i][c->getY()].getType() == 'o')
+                if (board[c->getX() + i][c->getY()].getType() == 't' || board[c->getX() + i][c->getY()].getType() == 'b')
                     board[c->getX() + i][c->getY()].setType('.');
             }
             break;
@@ -769,7 +825,7 @@ public:
         {
             for (int i = (9 - c->getY()); i >= 0; i--)
             {
-                if (board[c->getX()][c->getY() + i].getType() == 'o')
+                if (board[c->getX()][c->getY() + i].getType() == 't' || board[c->getX()][c->getY() + i].getType() == 'b')
                     board[c->getX()][c->getY() + i].setType('.');
             }
         }
@@ -778,7 +834,7 @@ public:
         {
             for (int i = (0 - c->getX()); i <= 0; i++)
             {
-                if (board[c->getX() + i][c->getY()].getType() == 'o')
+                if (board[c->getX() + i][c->getY()].getType() == 't' || board[c->getX() + i][c->getY()].getType() == 'b')
                     board[c->getX() + i][c->getY()].setType('.');
             }
         }
@@ -787,7 +843,7 @@ public:
         {
             for (int i = (0 - c->getY()); i <= 0; i++)
             {
-                if (board[c->getX()][c->getY() + i].getType() == 'o')
+                if (board[c->getX()][c->getY() + i].getType() == 't' || board[c->getX()][c->getY() + i].getType() == 'b')
                     board[c->getX()][c->getY() + i].setType('.');
             }
         }
@@ -798,8 +854,7 @@ public:
         }
     }
 
-
-//-----------------------------------------------------------------------------move--------------------------------------------------------------------
+    //-----------------------------------------------------------------------------move--------------------------------------------------------------------
     void move(char k)
     {
 
@@ -1137,6 +1192,22 @@ public:
 
                 newTurn();
             }
+            else if (board[c->getX()][c->getY() - 1].getType() == '$')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() - 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(4);
+                else
+                    luigiAbilityHelper(4);
+
+                newTurn();
+            }
             else if (board[c->getX()][c->getY() - 1].getType() == '.')
             {
                 if (!marioActive && !luigiActive)
@@ -1168,6 +1239,7 @@ public:
 
 int main()
 {
+    Gem();
 
     Map *m = new Map();
     return 0;
