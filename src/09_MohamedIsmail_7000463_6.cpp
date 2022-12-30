@@ -32,10 +32,6 @@ public:
         gemScore = 0;
         RemaningAbilityMoves = 2;
     }
-    // void print_champ_info()
-    // {
-    //     cout << "Current hp: " << hp << "  , Score: " << gemScore << "Remaining Ability Moves: " << RemaningAbilityMoves << endl;
-    // }
 
     virtual void useAbility()
     {
@@ -96,7 +92,6 @@ public:
 class Luigi : public Champion
 {
 
-
 public:
     void useAbility()
     {
@@ -108,12 +103,9 @@ public:
 class Mario : public Champion
 {
 public:
-
-
     void useAbility()
     {
 
-   
         cout << "Mario Ability is called" << endl;
         marioActive = true;
     }
@@ -354,14 +346,14 @@ public:
         {
             c = new Mario();
             cout << "\033[2J\033[1;1H";
-            currentchamp="Mario";
+            currentchamp = "Mario";
             print_map();
         }
         else if (rButton == 'L')
         {
             c = new Luigi();
             cout << "\033[2J\033[1;1H";
-            currentchamp="Luigi";
+            currentchamp = "Luigi";
             print_map();
         }
     }
@@ -470,7 +462,7 @@ public:
             gemCount++;
         }
 
-        //   Creating those Gems
+        //   Creating those Gems and Obsts
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -529,7 +521,7 @@ public:
         cout << "\033[2J\033[1;1H";
         print_map();
         cout << " 8 -> Up, 5 -> Down, 4 -> Left, 6 -> Right" << endl;
-        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() <<"\nChampion Type: " << currentchamp <<"\nRemaining Ability Moves: " << c->getRemainingAbilityMoves() << endl;
+        cout << "Total Gem count (g): " << gemCount << "\nObst count (o): " << obstCount << "\nScore: " << c->getScore() << "\nHealth: " << c->getHp() << "\nx: " << c->getX() << "\ny: " << c->getY() << "\nChampion Type: " << currentchamp << "\nRemaining Ability Moves: " << c->getRemainingAbilityMoves() << endl;
         char input;
         end();
         cout << "Enter direction: ";
@@ -782,6 +774,22 @@ public:
                     c->decHp();
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() + 1);
+                    if ()
+
+                        //---------------------------
+
+                        // for (int i = 0; i < 10; i++)
+                        // {
+                        //     for (int j = 0; j < 10; j++)
+                        //     {
+                        //         if (thievesX[i] == c->getX() && thievesY[j] == c->getY())
+                        //             execute
+
+                        //         if (bombsX[i] == i && bombsY[j] == j)
+                        //             Obstacle *o = new Bomb();
+                        //         //-------------
+                        //     }
+                        // }
                 }
                 else if (marioActive)
                     marioAbilityHelper(8);
@@ -1011,12 +1019,6 @@ public:
 int main()
 {
 
-    // Potion x = Potion();
-    // Champion a = Champion();
-    // x.execute(a);
-
-    // Map();
     Map *m = new Map();
-    // m->randomize_map();
     return 0;
 }
