@@ -68,15 +68,19 @@ public:
     }
     int getScore()
     {
-        return this->gemScore;
+        return gemScore;
     }
     void setScore(int x)
     {
-        this->gemScore = x;
+        gemScore = x;
     }
-    void setHp(int x)
+
+    void decScore(){
+        
+    }
+    void setHp(int k)
     {
-        this->hp = x;
+       hp = k;
     }
     int getRemainingAbilityMoves()
     {
@@ -161,7 +165,7 @@ public:
 
         if (x < 0)
             x = 0;
-        c->setHp(x);
+     //   c->setHp(x);
 
         cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
     }
@@ -172,18 +176,24 @@ public:
 class Gem
 {
 private:
-    int points;
+
 
 public:
+    int imp;
     Gem()
     {
         srand(time(0));
-        points = rand() % (5) + 5;
+        imp = (rand() % 5) + 5;
     }
-    int getPoints()
-    {
-        return this->points;
-    }
+    // int getPoints()
+    // {
+    //     return points;
+    // }
+
+    // void setPoints(int z){
+    //     points=z;
+    // }
+
     virtual void execute(Champion c)
     {
     }
@@ -195,8 +205,19 @@ class Coin : public Gem
 public:
     void execute(Champion *c)
     {
-        c->setScore(c->getScore() + this->getPoints());
-        cout << "Coin executed with points = " << this->getPoints() << endl;
+
+        // cout<<c->getHp()<<"ass"<<endl;
+        //         cout<<c->getHp()<<"ass3"<<endl;
+
+        // int newScore = c->getScore() + getPoints();
+        // c->setScore(newScore);
+
+
+
+
+
+
+        cout << "Coin executed with points = " << imp << endl;
     }
 };
 
@@ -205,12 +226,12 @@ class Potion : public Gem
 public:
     void execute(Champion *c)
     {
-        c->setHp(c->getHp() + this->getPoints());
-        if (c->getHp() == 100)
-        {
-            c->setHp(100);
-        }
-        cout << "Potion executed with points = " << this->getPoints() << endl;
+        // c->setHp(c->getHp() + this->getPoints());
+        // if (c->getHp() >= 100)
+        // {
+        //     c->setHp(100);
+        // }
+        cout << "Potion executed with points = " << imp << endl;
     }
 };
 
@@ -236,7 +257,7 @@ public:
         return this->objType;
     }
 
-    char setObjType(char c)
+    void setObjType(char c)
     {
         this->objType = c;
     }
@@ -777,6 +798,8 @@ public:
         }
     }
 
+
+//-----------------------------------------------------------------------------move--------------------------------------------------------------------
     void move(char k)
     {
 
@@ -784,7 +807,6 @@ public:
         {
         case '8':
         {
-            cout << marioActive << "";
             if (c->getX() == 9)
             {
                 newTurn();
