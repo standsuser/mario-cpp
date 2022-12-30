@@ -3,14 +3,10 @@
 #include <cstdlib>
 #include <conio.h>
 #include <stdlib.h>
-#include <chrono>
-#include <thread>
 #include <unistd.h>
 //-------------------------------//
 
 using namespace std;
-using namespace std::this_thread; // sleep_for, sleep_until
-using namespace std::chrono;      // nanoseconds, system_clock, seconds
 bool marioActive = false;
 bool luigiActive = false;
 int CompletedgemScore;
@@ -312,7 +308,7 @@ class Map
 private:
     int rows[10];
     int col[10];
-    Cell **board;
+    Cell ***board;
     int gemCount, obstCount;
     int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[10], potionsY[10], coinsX[10], coinsY[10];
     Obstacle *obstacles[20];
@@ -323,10 +319,10 @@ public:
     Map()
     {
         c = new Champion();
-        board = new Cell *[10];
+        board = new Cell **[10];
         for (int i = 0; i < 10; i++)
         {
-            board[i] = new Cell[10];
+            board[i] = new Cell*[10];
         }
         newGame();
     }
@@ -408,9 +404,9 @@ public:
             for (int j = 0; j < 10; j++)
             {
                 if (i == c->getX() && j == c->getY())
-                    board[i][j].setType('c');
+                    board[i][j]->setType('c');
 
-                cout << board[i][j].getType() << " ";
+                cout << board[i][j]->getType() << " ";
             }
             cout << endl;
         }
@@ -424,10 +420,10 @@ public:
         {
             for (int j = 0; j < 10; j++)
             {
-                board[i][j] = Cell();
-                board[i][j].setX(i);
-                board[i][j].setY(j);
-                board[i][j].setType('.');
+                board[i][j] = new Cell();
+                board[i][j]->setX(i);
+                board[i][j]->setY(j);
+                board[i][j]->setType('.');
             }
         }
 
@@ -445,11 +441,11 @@ public:
                     thievesX[i] = (rand() % 9) + 1;
                     thievesY[i] = (rand() % 9) + 1;
                 }
-            } while (board[thievesX[i]][thievesY[i]].getType() != '.');
+            } while (board[thievesX[i]][thievesY[i]]->getType() != '.');
 
-            board[thievesX[i]][thievesY[i]].setType('t');
-            board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
-            board[thievesX[i]][thievesY[i]].setY(thievesY[i]);
+            board[thievesX[i]][thievesY[i]]->setType('t');
+            board[thievesX[i]][thievesY[i]]->setX(thievesX[i]);
+            board[thievesX[i]][thievesY[i]]->setY(thievesY[i]);
             obstCount++;
 
             do
@@ -461,11 +457,11 @@ public:
                     bombsX[i] = (rand() % 9) + 1;
                     bombsY[i] = (rand() % 9) + 1;
                 }
-            } while (board[bombsX[i]][bombsY[i]].getType() != '.');
+            } while (board[bombsX[i]][bombsY[i]]->getType() != '.');
 
-            board[bombsX[i]][bombsY[i]].setType('b');
-            board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
-            board[bombsX[i]][bombsY[i]].setY(bombsY[i]);
+            board[bombsX[i]][bombsY[i]]->setType('b');
+            board[bombsX[i]][bombsY[i]]->setX(bombsX[i]);
+            board[bombsX[i]][bombsY[i]]->setY(bombsY[i]);
             obstCount++;
         }
 
@@ -481,11 +477,11 @@ public:
                     coinsX[i] = (rand() % 9) + 1;
                     coinsY[i] = (rand() % 9) + 1;
                 }
-            } while (board[coinsX[i]][coinsY[i]].getType() != '.');
+            } while (board[coinsX[i]][coinsY[i]]->getType() != '.');
 
-            board[coinsX[i]][coinsY[i]].setType('$');
-            board[coinsX[i]][coinsY[i]].setX(coinsX[i]);
-            board[coinsX[i]][coinsY[i]].setY(coinsY[i]);
+            board[coinsX[i]][coinsY[i]]->setType('$');
+            board[coinsX[i]][coinsY[i]]->setX(coinsX[i]);
+            board[coinsX[i]][coinsY[i]]->setY(coinsY[i]);
             gemCount++;
 
             do
@@ -497,11 +493,11 @@ public:
                     potionsX[i] = (rand() % 9) + 1;
                     potionsY[i] = (rand() % 9) + 1;
                 }
-            } while (board[potionsX[i]][potionsY[i]].getType() != '.');
+            } while (board[potionsX[i]][potionsY[i]]->getType() != '.');
 
-            board[potionsX[i]][potionsY[i]].setType('p');
-            board[potionsX[i]][potionsY[i]].setX(potionsX[i]);
-            board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
+            board[potionsX[i]][potionsY[i]]->setType('p');
+            board[potionsX[i]][potionsY[i]]->setX(potionsX[i]);
+            board[potionsX[i]][potionsY[i]]->setY(potionsY[i]);
             gemCount++;
         }
 
@@ -511,7 +507,7 @@ public:
         {
             for (int j = 0; j < 10; j++)
             {
-                if (board[i][j].getType() == 'o')
+                if (board[i][j]->getType() == 'o')
                 {
                     if (thievesX[i] == i && thievesY[j] == j)
                     {
@@ -529,7 +525,7 @@ public:
                 //     Champion *c = new Champion();
                 // }
 
-                if (board[i][j].getType() == 'g')
+                if (board[i][j]->getType() == 'g')
                 {
                     if (potionsX[i] == i && potionsY[j] == j)
                     {
@@ -650,25 +646,25 @@ public:
             }
             else
             {
-                board[c->getX()][c->getY()].setType('.');
+                board[c->getX()][c->getY()]->setType('.');
                 c->setX(c->getX() + 2);
-                if (board[c->getX()][c->getY()].getType() == 't')
+                if (board[c->getX()][c->getY()]->getType() == 't')
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'b')
+                if (board[c->getX()][c->getY()]->getType() == 'b')
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == 'p')
+                if (board[c->getX()][c->getY()]->getType() == 'p')
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == '$')
+                if (board[c->getX()][c->getY()]->getType() == '$')
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
@@ -691,25 +687,25 @@ public:
             }
             else
             {
-                board[c->getX()][c->getY()].setType('.');
+                board[c->getX()][c->getY()]->setType('.');
                 c->setY(c->getY() + 2);
-                if (board[c->getX()][c->getY()].getType() == 't')
+                if (board[c->getX()][c->getY()]->getType() == 't')
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'b')
+                if (board[c->getX()][c->getY()]->getType() == 'b')
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == 'p')
+                if (board[c->getX()][c->getY()]->getType() == 'p')
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == '$')
+                if (board[c->getX()][c->getY()]->getType() == '$')
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
@@ -735,25 +731,25 @@ public:
             else
             {
 
-                board[c->getX()][c->getY()].setType('.');
+                board[c->getX()][c->getY()]->setType('.');
                 c->setX(c->getX() - 2);
-                if (board[c->getX()][c->getY()].getType() == 't')
+                if (board[c->getX()][c->getY()]->getType() == 't')
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'b')
+                if (board[c->getX()][c->getY()]->getType() == 'b')
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == 'p')
+                if (board[c->getX()][c->getY()]->getType() == 'p')
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == '$')
+                if (board[c->getX()][c->getY()]->getType() == '$')
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
@@ -778,25 +774,25 @@ public:
             else
             {
 
-                board[c->getX()][c->getY()].setType('.');
+                board[c->getX()][c->getY()]->setType('.');
                 c->setY(c->getY() - 2);
-                if (board[c->getX()][c->getY()].getType() == 't')
+                if (board[c->getX()][c->getY()]->getType() == 't')
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
                 }
 
-                if (board[c->getX()][c->getY()].getType() == 'b')
+                if (board[c->getX()][c->getY()]->getType() == 'b')
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == 'p')
+                if (board[c->getX()][c->getY()]->getType() == 'p')
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
                 }
-                if (board[c->getX()][c->getY()].getType() == '$')
+                if (board[c->getX()][c->getY()]->getType() == '$')
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
@@ -817,16 +813,16 @@ public:
 
             for (int i = (9 - c->getX()); i >= 0; i--)
             {
-                if (board[c->getX() + i][c->getY()].getType() == 't' || board[c->getX() + i][c->getY()].getType() == 'b')
-                    board[c->getX() + i][c->getY()].setType('.');
+                if (board[c->getX() + i][c->getY()]->getType() == 't' || board[c->getX() + i][c->getY()]->getType() == 'b')
+                    board[c->getX() + i][c->getY()]->setType('.');
             }
             break;
         case 6: // board[mario.getX()][mario.getY() + 1]
         {
             for (int i = (9 - c->getY()); i >= 0; i--)
             {
-                if (board[c->getX()][c->getY() + i].getType() == 't' || board[c->getX()][c->getY() + i].getType() == 'b')
-                    board[c->getX()][c->getY() + i].setType('.');
+                if (board[c->getX()][c->getY() + i]->getType() == 't' || board[c->getX()][c->getY() + i]->getType() == 'b')
+                    board[c->getX()][c->getY() + i]->setType('.');
             }
         }
         break;
@@ -834,8 +830,8 @@ public:
         {
             for (int i = (0 - c->getX()); i <= 0; i++)
             {
-                if (board[c->getX() + i][c->getY()].getType() == 't' || board[c->getX() + i][c->getY()].getType() == 'b')
-                    board[c->getX() + i][c->getY()].setType('.');
+                if (board[c->getX() + i][c->getY()]->getType() == 't' || board[c->getX() + i][c->getY()]->getType() == 'b')
+                    board[c->getX() + i][c->getY()]->setType('.');
             }
         }
         break;
@@ -843,8 +839,8 @@ public:
         {
             for (int i = (0 - c->getY()); i <= 0; i++)
             {
-                if (board[c->getX()][c->getY() + i].getType() == 't' || board[c->getX()][c->getY() + i].getType() == 'b')
-                    board[c->getX()][c->getY() + i].setType('.');
+                if (board[c->getX()][c->getY() + i]->getType() == 't' || board[c->getX()][c->getY() + i]->getType() == 'b')
+                    board[c->getX()][c->getY() + i]->setType('.');
             }
         }
         break;
@@ -867,13 +863,13 @@ public:
                 newTurn();
             }
 
-            if (board[c->getX() + 1][c->getY()].getType() == 't')
+            if (board[c->getX() + 1][c->getY()]->getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() + 1);
                 }
 
@@ -884,13 +880,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() + 1][c->getY()].getType() == 'b')
+            else if (board[c->getX() + 1][c->getY()]->getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() + 1);
                 }
 
@@ -901,7 +897,7 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() + 1][c->getY()].getType() == '$')
+            else if (board[c->getX() + 1][c->getY()]->getType() == '$')
             {
 
                 if (!marioActive && !luigiActive)
@@ -909,7 +905,7 @@ public:
 
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() + 1);
                 }
                 else if (marioActive)
@@ -918,14 +914,14 @@ public:
                     luigiAbilityHelper(8);
                 newTurn();
             }
-            else if (board[c->getX() + 1][c->getY()].getType() == 'p')
+            else if (board[c->getX() + 1][c->getY()]->getType() == 'p')
             {
                 if (!marioActive && !luigiActive)
                 {
 
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() + 1);
                 }
                 else if (marioActive)
@@ -934,11 +930,11 @@ public:
                     luigiAbilityHelper(8);
                 newTurn();
             }
-            else if (board[c->getX() + 1][c->getY()].getType() == '.')
+            else if (board[c->getX() + 1][c->getY()]->getType() == '.')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
 
                     c->setX(c->getX() + 1);
                 }
@@ -962,13 +958,13 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX()][c->getY() + 1].getType() == 't')
+            if (board[c->getX()][c->getY() + 1]->getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() + 1);
                 }
                 else if (marioActive)
@@ -978,13 +974,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() + 1].getType() == 'b')
+            else if (board[c->getX()][c->getY() + 1]->getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() + 1);
                 }
                 else if (marioActive)
@@ -994,13 +990,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() + 1].getType() == '$')
+            else if (board[c->getX()][c->getY() + 1]->getType() == '$')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() + 1);
                 }
                 else if (marioActive)
@@ -1010,13 +1006,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() + 1].getType() == 'p')
+            else if (board[c->getX()][c->getY() + 1]->getType() == 'p')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() + 1);
                 }
                 else if (marioActive)
@@ -1026,11 +1022,11 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() + 1].getType() == '.')
+            else if (board[c->getX()][c->getY() + 1]->getType() == '.')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() + 1);
                 }
                 else if (marioActive)
@@ -1053,13 +1049,13 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX() - 1][c->getY()].getType() == 't')
+            if (board[c->getX() - 1][c->getY()]->getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() - 1);
                 }
                 else if (marioActive)
@@ -1069,13 +1065,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() - 1][c->getY()].getType() == 'b')
+            else if (board[c->getX() - 1][c->getY()]->getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() - 1);
                 }
                 else if (marioActive)
@@ -1085,13 +1081,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() - 1][c->getY()].getType() == '$')
+            else if (board[c->getX() - 1][c->getY()]->getType() == '$')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() - 1);
                 }
                 else if (marioActive)
@@ -1101,13 +1097,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() - 1][c->getY()].getType() == 'p')
+            else if (board[c->getX() - 1][c->getY()]->getType() == 'p')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() - 1);
                 }
                 else if (marioActive)
@@ -1117,11 +1113,11 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() - 1][c->getY()].getType() == '.')
+            else if (board[c->getX() - 1][c->getY()]->getType() == '.')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setX(c->getX() - 1);
                 }
                 else if (marioActive)
@@ -1144,13 +1140,13 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX()][c->getY() - 1].getType() == 't')
+            if (board[c->getX()][c->getY() - 1]->getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Thief *tempP = (Thief *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() - 1);
                 }
                 else if (marioActive)
@@ -1160,13 +1156,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() - 1].getType() == 'b')
+            else if (board[c->getX()][c->getY() - 1]->getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Bomb *tempP = (Bomb *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() - 1);
                 }
                 else if (marioActive)
@@ -1176,13 +1172,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() - 1].getType() == 'p')
+            else if (board[c->getX()][c->getY() - 1]->getType() == 'p')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Potion *tempP = (Potion *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() - 1);
                 }
                 else if (marioActive)
@@ -1192,13 +1188,13 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() - 1].getType() == '$')
+            else if (board[c->getX()][c->getY() - 1]->getType() == '$')
             {
                 if (!marioActive && !luigiActive)
                 {
                     Coin *tempP = (Coin *)c;
                     tempP->execute(c);
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() - 1);
                 }
                 else if (marioActive)
@@ -1208,11 +1204,11 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() - 1].getType() == '.')
+            else if (board[c->getX()][c->getY() - 1]->getType() == '.')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    board[c->getX()][c->getY()].setType('.');
+                    board[c->getX()][c->getY()]->setType('.');
                     c->setY(c->getY() - 1);
                 }
                 else if (marioActive)
