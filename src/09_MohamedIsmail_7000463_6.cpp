@@ -740,19 +740,19 @@ public:
         break;
         case 5: // board[mario.getX() - 1][mario.getY()]
         {
-            for (int i = (9 - c->getX()); i >= 0; i--)
+            for (int i = (0 - c->getX()); i <= 0; i++)
             {
-                if (board[c->getX() - i][c->getY()].getType() == 'o')
-                    board[c->getX() - i][c->getY()].setType('.');
+                if (board[c->getX() + i][c->getY()].getType() == 'o')
+                    board[c->getX() + i][c->getY()].setType('.');
             }
         }
         break;
         case 4: // board[mario.getX()][mario.getY() - 1]
         {
-            for (int i = (9 - c->getY()); i >= 0; i--)
+            for (int i = (0 - c->getY()); i <= 0; i++)
             {
-                if (board[c->getX()][c->getY() - i].getType() == 'o')
-                    board[c->getX()][c->getY() - i].setType('.');
+                if (board[c->getX()][c->getY() + i].getType() == 'o')
+                    board[c->getX()][c->getY() + i].setType('.');
             }
         }
         break;
