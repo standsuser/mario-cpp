@@ -192,7 +192,8 @@ public:
         // srand(time(0));
         takedmg = rand() % 5 + 1;
     }
-
+    friend class Thief;
+    friend class Bomb;
     virtual void execute(Champion *c)
     {
         cout << "Obstacle execute called" << endl;
@@ -243,45 +244,38 @@ public:
 class Gem : public Cell
 {
 private:
-    int amount;
-    int name;
+    int points;
 
 public:
-    Gem()
+    Gem() : Cell()
     {
-        srand(time(0));
-        this->amount = rand() % 6 + 5;
+        this->setType('g');
+        this->points = (rand() % 10) + 5;
     }
-    int getPoints()
-    {
-        return this->amount;
-    }
-
-    void setPoints(int z)
-    {
-        this->amount = z;
-    }
-
-    virtual void execute(Champion c)
-    {
-    }
+    virtual void execute(Champion *c) {}
+    friend class Coin;
+    friend class Potion;
 };
 
 class Coin : public Gem
 {
 
 public:
+    Coin() : Gem()
+    {
+        setType('$');
+    }
     void execute(Champion *c)
     {
-        if (getPoints() == 100)
+        if (this->points == 100)
         {
-            setPoints(rand() % 6 + 5);
+            this->points = rand() % 6 + 5;
         }
-        int newScore = c->getScore() + getPoints();
-        CompletedgemScore += getPoints();
+        int newScore = c->getScore() + this->points;
+        CompletedgemScore += this->points;
         c->setScore(newScore);
 
-        cout << "Coin executed with points = " << getPoints() << endl;
+        cout << "Coin executed with points = " << this->points << endl;
         sleep(4);
     }
 };
@@ -289,14 +283,19 @@ public:
 class Potion : public Gem
 {
 public:
+    Potion() : Gem()
+    {
+        setType('p');
+    }
     void execute(Champion *c)
     {
-        c->setHp(c->getHp() + getPoints());
+        int newhp = c->getHp() + this->points;
+        c->setHp(newhp);
         if (c->getHp() >= 100)
         {
             c->setHp(100);
         }
-        cout << "Potion executed with points = " << getPoints() << endl;
+        cout << "Potion executed with points = " << this->points << endl;
         sleep(4);
     }
 };
@@ -322,7 +321,7 @@ public:
         board = new Cell **[10];
         for (int i = 0; i < 10; i++)
         {
-            board[i] = new Cell*[10];
+            board[i] = new Cell *[10];
         }
         newGame();
     }
