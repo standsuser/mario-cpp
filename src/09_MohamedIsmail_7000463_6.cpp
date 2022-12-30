@@ -183,13 +183,13 @@ public:
 class Obstacle
 {
 private:
-    int takedmg;
+    int takedmg = 0;
     char type;
 
 public:
     Obstacle()
     {
-        // srand(time(0));
+        srand(time(0));
         takedmg = rand() % 5 + 1;
     }
 
@@ -217,24 +217,26 @@ public:
         c->setScore(x);
 
         cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
-        sleep(4);
+        sleep(2);
     }
 };
 
 class Bomb : public Obstacle
 {
 public:
+    int takedmg1 = 0;
     void execute(Champion *c)
     {
-
-        int x = c->getHp() - this->getTakeDmg();
+        srand(time(0));
+        takedmg1 = rand() % 5 + 1;
+        int x = c->getHp() - takedmg1;
 
         if (x < 0)
             x = 0;
-        //   c->setHp(x);
+        c->setHp(x);
 
         cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
-        sleep(4);
+        sleep(2);
     }
 };
 
@@ -322,7 +324,7 @@ public:
         board = new Cell **[10];
         for (int i = 0; i < 10; i++)
         {
-            board[i] = new Cell*[10];
+            board[i] = new Cell *[10];
         }
         newGame();
     }
@@ -598,7 +600,7 @@ public:
 
     void end()
     {
-        if (c->getScore() >= CompletedgemScore)
+        if (c->getScore() >= gemCount)
         {
             cout << "Congrats you won!!" << endl;
             for (int i = 0; i < 5; ++i)
