@@ -120,11 +120,14 @@ private:
 public:
     Obstacle()
     {
-        srand(time(0));
+        // srand(time(0));
         takedmg = rand() % 5 + 1;
     }
 
-    virtual void execute(Champion c){};
+    virtual void execute(Champion *c)
+    {
+        cout << "Obstacle execute called" << endl;
+    }
 
     int getTakeDmg()
     {
@@ -135,14 +138,14 @@ public:
 class Thief : public Obstacle
 {
 public:
-    void execute(Champion c)
+    void execute(Champion *c)
     {
 
-        int x = c.getScore() - this->getTakeDmg();
+        int x = c->getScore() - this->getTakeDmg();
 
         if (x < 0)
             x = 0;
-        c.setScore(x);
+        c->setScore(x);
 
         cout << "thief executed with dmg = " << this->getTakeDmg() << endl;
     }
@@ -151,14 +154,14 @@ public:
 class Bomb : public Obstacle
 {
 public:
-    void execute(Champion c)
+    void execute(Champion *c)
     {
 
-        int x = c.getHp() - this->getTakeDmg();
+        int x = c->getHp() - this->getTakeDmg();
 
         if (x < 0)
             x = 0;
-        c.setHp(x);
+        c->setHp(x);
 
         cout << "bomb excuted with dmg = " << this->getTakeDmg() << endl;
     }
@@ -190,9 +193,9 @@ class Coin : public Gem
 {
 
 public:
-    void execute(Champion c)
+    void execute(Champion *c)
     {
-        c.setScore(c.getScore() + this->getPoints());
+        c->setScore(c->getScore() + this->getPoints());
         cout << "Coin executed with points = " << this->getPoints() << endl;
     }
 };
@@ -200,12 +203,12 @@ public:
 class Potion : public Gem
 {
 public:
-    void execute(Champion c)
+    void execute(Champion *c)
     {
-        c.setHp(c.getHp() + this->getPoints());
-        if (c.getHp() == 100)
+        c->setHp(c->getHp() + this->getPoints());
+        if (c->getHp() == 100)
         {
-            c.setHp(100);
+            c->setHp(100);
         }
         cout << "Potion executed with points = " << this->getPoints() << endl;
     }
@@ -218,6 +221,7 @@ class Cell
 private:
     char type;
     int x, y;
+    char objType;
 
 public:
     Cell()
@@ -225,6 +229,16 @@ public:
         this->type = '.';
         this->x = 0;
         this->y = 0;
+    }
+
+    char getObjType()
+    {
+        return this->objType;
+    }
+
+    char setObjType(char c)
+    {
+        this->objType = c;
     }
 
     char getType()
@@ -274,6 +288,7 @@ private:
     int gemCount, obstCount;
     int thievesX[10], thievesY[10], bombsX[10], bombsY[10], potionsX[10], potionsY[10], coinsX[10], coinsY[10];
     Obstacle *obstacles[20];
+
     Champion *c;
 
 public:
@@ -404,7 +419,7 @@ public:
                 }
             } while (board[thievesX[i]][thievesY[i]].getType() != '.');
 
-            board[thievesX[i]][thievesY[i]].setType('o');
+            board[thievesX[i]][thievesY[i]].setType('t');
             board[thievesX[i]][thievesY[i]].setX(thievesX[i]);
             board[thievesX[i]][thievesY[i]].setY(thievesY[i]);
             obstCount++;
@@ -420,7 +435,7 @@ public:
                 }
             } while (board[bombsX[i]][bombsY[i]].getType() != '.');
 
-            board[bombsX[i]][bombsY[i]].setType('o');
+            board[bombsX[i]][bombsY[i]].setType('b');
             board[bombsX[i]][bombsY[i]].setX(bombsX[i]);
             board[bombsX[i]][bombsY[i]].setY(bombsY[i]);
             obstCount++;
@@ -440,7 +455,7 @@ public:
                 }
             } while (board[coinsX[i]][coinsY[i]].getType() != '.');
 
-            board[coinsX[i]][coinsY[i]].setType('g');
+            board[coinsX[i]][coinsY[i]].setType('$');
             board[coinsX[i]][coinsY[i]].setX(coinsX[i]);
             board[coinsX[i]][coinsY[i]].setY(coinsY[i]);
             gemCount++;
@@ -456,7 +471,7 @@ public:
                 }
             } while (board[potionsX[i]][potionsY[i]].getType() != '.');
 
-            board[potionsX[i]][potionsY[i]].setType('g');
+            board[potionsX[i]][potionsY[i]].setType('p');
             board[potionsX[i]][potionsY[i]].setX(potionsX[i]);
             board[potionsX[i]][potionsY[i]].setY(potionsY[i]);
             gemCount++;
@@ -470,10 +485,14 @@ public:
                 if (board[i][j].getType() == 'o')
                 {
                     if (thievesX[i] == i && thievesY[j] == j)
-                        Obstacle *o = new Thief();
+                    {
+                        Thief *t = new Thief();
+                    }
 
                     if (bombsX[i] == i && bombsY[j] == j)
-                        Obstacle *o = new Bomb();
+                    {
+                        Bomb *b = new Bomb();
+                    }
                 }
 
                 // if (board[i][j].getType() == 'c')
@@ -484,10 +503,14 @@ public:
                 if (board[i][j].getType() == 'g')
                 {
                     if (potionsX[i] == i && potionsY[j] == j)
-                        Gem *g = new Potion();
+                    {
+                        Potion *p = new Potion();
+                    }
 
                     if (coinsX[i] == i && coinsY[j] == j)
-                        Gem *g = new Coin();
+                    {
+                        Coin *coin = new Coin();
+                    }
                 }
             }
         }
@@ -550,7 +573,7 @@ public:
 
     void end()
     {
-        if (c->getScore() == gemCount)
+        if (c->getScore() >= gemCount)
         {
             cout << "Congrats you won!!" << endl;
             for (int i = 0; i < 5; ++i)
@@ -767,30 +790,16 @@ public:
                 newTurn();
             }
 
-            if (board[c->getX() + 1][c->getY()].getType() == 'o')
+            if (board[c->getX() + 1][c->getY()].getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->decHp();
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() + 1);
-                    if ()
-
-                        //---------------------------
-
-                        // for (int i = 0; i < 10; i++)
-                        // {
-                        //     for (int j = 0; j < 10; j++)
-                        //     {
-                        //         if (thievesX[i] == c->getX() && thievesY[j] == c->getY())
-                        //             execute
-
-                        //         if (bombsX[i] == i && bombsY[j] == j)
-                        //             Obstacle *o = new Bomb();
-                        //         //-------------
-                        //     }
-                        // }
                 }
+
                 else if (marioActive)
                     marioAbilityHelper(8);
                 else
@@ -798,13 +807,47 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() + 1][c->getY()].getType() == 'g')
+            else if (board[c->getX() + 1][c->getY()].getType() == 'b')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 1);
+                }
+
+                else if (marioActive)
+                    marioAbilityHelper(8);
+                else
+                    luigiAbilityHelper(8);
+
+                newTurn();
+            }
+            else if (board[c->getX() + 1][c->getY()].getType() == '$')
             {
 
                 if (!marioActive && !luigiActive)
                 {
 
-                    c->setScore(c->getScore() + 1);
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() + 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(8);
+                else
+                    luigiAbilityHelper(8);
+                newTurn();
+            }
+            else if (board[c->getX() + 1][c->getY()].getType() == 'p')
+            {
+                if (!marioActive && !luigiActive)
+                {
+
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() + 1);
                 }
@@ -842,11 +885,12 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX()][c->getY() + 1].getType() == 'o')
+            if (board[c->getX()][c->getY() + 1].getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->decHp();
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() + 1);
                 }
@@ -857,11 +901,44 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() + 1].getType() == 'g')
+            else if (board[c->getX()][c->getY() + 1].getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->setScore(c->getScore() + 1);
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(6);
+                else
+                    luigiAbilityHelper(6);
+
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() + 1].getType() == '$')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() + 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(6);
+                else
+                    luigiAbilityHelper(6);
+
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() + 1].getType() == 'p')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() + 1);
                 }
@@ -899,11 +976,12 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX() - 1][c->getY()].getType() == 'o')
+            if (board[c->getX() - 1][c->getY()].getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->decHp();
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
                 }
@@ -914,11 +992,44 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX() - 1][c->getY()].getType() == 'g')
+            else if (board[c->getX() - 1][c->getY()].getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->setScore(c->getScore() + 1);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() - 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(5);
+                else
+                    luigiAbilityHelper(5);
+
+                newTurn();
+            }
+            else if (board[c->getX() - 1][c->getY()].getType() == '$')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Coin *tempP = (Coin *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setX(c->getX() - 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(5);
+                else
+                    luigiAbilityHelper(5);
+
+                newTurn();
+            }
+            else if (board[c->getX() - 1][c->getY()].getType() == 'p')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setX(c->getX() - 1);
                 }
@@ -956,11 +1067,12 @@ public:
             {
                 newTurn();
             }
-            if (board[c->getX()][c->getY() - 1].getType() == 'o')
+            if (board[c->getX()][c->getY() - 1].getType() == 't')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->decHp();
+                    Thief *tempP = (Thief *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
                 }
@@ -971,11 +1083,28 @@ public:
 
                 newTurn();
             }
-            else if (board[c->getX()][c->getY() - 1].getType() == 'g')
+            else if (board[c->getX()][c->getY() - 1].getType() == 'b')
             {
                 if (!marioActive && !luigiActive)
                 {
-                    c->setScore(c->getScore() + 1);
+                    Bomb *tempP = (Bomb *)c;
+                    tempP->execute(c);
+                    board[c->getX()][c->getY()].setType('.');
+                    c->setY(c->getY() - 1);
+                }
+                else if (marioActive)
+                    marioAbilityHelper(4);
+                else
+                    luigiAbilityHelper(4);
+
+                newTurn();
+            }
+            else if (board[c->getX()][c->getY() - 1].getType() == 'p')
+            {
+                if (!marioActive && !luigiActive)
+                {
+                    Potion *tempP = (Potion *)c;
+                    tempP->execute(c);
                     board[c->getX()][c->getY()].setType('.');
                     c->setY(c->getY() - 1);
                 }
@@ -1011,7 +1140,6 @@ public:
             newTurn();
         }
     }
-
 }; // END OF MAP CLASS
 
 //----------------------------new turn and move ---------------------------
